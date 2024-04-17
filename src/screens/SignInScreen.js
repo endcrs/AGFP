@@ -5,8 +5,10 @@ import logo from '../asset/logo.png';
 import { useState } from 'react';
 import { Button } from '../components/Button.js';
 import { CaixaDeTexto } from '../components/TextInput.js';
+import { useAuth } from '../contexts/Auth';
 
 export default function Inicio() {
+  const {singIn} = useAuth();
   const [cpf, setCPF] = useState('');
   const [senha, setSenha] = useState('');
   
@@ -33,6 +35,7 @@ export default function Inicio() {
 
       <Button title='Entrar no App'
         style={{marginTop: 20}}
+        onPress={() => singIn(cpf, senha)}
       />
     </View>
   );
