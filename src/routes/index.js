@@ -22,7 +22,7 @@ export default function Routes() {
 
     return (
         <NavigationContainer>
-            {authData ? <DrawerRoutes/> : <AuthStack/>}
+           {authData ? <DrawerRoutes/> : <AuthStack/>}
         </NavigationContainer>
     )
 }

@@ -1,31 +1,36 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 
 import logo from '../asset/logo.png';
 
 import { useState } from 'react';
 import { Button } from '../components/Button.js';
-import { CaixaDeTexto } from '../components/TextInput.js';
+import { InputText } from '../components/InputText.js';
 import { useAuth } from '../contexts/Auth';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Inicio() {
+export default function Login() {
+  const navigation = useNavigation();
+  //Hook para utilizar as funções de autenticação
   const {singIn} = useAuth();
+  
   const [cpf, setCPF] = useState('');
   const [senha, setSenha] = useState('');
   
   return (
     <View style={styles.container}>
       <Image
-         resizeMode="contain"
-         source={logo}
-         style={{width: 180, height: 180, marginBottom: 30,}}
+        resizeMode="contain"
+        source={logo}
+        style={{width: 180, height: 180, marginBottom: 30,}}
       />
-      <CaixaDeTexto
+      <InputText
         onChangeText={setCPF}
         value={cpf}
         placeholder="CPF"
         placeholderTextColor="#727272"
       />
-      <CaixaDeTexto
+
+      <InputText
         onChangeText={setSenha}
         value={senha}
         secureTextEntry
@@ -37,6 +42,14 @@ export default function Inicio() {
         style={{marginTop: 20}}
         onPress={() => singIn(cpf, senha)}
       />
+
+      <TouchableOpacity 
+        style={{marginTop:30}}
+        onPress={() => navigation.navigate('CadastroUser')}
+      >
+        <Text style={styles.spam}>Não tem conta? Cadastre-se</Text>
+      </TouchableOpacity>
+        
     </View>
   );
 }
@@ -51,5 +64,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize:22,
     fontWeight: 'bold',
+  },
+  spam: {
+    fontSize: 15,
+    color: "#9F9898",
+    fontWeight: '500',
+    textDecorationLine: 'underline',
   }
 });

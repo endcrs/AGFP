@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import SignInScreen from '../screens/SignInScreen'
+import Login from '../screens/Login'
+import CadastroUser from '../screens/CadastroUser';
 
 const Stack = createNativeStackNavigator();
 
@@ -8,9 +9,13 @@ const Stack = createNativeStackNavigator();
 export default function AuthStack() {
     return(
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+           <Stack.Screen 
+                name="Login"
+                component={Login}
+            />
             <Stack.Screen 
-                name="SignInScreen"
-                component={SignInScreen}
+                name="CadastroUser"
+                component={CadastroUser}
             />
         </Stack.Navigator>
     )
