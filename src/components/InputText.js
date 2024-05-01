@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput } from 'react-native';
 
-export function CaixaDeTexto(props) {
+export function InputText(props) {
   return (
     <TextInput
       style={[
