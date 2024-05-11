@@ -1,22 +1,29 @@
+import { Alert } from 'react-native';
 import { AuthData } from '../contexts/Auth';
+import api from './api';
 
 // funtção que irá realizar o login na aplicação
 async function singIn(cpf: string, password: string): Promise<AuthData>{
+
     return new Promise((resolve, reject) => {
         
         //simulação de consulta a API
-        setTimeout(() => {
-            if(password === '123456'){
-                resolve({
-                    token: 'fake-token',
-                    cpf,
-                    name: 'David Silva'
-                })
-            }else {
-                reject(new Error('Credenciais Inválidas'));
+        api.post("/usuarios/login",
+            {
+                cpf:cpf,
+                senha:password
             }
-        }, 500)
+        ).then(function (response) {
+            resolve({
+                token: 'fake-token',
+                cpf: response.data.cpf,
+                name: response.data.nomeCompleto
+            })
+        }).catch(function (error) {
+            reject(new Error('Credenciais Inválidas'));
+        })
     });
+   
 }
 
 export const authService = {singIn};
