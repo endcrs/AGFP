@@ -1,4 +1,5 @@
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import CircularProgress from 'react-native-circular-progress-indicator';
 
 import { ButtonPlus } from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
@@ -10,90 +11,105 @@ export default function Painel() {
 
 
   return (
-    <View style={styles.container}>
-      
-      {/*Sessão Valores*/}
-      <View style={styles.session}>
-        <ScrollView  horizontal={true} >
-            <View style={[styles.cardValor, {backgroundColor:'#0093D1'}]} >
-              <Text style={styles.itemValor}>Receita</Text>
-              <Text style={[styles.itemValor, {fontSize:27}]}>R$ 1.995,00</Text>
+      <View style={styles.container}>
+        {/*Sessão Valores*/}
+        <View style={styles.session}>
+          <ScrollView  horizontal={true} >
+              <View style={[styles.cardValor, {backgroundColor:'#0093D1'}]} >
+                <Text style={styles.itemValor}>Receita</Text>
+                <Text style={[styles.itemValor, {fontSize:27}]}>R$ 1.995,00</Text>
+              </View>
+              
+              <View style={[styles.cardValor, {backgroundColor:'#FF0000'}]}>
+                <Text style={styles.itemValor}>Despesa</Text>
+                <Text style={[styles.itemValor, {fontSize:27}]}>R$ 1.287,00</Text>
+              </View>
+
+              <View style={[styles.cardValor, {backgroundColor:'#00d649'}]}>
+                <Text style={styles.itemValor}>Lucro</Text>
+                <Text style={[styles.itemValor, {fontSize:27}]}>R$ 708,00</Text>
+              </View>
+          </ScrollView>
+        </View>
+
+        {/*Sessão Categorias*/}
+        <View style={styles.session}>
+          <ScrollView horizontal={true}>
+            <View style={styles.CardCategoria}>
+              <CircularProgress 
+                value={50}
+                valueSuffix={'%'}
+              />
+              <Text style={styles.textCategoria}>Alimentação</Text>
+            </View>
+
+            <View style={styles.CardCategoria}>
+              <CircularProgress 
+                value={50}
+                valueSuffix={'%'}
+              />
+              <Text style={styles.textCategoria}>Alimentação</Text>
+            </View>
+
+            <View style={styles.CardCategoria}>
+              <CircularProgress 
+                value={50}
+                valueSuffix={'%'}
+              />
+              <Text style={styles.textCategoria}>Alimentação</Text>
+            </View>
+
+            <View style={styles.CardCategoria}>
+              <CircularProgress 
+                value={50}
+                valueSuffix={'%'}
+              />
+              <Text style={styles.textCategoria}>Alimentação</Text>
             </View>
             
-            <View style={[styles.cardValor, {backgroundColor:'#FF0000'}]}>
-              <Text style={styles.itemValor}>Despesa</Text>
-              <Text style={[styles.itemValor, {fontSize:27}]}>R$ 1.287,00</Text>
-            </View>
+          </ScrollView>
+          
+        </View>
 
-            <View style={[styles.cardValor, {backgroundColor:'#00d649'}]}>
-              <Text style={styles.itemValor}>Lucro</Text>
-              <Text style={[styles.itemValor, {fontSize:27}]}>R$ 708,00</Text>
-            </View>
-        </ScrollView>
+        {/*Sessão Gastos recentes */}
+
+        <View style={[styles.session, {height: 355}]}>
+          <View style={styles.titleCard}>
+            <Text style={{color:'#fff', fontSize:18, fontWeight:'700'}}>GASTOS RECENTES</Text>
+            <ButtonPlus onPress={() => navigation.navigate('CadastroRegistro')}/>
+          </View>
+
+          <ScrollView vertical={true}>
+            <CardRegistro 
+              titulo='Compras Virtuais'
+              valor='200,00'
+              categoria='Educação'
+              data='24/04/2024'
+            />
+
+            <CardRegistro 
+              titulo='Compras Diversas'
+              valor='500,00'
+              categoria='Educação'
+              data='24/04/2024'
+            />
+
+            <CardRegistro 
+              titulo='Nubank'
+              valor='500,00'
+              categoria='Educação'
+              data='24/04/2024'
+            />
+
+            <CardRegistro 
+              titulo='Nubank'
+              valor='500,00'
+              categoria='Educação'
+              data='24/04/2024'
+            />
+          </ScrollView>
+        </View>
       </View>
-
-      {/*Sessão Categorias*/}
-      <View style={styles.session}>
-        <ScrollView horizontal={true}>
-          <View style={styles.CardCategoria}>
-            <View style={styles.pregressCategoria}>
-
-            </View>
-            <Text style={styles.textCategoria}>Alimentação</Text>
-          </View>
-          <View style={styles.CardCategoria}>
-            <View style={styles.pregressCategoria}>
-
-            </View>
-            <Text style={styles.textCategoria}>Educação</Text>
-          </View>
-          <View style={styles.CardCategoria}>
-            <View style={styles.pregressCategoria}>
-
-            </View>
-            <Text style={styles.textCategoria}>Lazer</Text>
-          </View>
-          <View style={styles.CardCategoria}>
-
-          </View>
-
-        </ScrollView>
-        
-      </View>
-
-      {/*Sessão Gastos recentes */}
-
-      <View style={[styles.session, {height: 355}]}>
-        <Text style={{color:'#fff', fontSize:18, fontWeight:'700'}}>GASTOS RECENTES</Text>
-
-        <ScrollView>
-
-          <CardRegistro 
-            titulo='Compras Virtuais'
-            valor='200,00'
-            categoria='Educação'
-            data='24/04/2024'
-          />
-
-          <CardRegistro 
-            titulo='Compras Diversas'
-            valor='500,00'
-            categoria='Educação'
-            data='24/04/2024'
-          />
-
-          <CardRegistro 
-            titulo='Nubank'
-            valor='500,00'
-            categoria='Educação'
-            data='24/04/2024'
-          />
-        </ScrollView>
-      </View>
-
-      <ButtonPlus onPress={() => navigation.navigate('CadastroRegistro')}/>
-
-    </View>
   );
 }
 
@@ -102,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     alignItems:'center',
-    padding: 5,
+    //padding: 5,
   },
   session: {
     backgroundColor:'#1f1f1f',
@@ -113,6 +129,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     padding:10,
+  },
+  titleCard: {
+    width: '100%',
+    height: 50,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection: 'row',
   },
   cardValor: {
     width: 200,

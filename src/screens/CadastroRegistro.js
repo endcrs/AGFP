@@ -1,9 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
-import { InputText } from "../components/InputText";
+import { InputSelect, InputText } from "../components/InputText";
 import { useState } from "react";
-import Button from "../components/Button";
+import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 
+const dataCategoria = [
+  { label: 'Categoria 1', value: '1' },
+  { label: 'Categoria 2', value: '2' },
+];
+
+const dataCartão = [
+  { label: 'Cartão 1', value: '1' },
+  { label: 'Cartão 2', value: '2' },
+];
 
 export default function CadastroResgistro() {
 
@@ -33,9 +42,10 @@ export default function CadastroResgistro() {
             placeholderTextColor="#727272"
           />
 
-          <InputText
+          <InputSelect
             onChangeText={setCartao}
             value={cartao}
+            data={dataCartão}
             placeholder="Cartão"
             placeholderTextColor="#727272"
           />
@@ -45,9 +55,10 @@ export default function CadastroResgistro() {
             placeholder="Data"
             placeholderTextColor="#727272"
           />
-          <InputText
+          <InputSelect
             onChangeText={setCategoria}
             value={catergoria}
+            data={dataCategoria}
             placeholder="Categoria"
             placeholderTextColor="#727272"
           />

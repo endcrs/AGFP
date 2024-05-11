@@ -1,16 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 
 import Painel from '../screens/Painel';
 import Historico from '../screens/Historico';
 import Cartoes from '../screens/Cartoes';
+import CadastroResgistro from '../screens/CadastroRegistro';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
 export default function TabRoutes(){
     return (
         <Tab.Navigator 
-            
+
             screenOptions={{ 
                 headerShown: false,
                 
@@ -23,7 +25,7 @@ export default function TabRoutes(){
         >
             <Tab.Screen 
                 name="Painel"
-                component={Painel}
+                component={PainelNavigation}
                 options={{
                     tabBarIcon: ({ color, size }) => <Feather name='home' color={color} size={size}/>,
                     tabBarLabel: 'Painel'
@@ -46,5 +48,27 @@ export default function TabRoutes(){
                 }}
             />
         </Tab.Navigator>
+    )
+}
+
+const PainelStack = createNativeStackNavigator();
+
+function PainelNavigation() {
+    return(
+        <PainelStack.Navigator
+            initialRouteName="Painel"
+            screenOptions={{ 
+                headerShown: false,
+            }}
+        >
+            <PainelStack.Screen
+                name="Painel"
+                component={Painel}
+            />
+            <PainelStack.Screen
+                name="CadastroRegistro"
+                component={CadastroResgistro}
+            />
+        </PainelStack.Navigator>
     )
 }

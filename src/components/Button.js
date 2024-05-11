@@ -3,7 +3,7 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { AntDesign } from '@expo/vector-icons';
 
-export default function Button({ title, style, ...rest }) {
+export function Button({ title, style, ...rest }) {
   return (
     <TouchableOpacity {...rest} style={[styles.button, style]}>
       <Text style={styles.text}>{title}</Text>
@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
   },
   buttonPlus:{
     marginLeft:'auto', 
-    marginRight:10,
+    //marginRight:10,
   }
 });

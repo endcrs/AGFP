@@ -11,6 +11,14 @@ export default function CardRegistro({titulo, valor, categoria, data}){
     )
 }
 
+export function CardCartao(){
+  return(
+    <View style={styles.cardCartao}>
+      
+    </View>
+  )
+}
+
 
 const styles = StyleSheet.create({
   cardRegistro:{
@@ -18,7 +26,7 @@ const styles = StyleSheet.create({
     minHeight: 85,
     height: 'auto',
     borderRadius: 10,
-    marginTop: 15,
+    marginTop: 10,
     backgroundColor: '#474747',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -32,5 +40,15 @@ const styles = StyleSheet.create({
     color:'#fff',
     textAlign:'center',
     flexWrap: 'wrap',
-  }
+  },
+  cardCartao:{
+    width: '100%',
+    minHeight: 85,
+    height: 'auto',
+    borderRadius: 10,
+    backgroundColor: '#474747',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
 });
