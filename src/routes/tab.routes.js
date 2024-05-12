@@ -6,6 +6,7 @@ import Painel from '../screens/Painel';
 import Historico from '../screens/Historico';
 import Cartoes from '../screens/Cartoes';
 import CadastroResgistro from '../screens/CadastroRegistro';
+import CadastroCartao from '../screens/CadastroCartao';
 
 const Tab = createBottomTabNavigator()
 
@@ -24,7 +25,7 @@ export default function TabRoutes(){
             }}
         >
             <Tab.Screen 
-                name="Painel"
+                name="PainelTab"
                 component={PainelNavigation}
                 options={{
                     tabBarIcon: ({ color, size }) => <Feather name='home' color={color} size={size}/>,
@@ -41,7 +42,7 @@ export default function TabRoutes(){
             />
             <Tab.Screen 
                 name="Cartoes"
-                component={Cartoes}
+                component={CartaoNavigation}
                 options={{
                     tabBarIcon: ({ color, size }) => <Entypo name='credit-card' color={color} size={size}/>,
                     tabBarLabel: 'Cartões'
@@ -51,6 +52,7 @@ export default function TabRoutes(){
     )
 }
 
+// Rotas Stack da tela Painel
 const PainelStack = createNativeStackNavigator();
 
 function PainelNavigation() {
@@ -70,5 +72,28 @@ function PainelNavigation() {
                 component={CadastroResgistro}
             />
         </PainelStack.Navigator>
+    )
+}
+
+// Rotas Stack da tela Cartões
+const CartaoStack = createNativeStackNavigator();
+
+function CartaoNavigation() {
+    return(
+        <CartaoStack.Navigator
+            initialRouteName="Cartões"
+            screenOptions={{ 
+                headerShown: false,
+            }}
+        >
+            <CartaoStack.Screen
+                name="Cartões"
+                component={Cartoes}
+            />
+            <CartaoStack.Screen
+                name="CadastroCartao"
+                component={CadastroCartao}
+            />
+        </CartaoStack.Navigator>
     )
 }

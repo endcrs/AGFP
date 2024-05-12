@@ -9,7 +9,6 @@ export default function Painel() {
 
   const navigation = useNavigation();
 
-
   return (
       <View style={styles.container}>
         {/*Sessão Valores*/}
@@ -73,7 +72,7 @@ export default function Painel() {
 
         {/*Sessão Gastos recentes */}
 
-        <View style={[styles.session, {height: 355}]}>
+        <View style={[styles.session, {height: '49%'}]}>
           <View style={styles.titleCard}>
             <Text style={{color:'#fff', fontSize:18, fontWeight:'700'}}>GASTOS RECENTES</Text>
             <ButtonPlus onPress={() => navigation.navigate('CadastroRegistro')}/>
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
   },
   titleCard: {
     width: '100%',
-    height: 50,
+    height: 70,
     justifyContent:'center',
     alignItems:'center',
     flexDirection: 'row',

@@ -1,4 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import CreditCard, { CARD_SIDE } from '../components/CreditCard';
+import { useSharedValue } from 'react-native-reanimated';
 
 export default function CardRegistro({titulo, valor, categoria, data}){
     return(
@@ -11,10 +13,39 @@ export default function CardRegistro({titulo, valor, categoria, data}){
     )
 }
 
-export function CardCartao(){
+export function CardCartao({nomeCartao, numeroCartao, validade, cvv}){
+
+  const cardSide = useSharedValue(CARD_SIDE.front) // Estado do Cartão entre Frente ou Verso
+
+  function showFrontCard(){
+    cardSide.value = CARD_SIDE.front
+  }
+
+  function showBackCard(){
+    cardSide.value = CARD_SIDE.back
+  }
+
+  function handleFlipCard(){
+    console.log(cardSide.value)
+    if(cardSide.value === CARD_SIDE.front){
+      showBackCard()
+    }else{
+      showFrontCard()
+    }
+  }
+
   return(
-    <View style={styles.cardCartao}>
-      
+    <View>
+      <CreditCard 
+        cardSide={cardSide}
+        nomeCartao={nomeCartao}
+        numeroCartao={numeroCartao}
+        validade={validade}
+        cvv={cvv}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleFlipCard}>
+        <Text style={{color: "#FFF"}}>Inverter</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -41,14 +72,8 @@ const styles = StyleSheet.create({
     textAlign:'center',
     flexWrap: 'wrap',
   },
-  cardCartao:{
-    width: '100%',
-    minHeight: 85,
-    height: 'auto',
-    borderRadius: 10,
-    backgroundColor: '#474747',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
+  button: {
+    alignItems: "center",
+    marginVertical: 32,
+  }
 });

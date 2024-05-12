@@ -1,19 +1,24 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ButtonPlus } from '../components/Button';
+import { useNavigation } from '@react-navigation/native';
+
 import { CardCartao } from '../components/Card';
 
 export default function Cartoes() {
+
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <ButtonPlus/>
+      <ButtonPlus onPress={() => navigation.navigate('CadastroCartao')}/>
       
       <View style={[styles.session, {height: '90%'}]}>
         <ScrollView vertical={true}>
           <CardCartao 
-            titulo='Compras Virtuais'
-            valor='200,00'
-            categoria='Educação'
-            data='24/04/2024'
+            nomeCartao={'Eu sou brabo!'}
+            numeroCartao={'1234 5678 9012 3456'}
+            validade={'17/06'}
+            cvv={'123'}
           />
         </ScrollView>
       </View>
