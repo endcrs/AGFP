@@ -7,6 +7,9 @@ import { useState } from "react";
 import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import api from "../services/api";
+import { formatCPF } from "../utils/formatCPF";
+import { convertDateToAPIFormat, formatDate } from "../utils/formatDataNasc";
+import { formatPhoneNumber } from "../utils/formatPhone";
 
 export default function CadastroUser() {
   const navigation = useNavigation();
@@ -18,29 +21,74 @@ export default function CadastroUser() {
   const [numCelular, setNumCelular] = useState('');
   const [senha, setSenha] = useState('');
   const [confSenha, setConfSenha] = useState('');
-
   
+  
+  const [previousText, setPreviousText] = useState('');
+
+
+    //adiciona pontuação ao Cpf
+    const adicionarPontuacaoCpf = (text) => {
+        const formattedCPF = formatCPF(text);
+        setCPF(formattedCPF);
+    }
+
+    //adicona pontuações na data de nascimento
+    const adicionarPontuacaoDateNasc = (text) => {
+        const formattedDate = formatDate(text);
+        setDataNasc(formattedDate);
+    };
+
+    //adiciona pontuações numero do cliente
+    const adicionarPontuacaoPhone = (text) => {
+        const formattedPhone = formatPhoneNumber(text);
+
+        if (text.length < previousText.length) {
+            // mantendo o texto sem formatação formatação
+            setNumCelular(text);
+        } else {
+            // setando o numero formatato na caixa de texto
+            setNumCelular(formattedPhone);
+        }
+        // mantendo o valor do campo, ao tentar excluir o número
+        setPreviousText(text);
+    }
+  
+
+    // realizando cadastro do usuário 
   async function cadastroUsuario(){
 
+    //validando se as caixas estão vazias
     if(nome != "" && cpf != "" && dataNasc != "" &&  
       numCelular != "" && senha != "" && confSenha != ""
-    ){
+    ){  
+        //verificando as senha se estão iguais
         if(senha == confSenha){
+            
+            //tirando as pontuções para enviar os dados para o banco
+            const cpfsemPontuacao = cpf.replace(/\D/g, '');
+            const numCelularSemPontuacao = numCelular.replace(/\D/g, '');
+            const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
+            
+            //realizando cadastro na API
             await api.post("/usuarios",
                 {
                     nomeCompleto: nome,
-                    cpf: cpf,
-                    dataNascimento: dataNasc,
-                    celular: numCelular,
+                    cpf: cpfsemPontuacao,
+                    dataNascimento: dataNascParaAPI,
+                    celular: numCelularSemPontuacao,
                     senha: senha,
                     senhaConfirmada: confSenha,
                 }
             ).then(function (response) {
+                //Informa que o cadastro foi um sucesso e direciona para a pagina de login
                 Alert.alert('Cadastro realizado com sucesso!');
                 navigation.goBack();
             }).catch(function (error){
-                Alert.alert('Cadastro não realizado!');
-                console.log(error)
+                //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
+                Alert.alert(
+                    'Cadastro não realizado!',
+                    error.response.headers.mensagem);
+
             });
         }else{
             Alert.alert("Senha e a confirmação estão diferentes!")
@@ -70,25 +118,26 @@ export default function CadastroUser() {
       />
 
       <InputText
-        onChangeText={setCPF}
+        onChangeText={adicionarPontuacaoCpf}
         value={cpf}
-        maxLength={11}    
+        maxLength={14}    
         placeholder="CPF"
         keyboardType="numeric"
         placeholderTextColor="#727272"
       />
 
       <InputText
-        onChangeText={setDataNasc}
+        onChangeText={adicionarPontuacaoDateNasc}
         value={dataNasc}
-        placeholder="Data de Nascimento"
+        placeholder="DD/MM/AAAA"
         keyboardType="numeric"
         placeholderTextColor="#727272"
       />
       <InputText
-        onChangeText={setNumCelular}
+        onChangeText={adicionarPontuacaoPhone}
         value={numCelular}
         placeholder="xx xxxx-xxxx"
+        maxLength={15}
         keyboardType="numeric"
         placeholderTextColor="#727272"
       />
@@ -97,12 +146,14 @@ export default function CadastroUser() {
         onChangeText={setSenha}
         value={senha}
         placeholder="Senha"
+        secureTextEntry
         placeholderTextColor="#727272"
       />
 
       <InputText
         onChangeText={setConfSenha}
         value={confSenha}
+        secureTextEntry
         placeholder="Confirmar Senha"
         placeholderTextColor="#727272"
       />
