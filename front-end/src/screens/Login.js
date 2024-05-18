@@ -7,6 +7,7 @@ import { Button } from '../components/Button.js';
 import { InputText } from '../components/InputText.js';
 import { useAuth } from '../contexts/Auth';
 import { useNavigation } from '@react-navigation/native';
+import { formatCPF } from '../utils/formatCPF';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -15,6 +16,19 @@ export default function Login() {
   
   const [cpf, setCPF] = useState('');
   const [senha, setSenha] = useState('');
+
+  //adicionando pontuação ao CPF
+  const adicionarPontuacao = (text) => {
+    const formattedCPF = formatCPF(text);
+    setCPF(formattedCPF);
+  }
+
+  //tirando pontuação ao CPF para realizar o acesso a aplicação
+  const login = () =>{
+    const cpfsemPontuacao = cpf.replace(/\D/g, '');
+    //realizando acesso a API
+    singIn(cpfsemPontuacao, senha);
+  }
   
   return (
     <View style={styles.container}>
@@ -24,9 +38,11 @@ export default function Login() {
         style={{width: 180, height: 180, marginBottom: 30,}}
       />
       <InputText
-        onChangeText={setCPF}
+        onChangeText={adicionarPontuacao}
         value={cpf}
         placeholder="CPF"
+        maxLength={14}        
+        keyboardType="numeric"
         placeholderTextColor="#727272"
       />
 
@@ -40,7 +56,7 @@ export default function Login() {
 
       <Button title='Entrar no App'
         style={{marginTop: 20}}
-        onPress={() => singIn(cpf, senha)}
+        onPress={login}
       />
 
       <TouchableOpacity 
