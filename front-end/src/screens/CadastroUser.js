@@ -1,6 +1,5 @@
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-
 import logo from '../asset/logo.png';
 import { InputText } from "../components/InputText";
 import { useState } from "react";

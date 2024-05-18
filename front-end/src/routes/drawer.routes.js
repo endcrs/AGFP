@@ -26,11 +26,11 @@ export default function DrawerRoutes() {
             },        
         }}>
             <Drawer.Screen 
-                name="Inicio"
+                name="InicioDrawer"
                 component={TabRoutes}
                 options={{
                     drawerIcon: ({ color, size }) => <Feather name='home' color={color} size={size}/>,
-                    drawerLabel: 'Painel'
+                    drawerLabel: 'Inicio'
                 }}
             />
 
