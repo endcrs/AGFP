@@ -30,7 +30,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "TB_AGSP_TRANSACAO")
+@Table(name = "TB_AGFP_TRANSACAO")
 @NoArgsConstructor @AllArgsConstructor
 public class TransacaoEntity implements Serializable {
 	

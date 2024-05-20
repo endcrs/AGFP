@@ -108,11 +108,6 @@ public class UsuarioService {
 
 	public UsuarioVO recuperar(Long id) {
 		UsuarioEntity usuario =  recuperarUsuario(id);
-		return UsuarioVO.builder()
-				.id(usuario.getId())
-				.cpf(usuario.getCpf())
-				.nomeCompleto(usuario.getNomeCompleto())
-				.dataNascimento(usuario.getDataNascimento())
-				.build();
+		return UsuarioVOFactory.converterParaVO(usuario);
 	}
 }

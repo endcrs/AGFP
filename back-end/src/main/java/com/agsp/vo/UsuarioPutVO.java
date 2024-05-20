@@ -1,6 +1,7 @@
 package com.agsp.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotNull;
@@ -28,5 +29,12 @@ public class UsuarioPutVO implements Serializable {
 	
 	@PastOrPresent(message = "A data de nascimento não pode ser uma data futura")
 	private LocalDate dataNascimento;
+	
+	@Size(max = 11, min = 11, message = "O campo celular deve ter 11 caracteres")
+	private String celular;
+	
+	private BigDecimal saldo;
+	
+	
 	
 }

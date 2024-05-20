@@ -29,7 +29,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "TB_AGSP_LOGIN_USUARIO")
+@Table(name = "TB_AGFP_LOGIN_USUARIO")
 @NoArgsConstructor @AllArgsConstructor
 public class LoginUsuarioEntity implements Serializable {
 	

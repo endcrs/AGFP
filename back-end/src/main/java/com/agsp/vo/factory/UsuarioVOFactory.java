@@ -12,6 +12,7 @@ public class UsuarioVOFactory {
 			return UsuarioVO.builder()
 					.id(entity.getId())
 					.cpf(entity.getCpf())
+					.celular(entity.getCelular())
 					.dataNascimento(entity.getDataNascimento())
 					.nomeCompleto(entity.getNomeCompleto())
 					.saldo(entity.getSaldo())

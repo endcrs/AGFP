@@ -40,6 +40,8 @@ public class UsuarioEntityFactory {
 		
 		usuarioBanco.setNomeCompleto(vo.getNomeCompleto() != null ? vo.getNomeCompleto() : usuarioBanco.getNomeCompleto());
 		usuarioBanco.setDataNascimento(vo.getDataNascimento() != null ? vo.getDataNascimento() : usuarioBanco.getDataNascimento());
+		usuarioBanco.setSaldo(vo.getSaldo() != null ? vo.getSaldo() : usuarioBanco.getSaldo());
+		usuarioBanco.setCelular(vo.getCelular() != null ? vo.getCelular() : usuarioBanco.getCelular());
 		usuarioBanco.setDataAtualizacao(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)));
 	}
 

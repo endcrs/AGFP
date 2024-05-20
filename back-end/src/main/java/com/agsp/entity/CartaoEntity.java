@@ -38,7 +38,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "TB_AGSP_CARTAO")
+@Table(name = "TB_AGFP_CARTAO")
 @NoArgsConstructor @AllArgsConstructor
 public class CartaoEntity implements Serializable {
 	
