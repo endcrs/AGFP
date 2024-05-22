@@ -1,16 +1,17 @@
-package com.agsp.vo;
+package com.agsp.vo.factory;
 
 import java.util.List;
 
 import com.agsp.enumerator.BancoEnum;
+import com.agsp.vo.DominioVO;
 
 public class BancoVOFactory {
 	
 	private BancoVOFactory() {}
 	
-	public static BancoVO converterParaVO(BancoEnum banco) {
+	public static DominioVO converterParaVO(BancoEnum banco) {
 		if(banco != null) {
-			return BancoVO.builder()
+			return DominioVO.builder()
 					.id(banco.getId())
 					.codigo(banco.name())
 					.descricao(banco.getDescricao())
@@ -20,7 +21,7 @@ public class BancoVOFactory {
 	}
 	
 
-	public static List<BancoVO> conveterListParaVO(List<BancoEnum> devenvolvidores) {
+	public static List<DominioVO> conveterListParaVO(List<BancoEnum> devenvolvidores) {
 		return devenvolvidores.stream().map(BancoVOFactory::converterParaVO).toList();
 	}
 

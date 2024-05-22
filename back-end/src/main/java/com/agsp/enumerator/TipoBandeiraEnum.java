@@ -12,8 +12,7 @@ public enum TipoBandeiraEnum {
 	AMERICAN_EXPRESS(400, "American Express"),
 	HIPERCARD(500, "Hipercard"),
 	DINERS_CLUB(600, "Diners Club"),
-	DISCOVER(700, "Discover"),
-	;
+	DISCOVER(700, "Discover"),;
 	
 	private int id;
 	private String descricao;

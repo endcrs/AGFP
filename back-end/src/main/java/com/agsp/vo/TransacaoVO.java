@@ -3,8 +3,8 @@ package com.agsp.vo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 import com.agsp.enumerator.CategoriaEnum;
+import com.agsp.enumerator.TipoTransacaoEnum;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,5 +37,8 @@ public class TransacaoVO{
 		
 		@NotNull(message = "O preenchimento do campo categoria é obrigatório")
 		private CategoriaEnum categoria;
+		
+		@NotNull(message = "O preenchimento do campo tipo pagamento é obrigatório")
+		private TipoTransacaoEnum tipoTransacao;
 
 }

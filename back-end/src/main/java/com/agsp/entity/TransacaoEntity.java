@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.agsp.enumerator.CategoriaEnum;
+import com.agsp.enumerator.TipoTransacaoEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,21 +43,25 @@ public class TransacaoEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "TITULO")
+	@Column(name = "TITULO", nullable = false)
 	private String titulo;
 	
-	@Column(name = "CATEGORIA")
+	@Column(name = "CATEGORIA", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private CategoriaEnum categoria;
 	
-	@Column(name = "DATA_TRANSACAO")
+	@Column(name = "DATA_TRANSACAO", nullable = false)
 	private LocalDate dataTransacao;
 	
 	@Column(name = "VALOR_COMPRA", nullable = false)
 	private BigDecimal valorCompra;
 	
+	@Column(name = "TIPO_PAGAMENTO", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private TipoTransacaoEnum tipoTransacao;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_CARTAO", referencedColumnName = "IDENT", nullable = false)
+	@JoinColumn(name = "ID_CARTAO", referencedColumnName = "IDENT", nullable = true)
 	private CartaoEntity cartao;
 	
 }

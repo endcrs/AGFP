@@ -9,7 +9,6 @@ import org.hibernate.validator.constraints.br.CPF;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
@@ -49,8 +48,6 @@ public class UsuarioVO implements Serializable {
 	@Size(max = 11, min = 11, message = "O campo celular deve ter 11 caracteres")
 	private String celular;
 	
-	@Positive(message = "O valor do limite deve ser positivo")
-	@NotNull(message = "O prenchimento do campo limite é obrigatório")
 	private BigDecimal saldo;
-
+	
 }

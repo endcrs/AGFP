@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.agsp.enumerator.TipoBandeiraEnum;
-import com.agsp.vo.TipoBandeiraVO;
+import com.agsp.vo.DominioVO;
 import com.agsp.vo.factory.TipoBandeiraVOFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -15,8 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TipoBandeiraService {
 	
-	public List<TipoBandeiraVO> recuperarTiposBandeiras() {
-		
+	public List<DominioVO> recuperarTiposBandeiras() {
 		return TipoBandeiraVOFactory.converterListParaVO(TipoBandeiraEnum.getTiposBandeira());
 	}
 

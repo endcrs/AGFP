@@ -74,11 +74,8 @@ public class CartaoEntity implements Serializable {
 	@Column(name = "DATA_HORA")
 	private ZonedDateTime dataHora;
 	
-	@Column(name = "LIMITE", nullable = false)
-	private BigDecimal limiteTotal;
-	
-	@Column(name = "LIMITE_DISPONIVEL")
-	private BigDecimal limiteDisponivel;
+	@Column(name = "SALDO_DISPONIVEL", nullable = false)
+	private BigDecimal saldoDisponivel;
 	
 	@Column(name = "VENCIMENTO", nullable = false)
 	private String vencimento;

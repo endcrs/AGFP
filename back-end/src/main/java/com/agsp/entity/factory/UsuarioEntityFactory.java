@@ -23,7 +23,6 @@ public class UsuarioEntityFactory {
 					.senhaConfirmada(vo.getSenhaConfirmada())
 					.dataNascimento(vo.getDataNascimento())
 					.celular(vo.getCelular())
-					.saldo(vo.getSaldo())
 					.dataCadastro(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
 					.build();
 		} else 
@@ -33,14 +32,8 @@ public class UsuarioEntityFactory {
 
 	public static void atualizarUsuario(UsuarioPutVO vo, UsuarioEntity usuarioBanco) {
 		
-		if(vo.getSenha() != null && vo.getSenha().length() > 8) {
-			usuarioBanco.setSenha(vo.getSenha());
-			usuarioBanco.setSenhaConfirmada(vo.getSenha());
-		}
-		
 		usuarioBanco.setNomeCompleto(vo.getNomeCompleto() != null ? vo.getNomeCompleto() : usuarioBanco.getNomeCompleto());
 		usuarioBanco.setDataNascimento(vo.getDataNascimento() != null ? vo.getDataNascimento() : usuarioBanco.getDataNascimento());
-		usuarioBanco.setSaldo(vo.getSaldo() != null ? vo.getSaldo() : usuarioBanco.getSaldo());
 		usuarioBanco.setCelular(vo.getCelular() != null ? vo.getCelular() : usuarioBanco.getCelular());
 		usuarioBanco.setDataAtualizacao(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)));
 	}

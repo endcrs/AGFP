@@ -19,7 +19,7 @@ public class CartoesVO implements Serializable{
 	private Long id;
 	private String nome;
 	private String numero;
-	private BigDecimal limite;
+	private BigDecimal saldo;
 	private String cvv;
 	private String vencimento;
 	private BancoEnum banco;

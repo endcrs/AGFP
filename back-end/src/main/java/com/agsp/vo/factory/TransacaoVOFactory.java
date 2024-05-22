@@ -12,9 +12,11 @@ public class TransacaoVOFactory {
 		if(transacao != null) {
 			return TransacaoVO.builder()
 					.id(transacao.getId())
-					.valor(transacao.getValorCompra())
 					.titulo(transacao.getTitulo())
+					.valor(transacao.getValorCompra())
 					.categoria(transacao.getCategoria())
+					.dataTransacao(transacao.getDataTransacao())
+					.tipoTransacao(transacao.getTipoTransacao())
 					.build();
 		} else 
 			return null;
