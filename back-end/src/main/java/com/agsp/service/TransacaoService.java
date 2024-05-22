@@ -1,5 +1,8 @@
 package com.agsp.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.agsp.entity.CartaoEntity;
@@ -8,6 +11,7 @@ import com.agsp.entity.factory.TransacaoEntityFactory;
 import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.repository.CartaoRepository;
 import com.agsp.repository.TransacaoRespository;
+import com.agsp.vo.TransaListVO;
 import com.agsp.vo.TransacaoVO;
 import com.agsp.vo.factory.TransacaoVOFactory;
 
@@ -51,6 +55,19 @@ public class TransacaoService {
 		
 		transacao = transacaoRespository.save(transacao);
 		return TransacaoVOFactory.converterParaVO(transacao);
+	}
+
+	public List<TransaListVO> listarTodasTransacoes(String cpf) {
+		
+		List<TransacaoEntity> transacoes = transacaoRespository.findAllTransacoesUsuario(cpf);
+		
+		List<TransaListVO> vos = new ArrayList<>();
+		
+		transacoes.forEach(t -> 
+			vos.add(TransacaoVOFactory.converterParaVOList(t))
+		);
+		
+		return vos;
 	}
 
 //	private void validarValorTransacao(CartaoEntity cartao, BigDecimal valorCompra) {
