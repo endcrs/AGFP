@@ -3,7 +3,6 @@ package com.agsp.entity;
 import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -32,7 +31,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "TB_AGSP_USUARIO")
+@Table(name = "TB_AGFP_USUARIO")
 @NoArgsConstructor @AllArgsConstructor
 public class UsuarioEntity implements Serializable {
 	
@@ -56,7 +55,7 @@ public class UsuarioEntity implements Serializable {
 	@Column(name = "CPF", nullable = false, unique = true, /*, updatable = false*/ length = 11)
 	private String cpf;
 	
-	@Column(name = "CELULAR", nullable = false, unique = true, /*, updatable = false*/ length = 11)
+	@Column(name = "CELULAR", nullable = false,/*, updatable = false*/ length = 11)
 	private String celular;
 	
 	@Column(name = "DATA_CADASTRO")
@@ -67,9 +66,6 @@ public class UsuarioEntity implements Serializable {
 	
 	@Column(name = "DATA_ATUALIZACAO")
 	private ZonedDateTime dataAtualizacao;
-	
-	@Column(name = "SALDO", nullable = false)
-	private BigDecimal saldo;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
 	private List<CartaoEntity> cartoes;

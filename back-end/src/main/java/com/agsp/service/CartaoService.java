@@ -1,6 +1,5 @@
 package com.agsp.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import com.agsp.entity.UsuarioEntity;
 import com.agsp.entity.factory.CartaoEntityFactory;
 import com.agsp.exception.DadosJaCadastradosException;
 import com.agsp.exception.MsgException;
+import com.agsp.exception.NaoEncontradoException;
 import com.agsp.repository.CartaoRepository;
 import com.agsp.util.Constantes;
 import com.agsp.vo.CartaoVO;
@@ -33,7 +33,7 @@ public class CartaoService {
 		
 		UsuarioEntity usuario = usuarioService.recuperarUsuario(vo.idUsuario());
 		
-		validarSaldo(usuario, vo.limite());
+//		validarSaldo(usuario, vo.limite());
 		
 		CartaoEntity cartaoEntity = CartaoEntityFactory.converterParaEntity(usuario, vo);
 		
@@ -42,11 +42,11 @@ public class CartaoService {
 		return CartaoVOFactory.converterParaVO(cartaoEntity);
 	}
 	
-	private void validarSaldo(UsuarioEntity usuario, BigDecimal limite) {
-		if(limite.longValue() > usuario.getSaldo().longValue()) {
-			throw new MsgException("Valor do limite do cartão maior que saldo disponivel do usuário");
-		}
-	}
+//	private void validarSaldo(UsuarioEntity usuario, BigDecimal limite) {
+//		if(limite.longValue() > usuario.getSaldo().longValue()) {
+//			throw new MsgException("Valor do limite do cartão maior que saldo disponivel do usuário");
+//		}
+//	}
 
 	private void validarNumero(String numero) {
 		
@@ -68,6 +68,11 @@ public class CartaoService {
 		List<CartaoEntity> cartoes = cartaoRepository.findByUsuarioCpf(cpf);
 		
 		return CartaoVOFactory.converterListParaVO(cartoes);
+	}
+	
+	public CartaoEntity recuperarPorNumero(String numeroCartao) {
+		return cartaoRepository.findByNumero(numeroCartao)
+				.orElseThrow(() -> new NaoEncontradoException("Cartão com número "+numeroCartao + " não encontarado"));
 	}
 
 }

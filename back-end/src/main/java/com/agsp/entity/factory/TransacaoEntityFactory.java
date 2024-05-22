@@ -17,6 +17,7 @@ public class TransacaoEntityFactory {
 				.categoria(vo.getCategoria())
 				.valorCompra(vo.getValor())
 				.dataTransacao(vo.getDataTransacao())
+				.tipoTransacao(vo.getTipoTransacao())
 				.cartao(cartao)
 				.build();
 		} else return null;

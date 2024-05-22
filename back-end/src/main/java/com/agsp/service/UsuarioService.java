@@ -2,6 +2,7 @@ package com.agsp.service;
 
 import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
 
+import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import com.agsp.entity.factory.UsuarioEntityFactory;
 import com.agsp.exception.DadosJaCadastradosException;
 import com.agsp.exception.MsgException;
 import com.agsp.exception.NaoEncontradoException;
+import com.agsp.repository.CartaoRepository;
 import com.agsp.repository.LoginUsuarioRepository;
 import com.agsp.repository.UsuarioRepository;
 import com.agsp.util.Constantes;
@@ -29,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsuarioService {
 	
+	private final CartaoRepository cartaoRepository;
 	private final UsuarioRepository usuarioRepository;
 	private final LoginUsuarioRepository loginUsuarioRepository;
 	
@@ -41,7 +44,16 @@ public class UsuarioService {
 		
 		registrarLogin(usuario);
 		
-		return UsuarioVOFactory.converterParaVO(usuario);
+		BigDecimal saldo = getSaldoDisponivel(usuario);
+		
+		return UsuarioVOFactory.converterParaVO(usuario, saldo);
+	}
+
+	private BigDecimal getSaldoDisponivel(UsuarioEntity usuario) {
+		
+		BigDecimal saldo = cartaoRepository.findSaldoTotalCartoesUsuario(usuario.getId());
+		
+		return saldo;
 	}
 
 	@Transactional
@@ -53,7 +65,7 @@ public class UsuarioService {
 		
 		UsuarioEntity usuarioEntity = usuarioRepository.save(UsuarioEntityFactory.converterParaEntity(vo));
 		
-		return UsuarioVOFactory.converterParaVO(usuarioEntity);
+		return UsuarioVOFactory.converterParaVO(usuarioEntity, new BigDecimal(0));
 	}
 	
 	public UsuarioVO editar(UsuarioPutVO vo) {
@@ -64,7 +76,7 @@ public class UsuarioService {
 		
 		usuarioRepository.save(usuarioBanco);
 		
-		return UsuarioVOFactory.converterParaVO(usuarioBanco);
+		return UsuarioVOFactory.converterParaVO(usuarioBanco, new BigDecimal(0));
 	}
 	
 	private void validarCpf(String cpf) {
@@ -108,11 +120,6 @@ public class UsuarioService {
 
 	public UsuarioVO recuperar(Long id) {
 		UsuarioEntity usuario =  recuperarUsuario(id);
-		return UsuarioVO.builder()
-				.id(usuario.getId())
-				.cpf(usuario.getCpf())
-				.nomeCompleto(usuario.getNomeCompleto())
-				.dataNascimento(usuario.getDataNascimento())
-				.build();
+		return UsuarioVOFactory.converterParaVO(usuario, new BigDecimal(0));
 	}
 }

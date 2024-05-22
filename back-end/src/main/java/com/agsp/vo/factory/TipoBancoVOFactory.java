@@ -3,7 +3,7 @@ package com.agsp.vo.factory;
 import java.util.List;
 
 import com.agsp.enumerator.TipoBancoEnum;
-import com.agsp.vo.TipoBancoVO;
+import com.agsp.vo.DominioVO;
 
 public class TipoBancoVOFactory {
 	
@@ -11,10 +11,10 @@ public class TipoBancoVOFactory {
 	private TipoBancoVOFactory() {}
 
 	
-	public static TipoBancoVO converteParaVO(TipoBancoEnum tiposBanco) {
+	public static DominioVO converteParaVO(TipoBancoEnum tiposBanco) {
 		
 		if(tiposBanco != null) {
-			return TipoBancoVO.builder()
+			return DominioVO.builder()
 					.id(tiposBanco.getId())
 					.codigo(tiposBanco.name())
 					.descricao(tiposBanco.getDescricao())
@@ -24,7 +24,7 @@ public class TipoBancoVOFactory {
 	}
 
 	
-	public static List<TipoBancoVO> converterListParaVO(List<TipoBancoEnum> tiposBancos) {
+	public static List<DominioVO> converterListParaVO(List<TipoBancoEnum> tiposBancos) {
 		return tiposBancos.stream().map(TipoBancoVOFactory::converteParaVO).toList();
 	}
 

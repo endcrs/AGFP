@@ -17,7 +17,7 @@ public class CartaoVOFactory {
 					.id(entity.getId())
 					.nome(entity.getNome())
 					.numero(entity.getNumero())
-					.limite(entity.getLimiteTotal())
+					.saldo(entity.getSaldoDisponivel())
 					.cvv(entity.getCvv())
 					.vencimento(entity.getVencimento())
 					.banco(entity.getBanco())
@@ -36,13 +36,12 @@ public class CartaoVOFactory {
 					.id(entity.getId())
 					.nome(entity.getNome())
 					.numero(entity.getNumero())
-					.limite(entity.getLimiteTotal())
+					.saldo(entity.getSaldoDisponivel())
 					.cvv(entity.getCvv())
 					.vencimento(entity.getVencimento())
 					.banco(entity.getBanco())
 					.bandeira(entity.getBandeira())
 					.tipoBanco(entity.getTipobanco())
-					.limite(entity.getLimiteDisponivel())
 					.build();
 		} else 
 			return null;

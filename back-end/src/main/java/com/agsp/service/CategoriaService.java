@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.agsp.enumerator.CategoriaEnum;
-import com.agsp.vo.CategoriaVO;
+import com.agsp.vo.DominioVO;
 import com.agsp.vo.factory.CategoriaVOFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoriaService {
 	
-	public List<CategoriaVO> recuperarCategorias() {
+	public List<DominioVO> recuperarCategorias() {
 		return CategoriaVOFactory.converterListParaVO(CategoriaEnum.getCategorias()) ;
 	}
 	

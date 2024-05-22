@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agsp.service.TipoBandeiraService;
+import com.agsp.service.TipoTransacaoService;
 import com.agsp.vo.DominioVO;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(value ="/tipos-bandeira")
+@RequestMapping(value ="/tipos-transacao")
 @RequiredArgsConstructor
-public class TipoBandeiraController {
+public class TipoTransacaoController {
 	
-	private final TipoBandeiraService tipoBandeiraService;
+	private final TipoTransacaoService tipoPagamentoService;
 	
 	@GetMapping()
-	public List<DominioVO> recuperarTiposBandeiras () {
-		return tipoBandeiraService.recuperarTiposBandeiras();
+	public List<DominioVO> recuperarTiposPagamento() {
+		return tipoPagamentoService.recuperarTiposTransacao();
 	}
 
 }

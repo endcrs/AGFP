@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.service.TipoBancoService;
-import com.agsp.vo.TipoBancoVO;
+import com.agsp.vo.DominioVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ public class TipoBancoController {
 	private final TipoBancoService tipoBancoService;
 	
 	@GetMapping()
-	public List<TipoBancoVO> recuperarTiposConta () {
+	public List<DominioVO> recuperarTiposConta () {
 		return tipoBancoService.recuperarTipoConta();
 	}
 

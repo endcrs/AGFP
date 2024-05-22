@@ -3,7 +3,7 @@ package com.agsp.vo.factory;
 import java.util.List;
 
 import com.agsp.enumerator.CategoriaEnum;
-import com.agsp.vo.CategoriaVO;
+import com.agsp.vo.DominioVO;
 
 public class CategoriaVOFactory {
 	
@@ -11,11 +11,11 @@ public class CategoriaVOFactory {
 		
 	}
 	
-	public static CategoriaVO converterParaVO(CategoriaEnum categoria) {
+	public static DominioVO converterParaVO(CategoriaEnum categoria) {
 		
 		
 		if(categoria != null) {
-			return CategoriaVO.builder()
+			return DominioVO.builder()
 					.id(categoria.getId())
 					.codigo(categoria.name())
 					.descricao(categoria.getDescricao())
@@ -25,7 +25,7 @@ public class CategoriaVOFactory {
 	}
 	
 
-	public static List<CategoriaVO> converterListParaVO(List<CategoriaEnum> categorias) {
+	public static List<DominioVO> converterListParaVO(List<CategoriaEnum> categorias) {
 		return categorias.stream().map(CategoriaVOFactory::converterParaVO).toList();
 	}
 

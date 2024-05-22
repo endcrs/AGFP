@@ -45,7 +45,4 @@ public class UsuarioController {
 	public UsuarioVO recuperar (@PathVariable Long id) {
 		return usuarioService.recuperar(id);
 	}
-	
-	
-
 }
