@@ -26,8 +26,8 @@ export function InputSelect(props) {
       inputSearchStyle={styles.inputSearchStyle}
       search
       maxHeight={300}
-      labelField="label"
-      valueField="value"
+      labelField="descricao"
+      valueField="codigo"
       searchPlaceholder="Procurar"
       value={value}
       onChange={item => {

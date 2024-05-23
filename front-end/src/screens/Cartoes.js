@@ -1,12 +1,25 @@
+import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ButtonPlus } from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
+import api from '../services/api';
 
 import { CardCartao } from '../components/Card';
+import { useAuth } from '../contexts/Auth';
+import { formatCardNumber, formatValidate } from '../utils/formatCreditCard';
 
 export default function Cartoes() {
-
+  const {authData} = useAuth();
+  const [cartoes, setCartoes] = useState([]);
   const navigation = useNavigation();
+
+  // Retorna os dados que o usuário
+  useEffect(() => {
+        api.get('/cartoes?cpf=' + authData.cpf)
+        .then((response)=> setCartoes(response.data))
+        .catch((err)=>console.log(err));
+  }, []);
+  
 
   return (
     <View style={styles.container}>
@@ -14,12 +27,16 @@ export default function Cartoes() {
       
       <View style={[styles.session, {height: '90%'}]}>
         <ScrollView vertical={true}>
-          <CardCartao 
-            nomeCartao={'Eu sou brabo!'}
-            numeroCartao={'1234 5678 9012 3456'}
-            validade={'17/06'}
-            cvv={'123'}
-          />
+          {cartoes.map((cartao, index) => (
+            <CardCartao 
+                key={index}
+                nomeCartao={cartao.nome}
+                numeroCartao={formatCardNumber(cartao.numero)}
+                validade={formatValidate(cartao.vencimento)}
+                cvv={cartao.cvv}
+            />
+          ))}
+            
         </ScrollView>
       </View>
     </View>

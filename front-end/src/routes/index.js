@@ -4,6 +4,7 @@ import DrawerRoutes from './drawer.routes';
 import AuthStack from './AuthStack';
 import { useAuth } from '../contexts/Auth';
 import { Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 
 export default function Routes() {
@@ -22,6 +23,7 @@ export default function Routes() {
 
     return (
         <NavigationContainer>
+            <StatusBar barStyle='light-content' />
            {authData ? <DrawerRoutes/> : <AuthStack/>}
         </NavigationContainer>
     )

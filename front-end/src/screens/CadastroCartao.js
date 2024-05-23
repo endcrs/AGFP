@@ -1,28 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { InputSelect, InputText } from '../components/InputText';
 import { Button } from '../components/Button';
 
+import { useAuth } from '../contexts/Auth';
 import api from '../services/api';
 
-const dataTipoConta = [
-  { label: 'Física', value: '1' },
-  { label: 'Digital', value: '2' },
-];
-
-const dataBanco = [
-  { label: 'Banco 1', value: '1' },
-  { label: 'Banco 2', value: '2' },
-];
-
-const dataBandeira = [
-  { label: 'Bandeira 1', value: '1' },
-  { label: 'Bandeira 2', value: '2' },
-];
-
 export default function CadastroCartao() {
+  const {authData} = useAuth();
 
-  /*Variaveis de acesso */
+  // Variaveis de acesso
   const [nomeCartao, setNomeCartao] = useState('');
   const [numeroCartao, setNumeroCartao] = useState('');
   const [tipoConta, setTipoConta] = useState('');
@@ -30,6 +17,36 @@ export default function CadastroCartao() {
   const [bandeira, setBandeira] = useState('');
   const [limite, setLimite] = useState('');
   const [vencimento, setVencimento] = useState('');
+
+  // variáveis de dados dos inputs de select
+  const [dataBanco, setDataBanco] = useState([]);
+  const [dataTipoConta, setDataTipoConta] = useState([]);
+  const [dataBandeira, setDataBandeira] = useState([]);
+
+  // Retorna os dados dos selects
+  useEffect(() => {
+    api.get('/tipos-bancos')
+    .then((response)=> setDataTipoConta(response.data))
+    .catch((err)=>console.log(err));
+  }, []);
+
+    // Atualiza os bancos sempre que o tipo de conta mudar
+    useEffect(() => {
+      if (tipoConta) {
+        api.get('/bancos?tipo=' + tipoConta)
+          .then((response) => setDataBanco(response.data))
+          .catch((err) => console.log(err));
+      }
+    }, [tipoConta]);
+
+    console.log(tipoConta)
+
+  // Obtém as bandeiras
+  useEffect(() => {
+    api.get('/tipos-bandeira')
+      .then((response) => setDataBandeira(response.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   return(
     <View style={styles.container}>
