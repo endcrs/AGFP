@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocConfig {
 
-	    //http://localhost:8081/agfp/swagger-ui/index.html
+
+	  //http://localhost:8081/agfp/swagger-ui/index.html
 		@Bean
 		GroupedOpenApi swagger() {
 			return GroupedOpenApi.builder()

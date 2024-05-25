@@ -18,6 +18,7 @@ export default function CadastroUser() {
   const [cpf, setCPF] = useState('');
   const [dataNasc, setDataNasc] = useState('');
   const [numCelular, setNumCelular] = useState('');
+  const [saldo, setSaldo] = useState('');
   const [senha, setSenha] = useState('');
   const [confSenha, setConfSenha] = useState('');
   
@@ -75,6 +76,7 @@ export default function CadastroUser() {
                     cpf: cpfsemPontuacao,
                     dataNascimento: dataNascParaAPI,
                     celular: numCelularSemPontuacao,
+                    saldo: saldo,
                     senha: senha,
                     senhaConfirmada: confSenha,
                 }
@@ -140,6 +142,14 @@ export default function CadastroUser() {
         value={numCelular}
         placeholder="xx xxxx-xxxx"
         maxLength={15}
+        keyboardType="numeric"
+        placeholderTextColor="#727272"
+      />
+
+      <InputText
+        onChangeText={setSaldo}
+        value={saldo}
+        placeholder="Saldo"
         keyboardType="numeric"
         placeholderTextColor="#727272"
       />

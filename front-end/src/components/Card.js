@@ -44,7 +44,9 @@ export function CardCartao({nomeCartao, numeroCartao, validade, cvv}){
         cvv={cvv}
       />
       <TouchableOpacity style={styles.button} onPress={handleFlipCard}>
-        <Text style={{color: "#FFF"}}>Inverter</Text>
+        <View style={styles.buttonView}>
+          <Text style={{color: "#FFF", fontSize: 16,}}>Inverter</Text>
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -74,6 +76,13 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    marginVertical: 32,
+    marginBottom: 24,
+    marginTop: -10
+  },
+  buttonView: {
+    backgroundColor: "#727272",
+    paddingHorizontal: 8, 
+    borderRadius: 10, 
+    fontSize: 16,
   }
 });
