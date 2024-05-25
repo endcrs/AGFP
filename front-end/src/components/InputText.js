@@ -15,8 +15,6 @@ export function InputText(props) {
 }
 
 export function InputSelect(props) {
-  
-  const [value, setValue] = useState(null);
 
   return(
     <Dropdown
@@ -29,10 +27,6 @@ export function InputSelect(props) {
       labelField="descricao"
       valueField="codigo"
       searchPlaceholder="Procurar"
-      value={value}
-      onChange={item => {
-        setValue(item.value);
-      }}
       {...props}
     />
   );

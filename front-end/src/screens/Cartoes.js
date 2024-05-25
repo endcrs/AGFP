@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, FlatList, RefreshControl } from 'react-native';
 import { ButtonPlus } from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import api from '../services/api';
@@ -12,6 +12,18 @@ export default function Cartoes() {
   const {authData} = useAuth();
   const [cartoes, setCartoes] = useState([]);
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // Simular a atualização dos dados
+    setTimeout(() => {
+      api.get('/cartoes?cpf=' + authData.cpf)
+        .then((response)=> setCartoes(response.data))
+        .catch((err)=>console.log(err));
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   // Retorna os dados que o usuário
   useEffect(() => {
@@ -26,7 +38,12 @@ export default function Cartoes() {
       <ButtonPlus onPress={() => navigation.navigate('CadastroCartao')}/>
       
       <View style={[styles.session, {height: '90%'}]}>
-        <ScrollView vertical={true}>
+        <ScrollView 
+          vertical={true}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          >
           {cartoes.map((cartao, index) => (
             <CardCartao 
                 key={index}
