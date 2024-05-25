@@ -1,6 +1,11 @@
 package com.agsp.service;
 
+import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -53,6 +58,22 @@ public class TransacaoService {
 		
 		return transacoes.stream().map(TransacaoVOFactory::converterParaVOList).toList();
 	}
+	
+	
+	public List<TransaListVO> listarTransacoesMensais(String cpf) {
+		
+		validarCpfUsuario(cpf);
+		
+		LocalDate dataFim = LocalDate.now(ZoneId.of(AMERICA_SAO_PAULO));
+		
+		LocalDate dataInicio = dataFim.with(TemporalAdjusters.firstDayOfMonth());
+		
+		List<TransacaoEntity> transacoes = transacaoRespository
+		.getTransacoesMensaisUsuario(cpf, dataInicio, dataFim);
+		
+		return transacoes.stream().map(TransacaoVOFactory::converterParaVOList).toList();
+	}
+	
 
 	private void validarCpfUsuario(String cpf) {
 		

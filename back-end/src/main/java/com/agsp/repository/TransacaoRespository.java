@@ -1,5 +1,6 @@
 package com.agsp.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,11 @@ public interface TransacaoRespository extends JpaRepository<TransacaoEntity, Lon
 			+ "where u.cpf = :cpf ")
 	List<TransacaoEntity> getAllTransacoesUsuario(@Param(value = "cpf") String cpf);
 
+	@Query(value = "select t from TransacaoEntity t "
+			+ "join t.cartao c "
+			+ "join c.usuario u "
+			+ "where u.cpf = :cpf and t.dataTransacao between :startDate and :endDate")
+	List<TransacaoEntity> getTransacoesMensaisUsuario(@Param(value = "cpf") String cpf, 
+			@Param(value = "startDate")LocalDate startDate, 
+			@Param(value = "endDate")LocalDate endDate);
 }
