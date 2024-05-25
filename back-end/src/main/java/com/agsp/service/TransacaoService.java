@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.agsp.controller.CategoriaListVO;
 import com.agsp.entity.CartaoEntity;
 import com.agsp.entity.TransacaoEntity;
 import com.agsp.entity.factory.TransacaoEntityFactory;
@@ -13,6 +12,7 @@ import com.agsp.enumerator.CategoriaEnum;
 import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.exception.MsgException;
 import com.agsp.repository.TransacaoRespository;
+import com.agsp.vo.CategoriaListVO;
 import com.agsp.vo.CategoriaVO;
 import com.agsp.vo.TransaListVO;
 import com.agsp.vo.TransacaoVO;

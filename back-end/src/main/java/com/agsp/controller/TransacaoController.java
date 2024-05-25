@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.service.TransacaoService;
+import com.agsp.vo.CategoriaListVO;
 import com.agsp.vo.TransaListVO;
 import com.agsp.vo.TransacaoVO;
 

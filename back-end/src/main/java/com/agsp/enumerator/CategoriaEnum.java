@@ -34,6 +34,7 @@ public enum CategoriaEnum {
 		return Arrays.asList(CategoriaEnum.ALIMENTACAO,
 				CategoriaEnum.BELEZA_ESTETICA,
 				CategoriaEnum.ESPORTE_LAZER,
+				CategoriaEnum.EDUCACAO,
 				CategoriaEnum.SAUDE,
 				CategoriaEnum.TRANSPORTE
 				);

@@ -1,8 +1,6 @@
-package com.agsp.controller;
+package com.agsp.vo;
 
 import java.io.Serializable;
-
-import com.agsp.vo.CategoriaVO;
 
 import lombok.Builder;
 import lombok.Data;
