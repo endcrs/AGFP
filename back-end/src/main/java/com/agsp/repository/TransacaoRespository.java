@@ -14,6 +14,6 @@ public interface TransacaoRespository extends JpaRepository<TransacaoEntity, Lon
 			+ "join t.cartao c "
 			+ "join c.usuario u "
 			+ "where u.cpf = :cpf ")
-	List<TransacaoEntity> findAllTransacoesUsuario(@Param(value = "cpf") String cpf);
+	List<TransacaoEntity> getAllTransacoesUsuario(@Param(value = "cpf") String cpf);
 
 }

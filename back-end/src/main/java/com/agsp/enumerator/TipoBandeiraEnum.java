@@ -17,8 +17,6 @@ public enum TipoBandeiraEnum {
 	private int id;
 	private String descricao;
 	
-	
-	
 	public static List<TipoBandeiraEnum> getTiposBandeira(){
 		return Arrays.asList(TipoBandeiraEnum.MASTERCARD,
 				TipoBandeiraEnum.VISA, 
