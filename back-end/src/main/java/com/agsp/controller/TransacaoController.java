@@ -29,8 +29,13 @@ public class TransacaoController {
 	}
 	
 	@GetMapping(value = "/listar-todos")
-	public List<TransaListVO> listarTodos (@RequestParam(value = "cpf") String cpf) {
+	public List<TransaListVO> listarTodos (@RequestParam(value = "cpf", required = true) String cpf) {
 		return transacaoService.listarTodasTransacoes(cpf);
+	}
+	
+	@GetMapping(value = "/listar-percentagem-gasto-categoria")
+	public CategoriaListVO listarPercentagemGastoCategoria (@RequestParam(value = "cpf", required = true) String cpf) {
+		return transacaoService.listarPercentagemGastoCategoria(cpf);
 	}
 
 }

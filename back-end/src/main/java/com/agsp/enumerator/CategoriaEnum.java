@@ -6,11 +6,12 @@ import java.util.List;
 public enum CategoriaEnum {
 	
 	
-	ALIMENTACAO(504, "Alimentação"),
-	BELEZA_ESTETICA(502, "Beleza"),
+	ALIMENTACAO(501, "Alimentação"),
+	BELEZA_ESTETICA(502, "Beleza e Estética"),
 	ESPORTE_LAZER(503, "Esporte e Lazer"),
-	SAUDE(501, "Saúde"),
-	TRANSPORTE(500, "Transporte");
+	EDUCACAO(504, "Esporte e Lazer"),
+	SAUDE(505, "Saúde"),
+	TRANSPORTE(506, "Transporte");
 	
 	
 	private int id;

@@ -50,10 +50,8 @@ public class UsuarioService {
 	}
 
 	private BigDecimal getSaldoDisponivel(UsuarioEntity usuario) {
-		
-		BigDecimal saldo = cartaoRepository.findSaldoTotalCartoesUsuario(usuario.getId());
-		
-		return saldo;
+		BigDecimal saldo =  cartaoRepository.findSaldoTotalCartoesUsuario(usuario.getId());
+		return saldo != null ? saldo : BigDecimal.valueOf(0.0);
 	}
 
 	@Transactional
@@ -65,7 +63,7 @@ public class UsuarioService {
 		
 		UsuarioEntity usuarioEntity = usuarioRepository.save(UsuarioEntityFactory.converterParaEntity(vo));
 		
-		return UsuarioVOFactory.converterParaVO(usuarioEntity, new BigDecimal(0));
+		return UsuarioVOFactory.converterParaVO(usuarioEntity, getSaldoDisponivel(usuarioEntity));
 	}
 	
 	public UsuarioVO editar(UsuarioPutVO vo) {
@@ -76,14 +74,13 @@ public class UsuarioService {
 		
 		usuarioRepository.save(usuarioBanco);
 		
-		return UsuarioVOFactory.converterParaVO(usuarioBanco, new BigDecimal(0));
+		BigDecimal saldo = getSaldoDisponivel(usuarioBanco);
+		
+		return UsuarioVOFactory.converterParaVO(usuarioBanco, saldo);
 	}
 	
 	private void validarCpf(String cpf) {
-		
-		boolean existeCpf = usuarioRepository.existsByCpf(cpf);
-		
-		if(existeCpf) 
+		if(usuarioRepository.existsByCpf(cpf)) 
 			throw new DadosJaCadastradosException(Constantes.CPF_CDASTRADO);
 	}
 	
@@ -120,6 +117,6 @@ public class UsuarioService {
 
 	public UsuarioVO recuperar(Long id) {
 		UsuarioEntity usuario =  recuperarUsuario(id);
-		return UsuarioVOFactory.converterParaVO(usuario, new BigDecimal(0));
+		return UsuarioVOFactory.converterParaVO(usuario, getSaldoDisponivel(usuario));
 	}
 }
