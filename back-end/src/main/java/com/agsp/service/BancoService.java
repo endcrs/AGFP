@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.agsp.enumerator.BancoEnum;
 import com.agsp.enumerator.TipoBancoEnum;
-import com.agsp.vo.BancoVO;
-import com.agsp.vo.BancoVOFactory;
+import com.agsp.vo.DominioVO;
+import com.agsp.vo.factory.BancoVOFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,15 +15,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BancoService {
 
-	public List<BancoVO> recuperarBancos(TipoBancoEnum tipo) {
+	public List<DominioVO> recuperarBancos(TipoBancoEnum tipo) {
 		return TipoBancoEnum.TRADICIONAL.equals(tipo) ? getTipoTradicional() : getTipoDigital();
 	}
 
-	private List<BancoVO> getTipoDigital() {
+	private List<DominioVO> getTipoDigital() {
 		return BancoVOFactory.conveterListParaVO(BancoEnum.getDigital());
 	}
 
-	private List<BancoVO> getTipoTradicional() {
+	private List<DominioVO> getTipoTradicional() {
 		return BancoVOFactory.conveterListParaVO(BancoEnum.getTradicional());
 	}
 

@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthData } from '../contexts/Auth';
 import api from './api';
 
@@ -15,7 +14,7 @@ async function singIn(cpf: string, password: string): Promise<AuthData>{
             }
         ).then(function (response) {
             resolve({
-                token: 'fake-token',
+                token: response.data.id,
                 cpf: response.data.cpf,
                 name: response.data.nomeCompleto
             })

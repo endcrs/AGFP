@@ -31,4 +31,17 @@ const convertDateToAPIFormat = (date) => {
     return null;
 };
 
-export {formatDate, convertDateToAPIFormat}
+const convertDateToFormFormat = (date) => {
+
+    //separando dia mes e ano para enviar a API
+    const [year, month, day] = date.split('-');
+    //confirmando se exite o mes dia e ano
+    if (year && month && day) {
+        return `${day}/${month}/${year}`;
+    }
+    return null;
+};
+
+export {formatDate, 
+        convertDateToAPIFormat,
+        convertDateToFormFormat}

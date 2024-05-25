@@ -38,7 +38,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "TB_AGSP_CARTAO")
+@Table(name = "TB_AGFP_CARTAO")
 @NoArgsConstructor @AllArgsConstructor
 public class CartaoEntity implements Serializable {
 	
@@ -74,11 +74,8 @@ public class CartaoEntity implements Serializable {
 	@Column(name = "DATA_HORA")
 	private ZonedDateTime dataHora;
 	
-	@Column(name = "LIMITE", nullable = false)
-	private BigDecimal limiteTotal;
-	
-	@Column(name = "LIMITE_DISPONIVEL")
-	private BigDecimal limiteDisponivel;
+	@Column(name = "SALDO_DISPONIVEL", nullable = false)
+	private BigDecimal saldoDisponivel;
 	
 	@Column(name = "VENCIMENTO", nullable = false)
 	private String vencimento;

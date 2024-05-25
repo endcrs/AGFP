@@ -3,17 +3,17 @@ package com.agsp.vo.factory;
 import java.util.List;
 
 import com.agsp.enumerator.TipoBandeiraEnum;
-import com.agsp.vo.TipoBandeiraVO;
+import com.agsp.vo.DominioVO;
 
 public class TipoBandeiraVOFactory {
 	
 	private TipoBandeiraVOFactory() {}
 	
 	
-	public static TipoBandeiraVO converterParaVO(TipoBandeiraEnum tiposBandeira) {
+	public static DominioVO converterParaVO(TipoBandeiraEnum tiposBandeira) {
 		
 		if(tiposBandeira != null) {
-			return TipoBandeiraVO.builder()
+			return DominioVO.builder()
 					.id(tiposBandeira.getId())
 					.codigo(tiposBandeira.name())
 					.descricao(tiposBandeira.getDescricao())
@@ -23,7 +23,7 @@ public class TipoBandeiraVOFactory {
 	}
 
 
-	public static List<TipoBandeiraVO> converterListParaVO(List<TipoBandeiraEnum> tiposBandeira) {
+	public static List<DominioVO> converterListParaVO(List<TipoBandeiraEnum> tiposBandeira) {
 		return tiposBandeira.stream().map(TipoBandeiraVOFactory::converterParaVO).toList();
 	}
 

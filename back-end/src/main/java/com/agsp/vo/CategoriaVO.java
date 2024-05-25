@@ -1,6 +1,7 @@
 package com.agsp.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,12 +9,11 @@ import lombok.Data;
 @Data
 @Builder
 public class CategoriaVO implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	
-	private int id;
-	private String codigo;
-	private String descricao;
-
+	@Builder.Default
+	private BigDecimal percentagem = BigDecimal.valueOf(0);
+	
 
 }

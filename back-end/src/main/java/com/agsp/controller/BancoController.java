@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.enumerator.TipoBancoEnum;
 import com.agsp.service.BancoService;
-import com.agsp.vo.BancoVO;
+import com.agsp.vo.DominioVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,7 @@ public class BancoController {
 	private final BancoService bancoService;
 	
 	@GetMapping()
-	public List<BancoVO> recuperarBancos(@RequestParam(value="tipo", required = true) TipoBancoEnum tipo) {
+	public List<DominioVO> recuperarBancos(@RequestParam(value="tipo", required = true) TipoBancoEnum tipo) {
 		return bancoService.recuperarBancos(tipo);
 	}
 

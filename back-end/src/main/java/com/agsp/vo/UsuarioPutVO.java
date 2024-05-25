@@ -20,13 +20,11 @@ public class UsuarioPutVO implements Serializable {
 	
 	@Size(min = 15, max = 75, message = "O campo nome completo deve ter no mínimo 15 caracteres máximo 75")
 	private String nomeCompleto;
-	
 
-	@Size(min = 8, max = 25, message = "O campo senha confirmada deve ter no mínimo 8 caracteres máximo 25")
-	private String senha;
-	
-	
 	@PastOrPresent(message = "A data de nascimento não pode ser uma data futura")
 	private LocalDate dataNascimento;
+	
+	@Size(max = 11, min = 11, message = "O campo celular deve ter 11 caracteres")
+	private String celular;
 	
 }
