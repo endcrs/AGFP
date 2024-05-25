@@ -87,14 +87,17 @@ export default function CadastroUser() {
                 Alert.alert(
                     'Cadastro não realizado!',
                     error.response.headers.mensagem);
+					
+					console.log(error.response);
+
 
             });
         }else{
-            Alert.alert("Senha e a confirmação estão diferentes!")
+            Alert.alert('Cadastro não realizado!',"Senha e a confirmação de senha precisam ser iguais!")
         }
 
     }else{
-      Alert.alert("Nenhuma caixa pode está vazia!");
+      Alert.alert('Cadastro não realizado!',"Nenhuma caixa pode está vazia!");
     }
 
 
