@@ -24,8 +24,6 @@ export function InputSelect(props) {
       inputSearchStyle={styles.inputSearchStyle}
       search
       maxHeight={300}
-      labelField="descricao"
-      valueField="codigo"
       searchPlaceholder="Procurar"
       {...props}
     />

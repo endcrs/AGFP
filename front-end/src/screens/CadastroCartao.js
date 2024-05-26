@@ -123,6 +123,8 @@ export default function CadastroCartao() {
         placeholder="Tipo de Conta"
         placeholderTextColor="#727272"
         value={tipoConta}
+        labelField="descricao"
+      	valueField="codigo"
         onChange={item => {
           setTipoConta(item.codigo)
           setBanco('');
@@ -135,6 +137,8 @@ export default function CadastroCartao() {
         placeholder="Banco"
         placeholderTextColor="#727272"
         value={banco}
+        labelField="descricao"
+      	valueField="codigo"
         onChange={item => {
           setBanco(item.codigo)
         }}
@@ -145,6 +149,8 @@ export default function CadastroCartao() {
         data={dataBandeira}
         placeholder="Bandeira"
         placeholderTextColor="#727272"
+        labelField="descricao"
+      	valueField="codigo"
         onChange={item => {
           setBandeira(item.codigo)
         }}
