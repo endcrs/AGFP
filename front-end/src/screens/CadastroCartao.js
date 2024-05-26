@@ -20,7 +20,7 @@ export default function CadastroCartao() {
   const [tipoConta, setTipoConta] = useState('');
   const [banco, setBanco] = useState('');
   const [bandeira, setBandeira] = useState('');
-  const [limite, setLimite] = useState('');
+  const [saldo, setSaldo] = useState('');
   const [vencimento, setVencimento] = useState('');
   const [cvv, setCvv] = useState('');
 
@@ -67,7 +67,7 @@ export default function CadastroCartao() {
 
   async function cadastroCartao()
   {
-    if (nomeCartao != "" && numeroCartao != "" && tipoConta != "" && banco != "" && bandeira != "" && limite != "" && vencimento != "")
+    if (nomeCartao != "" && numeroCartao != "" && tipoConta != "" && banco != "" && bandeira != "" && saldo != "" && vencimento != "")
       {
         const cartaoSemEspaco = numeroCartao.replace(/\D/g, '');
         const vencimentoSemBarra = vencimento.replace(/\D/g, '');
@@ -75,12 +75,12 @@ export default function CadastroCartao() {
         //realizando cadastro na API
         await api.post("/cartoes",
         {
-          idUsuario: 1,
+          idUsuario: authData.token,
           banco: banco,
           tipoBanco: tipoConta,
           bandeira: bandeira,
           vencimento: vencimentoSemBarra,
-          limite: limite,
+          saldo: saldo,
           nome: nomeCartao,
           numero: cartaoSemEspaco,
           cvv: cvv
@@ -151,9 +151,9 @@ export default function CadastroCartao() {
       />
 
       <InputText
-        onChangeText={setLimite}
-        value={limite}
-        placeholder="Limite"
+        onChangeText={setSaldo}
+        value={saldo}
+        placeholder="Saldo"
         keyboardType="numeric"
         placeholderTextColor="#727272"
       />
