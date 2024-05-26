@@ -18,7 +18,6 @@ async function singIn(cpf: string, password: string): Promise<AuthData>{
                 cpf: response.data.cpf,
                 name: response.data.nomeCompleto
             })
-            console.log(response)
         }).catch(function (error) {
             reject(new Error('Credenciais Inválidas'));
         })

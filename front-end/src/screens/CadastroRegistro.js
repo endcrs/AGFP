@@ -5,7 +5,8 @@ import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../contexts/Auth";
 import api from "../services/api";
-import { convertDateToAPIFormat, formatDate } from "../utils/formatDataNasc";
+import { convertDateToAPIFormat, formatDate } from "../utils/formatData";
+import { formatValue } from "../utils/formatValue";
 
 export default function CadastroResgistro() {
     const {authData} = useAuth();
@@ -23,8 +24,6 @@ export default function CadastroResgistro() {
 	const [dataCategoria, setDataCategoria] = useState([]);
 	const [dataCartao, setDataCartao] = useState([]);
 
-
-	console.log(cartao)
 
 	//puxando os categorias e cartões
 	useEffect(() => {
@@ -85,15 +84,17 @@ export default function CadastroResgistro() {
 
 		<InputText
 			onChangeText={setTitulo}
-				value={titulo}
+			value={titulo}
 			placeholder="Titulo"
+			maxLength={20}
 			placeholderTextColor="#727272"
 		/>
 
 		<InputText
 			onChangeText={setValor}
-				value={valor}
+			value={valor}
 			placeholder="Valor"
+			keyboardType="numeric"
 			placeholderTextColor="#727272"
 		/>
 

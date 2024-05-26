@@ -9,7 +9,7 @@ public enum CategoriaEnum {
 	ALIMENTACAO(501, "Alimentação"),
 	BELEZA_ESTETICA(502, "Beleza e Estética"),
 	ESPORTE_LAZER(503, "Esporte e Lazer"),
-	EDUCACAO(504, "Esporte e Lazer"),
+	EDUCACAO(504, "Educação"),
 	SAUDE(505, "Saúde"),
 	TRANSPORTE(506, "Transporte");
 	
