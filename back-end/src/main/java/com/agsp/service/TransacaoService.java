@@ -111,11 +111,11 @@ public class TransacaoService {
 			}else if(CategoriaEnum.ESPORTE_LAZER.equals(unidade.getCategoria())) {
 				esporteLazer += 1;
 			}else if(CategoriaEnum.EDUCACAO.equals(unidade.getCategoria())) {
-				saude += 1;
-			}else if(CategoriaEnum.SAUDE.equals(unidade.getCategoria())) {
-				transporte += 1;
-			}else if(CategoriaEnum.TRANSPORTE.equals(unidade.getCategoria())) {
 				educacao += 1;
+			}else if(CategoriaEnum.SAUDE.equals(unidade.getCategoria())) {
+				saude += 1;
+			}else if(CategoriaEnum.TRANSPORTE.equals(unidade.getCategoria())) {
+				transporte += 1;
 			}
 		}
 		return setPercentagemByCategoria(alimentacao, belezaEstetica, esporteLazer, saude, transporte, educacao, transacoes.size());

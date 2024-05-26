@@ -1,12 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CreditCard, { CARD_SIDE } from '../components/CreditCard';
-import { useSharedValue } from 'react-native-reanimated';
+import { formatValue } from "../utils/formatValue";
+import { useSharedValue } from "react-native-reanimated";
 
-export default function CardRegistro({titulo, valor, categoria, data}){
+export default function CardRegistro({titulo, valor, categoria, data, tipoTransacao}){
     return(
         <View style={styles.cardRegistro}>
             <Text style={styles.itemRegistro}>{titulo}</Text>
-            <Text style={styles.itemRegistro}>R$ {valor}</Text>
+            
+            { tipoTransacao == 'DESPESA' ? 
+              (<Text style={[styles.itemRegistro, {color:'red'}]}> {formatValue(valor)}</Text>) :
+              (<Text style={[styles.itemRegistro, {color:'#00a8f3'}]}> {formatValue(valor)} </Text>)
+            }
             <Text style={styles.itemRegistro}>{categoria}</Text>
             <Text style={styles.itemRegistro}>{data}</Text>
         </View>

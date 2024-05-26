@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/Auth';
 import { InputText } from '../components/InputText';
 import { useEffect, useState } from 'react';
 import { formatCPF } from '../utils/formatCPF';
-import { convertDateToAPIFormat, convertDateToFormFormat, formatDate } from '../utils/formatDataNasc';
+import { convertDateToAPIFormat, convertDateToFormFormat, formatDate } from '../utils/formatData';
 import { formatPhoneNumber } from '../utils/formatPhone';
 import api from '../services/api';
 
@@ -171,7 +171,7 @@ export default function Perfil() {
         <Button style={{width:120}} title={btnEditar} onPress={() => editarUsuario() } />
 
         {btnEditar == 'Atualizar' ? (
-          <Button style={{backgroundColor:'red', width:120}}  title='Cancelar' onPress={() => cancelarAtualizarcao() } />
+            <Button style={{backgroundColor:'red', width:120}}  title='Cancelar' onPress={() => cancelarAtualizarcao() } />
           ) : ( null )
         }
       </View>

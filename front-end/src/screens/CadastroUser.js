@@ -7,7 +7,7 @@ import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import api from "../services/api";
 import { formatCPF } from "../utils/formatCPF";
-import { convertDateToAPIFormat, formatDate } from "../utils/formatDataNasc";
+import { convertDateToAPIFormat, formatDate } from "../utils/formatData";
 import { formatPhoneNumber } from "../utils/formatPhone";
 
 export default function CadastroUser() {

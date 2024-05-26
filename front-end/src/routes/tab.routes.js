@@ -33,15 +33,15 @@ export default function TabRoutes(){
                 }}
             />
             <Tab.Screen 
-                name="Historico"
-                component={Historico}
+                name="HistoricoTab"
+                component={HistoricoNavigation}
                 options={{
                     tabBarIcon: ({ color, size }) => <Ionicons name='newspaper-outline' color={color} size={size}/>,
                     tabBarLabel: 'Histórico'
                 }}
             />
             <Tab.Screen 
-                name="Cartoes"
+                name="CartoesTab"
                 component={CartaoNavigation}
                 options={{
                     tabBarIcon: ({ color, size }) => <Entypo name='credit-card' color={color} size={size}/>,
@@ -72,6 +72,29 @@ function PainelNavigation() {
                 component={CadastroResgistro}
             />
         </PainelStack.Navigator>
+    )
+}
+
+// Rotas Stack da tela Painel
+const HistoricoStack = createNativeStackNavigator();
+
+function HistoricoNavigation() {
+    return(
+        <HistoricoStack.Navigator
+            initialRouteName="Historico"
+            screenOptions={{ 
+                headerShown: false,
+            }}
+        >
+            <HistoricoStack.Screen
+                name="Historico"
+                component={Historico}
+            />
+            <HistoricoStack.Screen
+                name="CadastroRegistro"
+                component={CadastroResgistro}
+            />
+        </HistoricoStack.Navigator>
     )
 }
 

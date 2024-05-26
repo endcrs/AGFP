@@ -1,98 +1,73 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ButtonPlus } from '../components/Button';
 import CardRegistro from '../components/Card';
+import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../contexts/Auth';
+import { useCallback, useEffect, useState } from 'react';
+import api from '../services/api';
+import { convertDateToFormFormat, formatDate } from '../utils/formatData';
 
-export default function Historico() {
+export default function Historico() {    
+    const {authData} = useAuth();
+    const navigation = useNavigation();
+    const [refreshing, setRefreshing] = useState(false);
+
+    const [transacoes, setTransacoes] = useState([]);
+
+    //reloading
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        //atualização dos dados
+        setTimeout(() => {
+
+            api.get(`transacoes/listar-todos?cpf=${authData.cpf}`)
+            .then((response) => {
+            const data = response.data.sort((a, b) => b.id - a.id)
+            setTransacoes(data)
+            }).catch((err)=>console.log(err));
+
+            setRefreshing(false);
+        }, 1000);
+    }, []);
+
+  // Retorna os dados que o usuário
+    useEffect(() => {
+        api.get(`transacoes/listar-todos?cpf=${authData.cpf}`)
+        .then((response) => {
+        const data = response.data.sort((a, b) => b.id - a.id)
+        setTransacoes(data)
+        }).catch((err)=>console.log(err));
+    }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.cardTitle}>
         <Text style={{color:'#fff', fontSize:20, fontWeight:'700'}}>HISTÓRICO</Text>
-        <ButtonPlus/>
+        <ButtonPlus
+            onPress={() => navigation.navigate('CadastroRegistro')}
+        />
       </View>
+
       <View style={styles.session}>
 
-        <ScrollView vertical={true}>
-        <CardRegistro 
-              titulo='Compras Virtuais'
-              valor='200,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
+        <ScrollView 
+            vertical={true}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+        >
 
-            <CardRegistro 
-              titulo='Compras Diversas'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-
-            <CardRegistro 
-              titulo='Nubank'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-
-            <CardRegistro 
-              titulo='Nubank'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-             <CardRegistro 
-              titulo='Compras Virtuais'
-              valor='200,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-
-            <CardRegistro 
-              titulo='Compras Diversas'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-
-            <CardRegistro 
-              titulo='Nubank'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-
-            <CardRegistro 
-              titulo='Nubank'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-             <CardRegistro 
-              titulo='Compras Virtuais'
-              valor='200,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-
-            <CardRegistro 
-              titulo='Compras Diversas'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-
-            <CardRegistro 
-              titulo='Nubank'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
-
-            <CardRegistro 
-              titulo='Nubank'
-              valor='500,00'
-              categoria='Educação'
-              data='24/04/2024'
-            />
+            {transacoes.map((transacao, index) => (
+                <CardRegistro 
+                    key={index}
+                    tipoTransacao={transacao.tipoTranscao.codigo}
+                    titulo={transacao.titulo}
+                    valor={transacao.valor}
+                    categoria={transacao.categoria.descricao}
+                    data={convertDateToFormFormat(transacao.dataTransacao)}
+                /> 
+            ))}
+        
         </ScrollView>
       </View>
 

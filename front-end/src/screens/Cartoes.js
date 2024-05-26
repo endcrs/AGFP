@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, FlatList, RefreshControl } from 'react-native';
+import { ScrollView, StyleSheet, View,RefreshControl } from 'react-native';
 import { ButtonPlus } from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import api from '../services/api';
@@ -27,9 +27,9 @@ export default function Cartoes() {
 
   // Retorna os dados que o usuário
   useEffect(() => {
-        api.get('/cartoes?cpf=' + authData.cpf)
-        .then((response)=> setCartoes(response.data))
-        .catch((err)=>console.log(err));
+      api.get('/cartoes?cpf=' + authData.cpf)
+      .then((response)=> setCartoes(response.data))
+      .catch((err)=>console.log(err));
   }, []);
   
 
@@ -37,7 +37,7 @@ export default function Cartoes() {
     <View style={styles.container}>
       <ButtonPlus onPress={() => navigation.navigate('CadastroCartao')}/>
       
-      <View style={[styles.session, {height: '90%'}]}>
+      <View style={[styles.session, {height: '95%'}]}>
         <ScrollView 
           vertical={true}
           refreshControl={
