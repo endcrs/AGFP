@@ -8,11 +8,13 @@ import { useAuth } from '../contexts/Auth';
 import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
 import { convertDateToFormFormat } from '../utils/formatData';
+import { formatValue } from '../utils/formatValue';
 
 export default function Painel() {
   const {authData} = useAuth();
   const navigation = useNavigation();
 
+  const [saldo, setSaldo] = useState(''); 
   const [transacoes, setTransacoes] = useState([]);
   const [categoria, setCategoria] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -24,6 +26,7 @@ export default function Painel() {
       setTimeout(() => {
         puxarTransacoesMensais();
         puxarCategorias();
+        puxarSaldo();
         setRefreshing(false);
       }, 1000);
   }, []);
@@ -32,6 +35,7 @@ export default function Painel() {
   useEffect(() => {
       puxarTransacoesMensais();
       puxarCategorias();
+      puxarSaldo();
   }, []);
 
   async function puxarTransacoesMensais(){
@@ -43,12 +47,20 @@ export default function Painel() {
   }
 
   async function puxarCategorias(){
-      api.get(`/transacoes/listar-percentagem-gasto-categoria?cpf=${authData.cpf}`)
+      await api.get(`/transacoes/listar-percentagem-gasto-categoria?cpf=${authData.cpf}`)
         .then((response) => {
           setCategoria(response.data)
         }).catch((err)=>console.log(err));
   }
 
+  async function puxarSaldo(){
+      await api.get(`/usuarios/${authData.token}`)
+        .then((response) => {
+          setSaldo(response.data.saldo)
+        }).catch((err)=>console.log(err));
+  }
+
+  console.log(categoria)
     
   const formatarTextoCategoria = (categoria) => {
 
@@ -106,7 +118,7 @@ export default function Painel() {
             <ScrollView  horizontal={true} >
                 <View style={[styles.cardValor, {backgroundColor:'#0093D1'}]} >
                   <Text style={styles.itemValor}>Receita</Text>
-                  <Text style={[styles.itemValor, {fontSize:27}]}>R$ 1.995,00</Text>
+                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(saldo)}</Text>
                 </View>
                 
                 <View style={[styles.cardValor, {backgroundColor:'#FF0000'}]}>
@@ -190,7 +202,7 @@ const styles = StyleSheet.create({
     minHeight: 100,
     height:'auto',
     marginLeft: 22,
-    marginTop: 20,
+    marginTop: 0,
   },
   titleCard: {
     width: '100%',

@@ -100,7 +100,7 @@ export default function CadastroCartao() {
 
   return(
     <View style={styles.container}>
-      <Text style={styles.title}>NOVO CARTÃO</Text>
+      <Text style={styles.title}>NOVO CARTÃO DE DÉBITO</Text>
 
       <InputText
         onChangeText={setNomeCartao}
