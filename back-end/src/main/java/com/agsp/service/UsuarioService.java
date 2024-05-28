@@ -3,8 +3,10 @@ package com.agsp.service;
 import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -12,11 +14,13 @@ import org.springframework.stereotype.Service;
 import com.agsp.entity.LoginUsuarioEntity;
 import com.agsp.entity.UsuarioEntity;
 import com.agsp.entity.factory.UsuarioEntityFactory;
+import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.exception.DadosJaCadastradosException;
 import com.agsp.exception.MsgException;
 import com.agsp.exception.NaoEncontradoException;
 import com.agsp.repository.CartaoRepository;
 import com.agsp.repository.LoginUsuarioRepository;
+import com.agsp.repository.TransacaoRespository;
 import com.agsp.repository.UsuarioRepository;
 import com.agsp.util.Constantes;
 import com.agsp.vo.LoginVO;
@@ -33,20 +37,31 @@ public class UsuarioService {
 	
 	private final CartaoRepository cartaoRepository;
 	private final UsuarioRepository usuarioRepository;
+	private final TransacaoRespository transacaoRespository;
 	private final LoginUsuarioRepository loginUsuarioRepository;
 	
 	@Transactional
-	public UsuarioVO login(LoginVO vo) {
+	public UsuarioVO login(LoginVO loginVo) {
 		
-		UsuarioEntity usuario = recuperarUsuarioPorCpf(vo.cpf());
+		UsuarioEntity usuario = recuperarUsuarioPorCpf(loginVo.cpf());
 		
-		validarLogin(usuario.getSenha(), vo.senha());
+		validarLogin(usuario.getSenha(), loginVo.senha());
 		
 		registrarLogin(usuario);
 		
 		BigDecimal saldo = getSaldoDisponivel(usuario);
 		
-		return UsuarioVOFactory.converterParaVO(usuario, saldo);
+		BigDecimal receita = getTotalReceitaMensal(usuario);
+		BigDecimal despesa = getTotalDespesasMensal(usuario);
+		BigDecimal lucro = receita.subtract(despesa);
+		
+		UsuarioVO vo = UsuarioVOFactory.converterParaVO(usuario, saldo);
+		
+		vo.setReceita(receita);
+		vo.setDespesas(despesa);
+		vo.setLucro(lucro);
+		
+		return vo;
 	}
 
 	private BigDecimal getSaldoDisponivel(UsuarioEntity usuario) {
@@ -117,6 +132,44 @@ public class UsuarioService {
 
 	public UsuarioVO recuperar(Long id) {
 		UsuarioEntity usuario =  recuperarUsuario(id);
-		return UsuarioVOFactory.converterParaVO(usuario, getSaldoDisponivel(usuario));
+		
+		UsuarioVO vo = UsuarioVOFactory.converterParaVO(usuario, getSaldoDisponivel(usuario));
+		
+		BigDecimal receita = getTotalReceitaMensal(usuario);
+		BigDecimal despesa = getTotalDespesasMensal(usuario);
+		BigDecimal lucro = receita.subtract(despesa);
+		
+		vo.setReceita(receita);
+		vo.setDespesas(despesa);
+		vo.setLucro(lucro);
+		
+		return vo;
 	}
+
+	private BigDecimal getTotalDespesasMensal(UsuarioEntity usuario) {
+		
+		LocalDate dataInicio = getToday().with(TemporalAdjusters.firstDayOfMonth());
+		
+		BigDecimal despesa = transacaoRespository
+				.getTotalReceitaOrDespesaMensal(usuario.getCpf().trim(), 
+						dataInicio, getToday(), TipoTransacaoEnum.DESPESA);
+		
+		return despesa != null ? despesa : BigDecimal.valueOf(0.0);
+	}
+
+	private LocalDate getToday() {
+		return LocalDate.now(ZoneId.of(AMERICA_SAO_PAULO));
+	}
+
+	private BigDecimal getTotalReceitaMensal(UsuarioEntity usuario) {
+		
+		LocalDate dataInicio = getToday().with(TemporalAdjusters.firstDayOfMonth());
+		
+		BigDecimal receita = transacaoRespository
+				.getTotalReceitaOrDespesaMensal(usuario.getCpf().trim(), 
+						dataInicio, getToday(), TipoTransacaoEnum.RECEITA);
+		
+		return receita != null ? receita : BigDecimal.valueOf(0.0);
+	}
+
 }
