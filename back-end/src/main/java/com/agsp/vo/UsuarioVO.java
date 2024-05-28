@@ -49,5 +49,8 @@ public class UsuarioVO implements Serializable {
 	private String celular;
 	
 	private BigDecimal saldo;
+	private BigDecimal receita;
+	private BigDecimal despesas;
+	private BigDecimal lucro;
 	
 }

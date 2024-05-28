@@ -30,11 +30,8 @@ import lombok.RequiredArgsConstructor;
 public class TransacaoService {
 	
 	private final TransacaoRespository transacaoRespository;
-//	private final UsuarioRepository usuarioRepository;
-	
 	private final CartaoService cartaoService;
-//	private final UsuarioService usuarioService;
-	
+
 	public TransacaoVO salvar(TransacaoVO vo) {
 		
 		CartaoEntity cartao = cartaoService.recuperarPorNumero(vo.getNumeroCartao());
@@ -69,7 +66,7 @@ public class TransacaoService {
 		LocalDate dataInicio = dataFim.with(TemporalAdjusters.firstDayOfMonth());
 		
 		List<TransacaoEntity> transacoes = transacaoRespository
-		.getTransacoesMensaisUsuario(cpf, dataInicio, dataFim);
+				.getTransacoesMensaisUsuario(cpf, dataInicio, dataFim);
 		
 		return transacoes.stream().map(TransacaoVOFactory::converterParaVOList).toList();
 	}
@@ -96,33 +93,37 @@ public class TransacaoService {
 		
 		List<TransacaoEntity> transacoes = transacaoRespository.getAllTransacoesUsuario(cpf);
 		
-		double alimentacao = 0.0;
-		double belezaEstetica = 0;
-		double esporteLazer = 0.0;
-		double saude = 0.0;
-		double transporte = 0.0;
-		double educacao = 0.0;
+		Double alimentacao = 0.0;
+		Double belezaEstetica = 0.0;
+		Double esporteLazer = 0.0;
+		Double saude = 0.0;
+		Double transporte = 0.0;
+		Double educacao = 0.0;
 		
-		for(TransacaoEntity unidade : transacoes ) {
-			if(CategoriaEnum.ALIMENTACAO.equals(unidade.getCategoria())) {
-				alimentacao += 1;
-			}else if(CategoriaEnum.BELEZA_ESTETICA.equals(unidade.getCategoria())) {
-				belezaEstetica += 1;
-			}else if(CategoriaEnum.ESPORTE_LAZER.equals(unidade.getCategoria())) {
-				esporteLazer += 1;
-			}else if(CategoriaEnum.EDUCACAO.equals(unidade.getCategoria())) {
-				educacao += 1;
-			}else if(CategoriaEnum.SAUDE.equals(unidade.getCategoria())) {
-				saude += 1;
-			}else if(CategoriaEnum.TRANSPORTE.equals(unidade.getCategoria())) {
-				transporte += 1;
+		if( !transacoes.isEmpty()) {
+			
+			for(TransacaoEntity unidade : transacoes ) {
+				if(CategoriaEnum.ALIMENTACAO.equals(unidade.getCategoria())) {
+					alimentacao += 1;
+				}else if(CategoriaEnum.BELEZA_ESTETICA.equals(unidade.getCategoria())) {
+					belezaEstetica += 1;
+				}else if(CategoriaEnum.ESPORTE_LAZER.equals(unidade.getCategoria())) {
+					esporteLazer += 1;
+				}else if(CategoriaEnum.EDUCACAO.equals(unidade.getCategoria())) {
+					educacao += 1;
+				}else if(CategoriaEnum.SAUDE.equals(unidade.getCategoria())) {
+					saude += 1;
+				}else if(CategoriaEnum.TRANSPORTE.equals(unidade.getCategoria())) {
+					transporte += 1;
+				}
 			}
 		}
-		return setPercentagemByCategoria(alimentacao, belezaEstetica, esporteLazer, saude, transporte, educacao, transacoes.size());
+		return setPercentagemByCategoria(alimentacao, belezaEstetica, esporteLazer, saude, transporte, educacao,
+				transacoes.isEmpty() ? 0 : transacoes.size() );
 	}
 
-	private CategoriaListVO setPercentagemByCategoria(double valorAlimentacao, double valorBelezaEstetica,
-			double valorEsporteLazer, double valorSaude, double valorTransporte, double valorEducacao, int totalTransacoes) {
+	private CategoriaListVO setPercentagemByCategoria(Double valorAlimentacao, Double valorBelezaEstetica,
+			Double valorEsporteLazer, Double valorSaude, Double valorTransporte, Double valorEducacao, Integer totalTransacoes) {
 		
 		CategoriaVO alimentacao =  CategoriaVO.builder()
 				.percentagem(calcularPercentagem(valorAlimentacao, totalTransacoes)).build();
@@ -152,7 +153,12 @@ public class TransacaoService {
 				.build();
 	}
 
-	private BigDecimal calcularPercentagem(double valor, int total) {
-		return  BigDecimal.valueOf((valor * 100) / total);
+	private BigDecimal calcularPercentagem(Double valor, Integer total) {
+		try {
+			if((valor != null && total != null)) {
+				return BigDecimal.valueOf((valor * 100) / total);
+			}
+		} catch (Exception e) {}
+		return  BigDecimal.valueOf(0.0);
 	}
 }
