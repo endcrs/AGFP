@@ -14,7 +14,11 @@ export default function Painel() {
   const {authData} = useAuth();
   const navigation = useNavigation();
 
-  const [saldo, setSaldo] = useState(''); 
+  const [saldo, setSaldo] = useState('');
+  const [receita, setReceita] = useState(''); 
+  const [despesa, setDespesa] = useState('');
+  const [lucro, setLucro] = useState('');
+
   const [transacoes, setTransacoes] = useState([]);
   const [categoria, setCategoria] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -26,7 +30,7 @@ export default function Painel() {
       setTimeout(() => {
         puxarTransacoesMensais();
         puxarCategorias();
-        puxarSaldo();
+        puxarDadosFinanceiro();
         setRefreshing(false);
       }, 1000);
   }, []);
@@ -35,7 +39,7 @@ export default function Painel() {
   useEffect(() => {
       puxarTransacoesMensais();
       puxarCategorias();
-      puxarSaldo();
+      puxarDadosFinanceiro();
   }, []);
 
   async function puxarTransacoesMensais(){
@@ -53,14 +57,15 @@ export default function Painel() {
         }).catch((err)=>console.log(err));
   }
 
-  async function puxarSaldo(){
+  async function puxarDadosFinanceiro(){
       await api.get(`/usuarios/${authData.token}`)
         .then((response) => {
-          setSaldo(response.data.saldo)
+          setSaldo(response.data.saldo);
+          setReceita(response.data.receita);
+          setDespesa(response.data.despesas);
+          setLucro(response.data.lucro);
         }).catch((err)=>console.log(err));
-  }
-
-  console.log(categoria)
+    }
     
   const formatarTextoCategoria = (categoria) => {
 
@@ -116,19 +121,24 @@ export default function Painel() {
         >
           <View style={styles.session}>
             <ScrollView  horizontal={true} >
+                <View style={[styles.cardValor, {backgroundColor:'#5100ff'}]} >
+                  <Text style={styles.itemValor}>Saldo</Text>
+                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(saldo)}</Text>
+                </View>
+
                 <View style={[styles.cardValor, {backgroundColor:'#0093D1'}]} >
                   <Text style={styles.itemValor}>Receita</Text>
-                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(saldo)}</Text>
+                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(receita)}</Text>
                 </View>
                 
                 <View style={[styles.cardValor, {backgroundColor:'#FF0000'}]}>
                   <Text style={styles.itemValor}>Despesa</Text>
-                  <Text style={[styles.itemValor, {fontSize:27}]}>R$ 1.287,00</Text>
+                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(despesa)}</Text>
                 </View>
 
                 <View style={[styles.cardValor, {backgroundColor:'#00d649'}]}>
                   <Text style={styles.itemValor}>Lucro</Text>
-                  <Text style={[styles.itemValor, {fontSize:27}]}>R$ 708,00</Text>
+                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(lucro)}</Text>
                 </View>
             </ScrollView>
           </View>
