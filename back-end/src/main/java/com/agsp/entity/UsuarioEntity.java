@@ -16,22 +16,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Builder
-@Getter
-@Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @Entity
 @Table(name = "TB_AGFP_USUARIO")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor @AllArgsConstructor
 public class UsuarioEntity implements Serializable {
 	
@@ -43,42 +40,37 @@ public class UsuarioEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "NOME_COMPLETO", nullable = false, length = 75)
-	private String nomeCompleto;
+	@Column(name = "NOME", nullable = false, length = 75)
+	private String nome;
+	
+	@Column(name = "SOBRENOME", nullable = false, length = 75)
+	private String sobreNome;
 	
 	@Column(name = "SENHA", nullable = false, length = 16)
 	private String senha;
 	
-	@Column(name = "SENHA_CONFIRMADA", nullable = false, length = 16)
-	private String senhaConfirmada;
-	
-	@Column(name = "CPF", nullable = false, unique = true, /*, updatable = false*/ length = 11)
+	@Column(name = "CPF", nullable = false, unique = true, updatable = false, length = 11)
 	private String cpf;
 	
-	@Column(name = "CELULAR", nullable = false,/*, updatable = false*/ length = 11)
+	@Column(name = "CELULAR", nullable = false, length = 11)
 	private String celular;
-	
-	@Column(name = "DATA_CADASTRO")
-	private ZonedDateTime dataCadastro;
 	
 	@Column(name = "DATA_NASCIMENTO")
 	private LocalDate dataNascimento;
 	
-	@Column(name = "DATA_ATUALIZACAO")
-	private ZonedDateTime dataAtualizacao;
+	@Column(name = "DATA_CADASTRO")
+	private ZonedDateTime dataCadastro;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-	private List<CartaoEntity> cartoes;
+	private List<ContaEntity> contas;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+	private List<CartaoCreditoEntity> cartoes;
 
 	
 	@PrePersist
 	private void onCreate() {
 		dataCadastro = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
-	}
-
-	@PreUpdate
-	private void onUpdate() {
-		dataAtualizacao = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 	}
 
 }

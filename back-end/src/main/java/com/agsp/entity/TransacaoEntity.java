@@ -1,11 +1,13 @@
 package com.agsp.entity;
 
+import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import com.agsp.enumerator.CategoriaEnum;
-import com.agsp.enumerator.TipoTransacaoEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,9 +32,9 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "TB_AGFP_TRANSACAO")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor @AllArgsConstructor
 public class TransacaoEntity implements Serializable {
 	
@@ -43,25 +46,31 @@ public class TransacaoEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "TITULO", nullable = false)
-	private String titulo;
-	
 	@Column(name = "CATEGORIA", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private CategoriaEnum categoria;
 	
 	@Column(name = "DATA_TRANSACAO", nullable = false)
-	private LocalDate dataTransacao;
+	private ZonedDateTime dataTransacao;
 	
 	@Column(name = "VALOR_COMPRA", nullable = false)
 	private BigDecimal valorCompra;
 	
-	@Column(name = "TIPO_PAGAMENTO", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private TipoTransacaoEnum tipoTransacao;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDENT", nullable = false)
+	private UsuarioEntity usuario;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_CARTAO", referencedColumnName = "IDENT", nullable = true)
-	private CartaoEntity cartao;
+	@JoinColumn(name = "CARTAO_CREDITO_ID", referencedColumnName = "IDENT", nullable = true)
+	private CartaoCreditoEntity cartaoCredito;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CONTA_ID", referencedColumnName = "IDENT", nullable = true)
+	private ContaEntity conta;
+	
+	@PrePersist
+	private void onCreate() {
+		dataTransacao = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+	}
 	
 }

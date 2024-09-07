@@ -3,11 +3,16 @@ package com.agsp.entity;
 import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import com.agsp.enumerator.BancoEnum;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,10 +31,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Entity
-@Table(name = "TB_AGFP_LOGIN_USUARIO")
+@Table(name = "TB_AGFP_CONTA")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor @AllArgsConstructor
-public class LoginUsuarioEntity implements Serializable {
+public class ContaEntity implements Serializable {
 	
 	private static final long serialVersionUID = -4131922305601547724L;
 
@@ -39,19 +44,23 @@ public class LoginUsuarioEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "DATA_HORA")
-	private ZonedDateTime dataHora;
+	@Column(name = "BANCO")
+	@Enumerated(EnumType.STRING)
+	private BancoEnum banco;
 	
-	@Column(name = "TOKEN")
-	private String token;
+	@Column(name = "SALDO", nullable = false)
+	private BigDecimal saldo;
+	
+	@Column(name = "DATA_CADASTRO")
+	private ZonedDateTime dataCadastro;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDENT")
+	@JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDENT", nullable = false)
 	private UsuarioEntity usuario;
 	
 	@PrePersist
 	private void onCreate() {
-		dataHora = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+		dataCadastro = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 	}
 
 }
