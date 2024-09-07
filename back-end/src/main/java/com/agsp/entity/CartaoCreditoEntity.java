@@ -4,12 +4,10 @@ import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
 
-import com.agsp.enumerator.BancoEnum;
-import com.agsp.enumerator.TipoBancoEnum;
 import com.agsp.enumerator.TipoBandeiraEnum;
 
 import jakarta.persistence.Column;
@@ -22,25 +20,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Builder
-@Getter
-@Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @Entity
-@Table(name = "TB_AGFP_CARTAO")
+@Table(name = "TB_AGFP_CARTAO_CREDITO")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor @AllArgsConstructor
-public class CartaoEntity implements Serializable {
+public class CartaoCreditoEntity implements Serializable {
 	
 	private static final long serialVersionUID = -4131922305601547724L;
 
@@ -50,46 +45,42 @@ public class CartaoEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "NOME_CARTAO", nullable = false)
-	private String nome;
-	
 	@Column(name = "NUMERO", nullable = false, length = 20, unique =  true)
 	private String numero;
 	
-	@Column(name = "CVV", nullable = false, length = 3, unique =  true)
-	private String cvv;
+	@Column(name = "LIMITE", nullable = false)
+	private BigDecimal limite;
 	
-	@Column(name = "BANCO")
-	@Enumerated(EnumType.STRING)
-	private BancoEnum banco;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "TIPO_BANCO", nullable = false)
-	private TipoBancoEnum tipobanco;
+	@Column(name = "VALIDADE_CARTAO")
+	private LocalDate validade;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TIPO_BANDEIRA", nullable = false)
 	private TipoBandeiraEnum bandeira;
 	
+	@Column(name = "FATURA_ATUAL", nullable = false)
+	private BigDecimal facturaAtual;
+	
+	@Column(name = "VENCIMENTO")
+	private LocalDate vencimento;
+	
+	@Column(name = "FECHAMENTO")
+	private LocalDate fechamento;
+	
 	@Column(name = "DATA_HORA")
-	private ZonedDateTime dataHora;
-	
-	@Column(name = "SALDO_DISPONIVEL", nullable = false)
-	private BigDecimal saldoDisponivel;
-	
-	@Column(name = "VENCIMENTO", nullable = false)
-	private String vencimento;
+	private ZonedDateTime dataCadastro;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_USUARIO_PROPRIETARIO", referencedColumnName = "IDENT", nullable = false)
+	@JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDENT", nullable = true)
 	private UsuarioEntity usuario;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cartao")
-	private List<TransacaoEntity> transacoes;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CONTA_ID", referencedColumnName = "IDENT", nullable = true)
+	private ContaEntity conta;
 	
 	@PrePersist
 	private void onCreate() {
-		dataHora = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+		dataCadastro = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 	}
 
 }
