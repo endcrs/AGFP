@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.agsp.entity.CartaoEntity;
+import com.agsp.entity.CartaoCreditoEntity;
 import com.agsp.entity.UsuarioEntity;
 import com.agsp.entity.factory.CartaoEntityFactory;
 import com.agsp.exception.DadosJaCadastradosException;
@@ -35,7 +35,7 @@ public class CartaoService {
 		
 //		validarSaldo(usuario, vo.limite());
 		
-		CartaoEntity cartaoEntity = CartaoEntityFactory.converterParaEntity(usuario, vo);
+		CartaoCreditoEntity cartaoEntity = CartaoEntityFactory.converterParaEntity(usuario, vo);
 		
 		cartaoEntity = cartaoRepository.save(cartaoEntity);
 		
@@ -65,12 +65,12 @@ public class CartaoService {
 
 	public List<CartoesVO> recuperarCartoesUsurio(String cpf) {
 		
-		List<CartaoEntity> cartoes = cartaoRepository.findByUsuarioCpf(cpf);
+		List<CartaoCreditoEntity> cartoes = cartaoRepository.findByUsuarioCpf(cpf);
 		
 		return CartaoVOFactory.converterListParaVO(cartoes);
 	}
 	
-	public CartaoEntity recuperarPorNumero(String numeroCartao) {
+	public CartaoCreditoEntity recuperarPorNumero(String numeroCartao) {
 		return cartaoRepository.findByNumero(numeroCartao)
 				.orElseThrow(() -> new NaoEncontradoException("Cartão com número "+numeroCartao + " não encontarado"));
 	}

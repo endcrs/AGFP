@@ -1,20 +1,15 @@
 package com.agsp.service;
 
-import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.agsp.entity.CartaoEntity;
+import com.agsp.entity.CartaoCreditoEntity;
 import com.agsp.entity.TransacaoEntity;
 import com.agsp.entity.factory.TransacaoEntityFactory;
 import com.agsp.enumerator.CategoriaEnum;
-import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.exception.MsgException;
 import com.agsp.repository.TransacaoRespository;
 import com.agsp.vo.CategoriaListVO;
@@ -34,15 +29,15 @@ public class TransacaoService {
 
 	public TransacaoVO salvar(TransacaoVO vo) {
 		
-		CartaoEntity cartao = cartaoService.recuperarPorNumero(vo.getNumeroCartao());
+		CartaoCreditoEntity cartao = cartaoService.recuperarPorNumero(vo.getNumeroCartao());
 		
 		validarValorTransacaoDespesa(cartao, vo);
 		
 		TransacaoEntity transacao = TransacaoEntityFactory.converterParaEntity(cartao, vo);
 		
-		cartao.setSaldoDisponivel(TipoTransacaoEnum.isDespesa(vo.getTipoTransacao())
-				? cartao.getSaldoDisponivel().subtract(vo.getValor())
-						: cartao.getSaldoDisponivel().add(vo.getValor()));
+//		cartao.setSaldoDisponivel(TipoTransacaoEnum.isDespesa(vo.getTipoTransacao())
+//				? cartao.getSaldoDisponivel().subtract(vo.getValor())
+//						: cartao.getSaldoDisponivel().add(vo.getValor()));
 		transacao = transacaoRespository.save(transacao);
 		return TransacaoVOFactory.converterParaVO(transacao);
 	}
@@ -51,9 +46,10 @@ public class TransacaoService {
 		
 		validarCpfUsuario(cpf);
 		
-		List<TransacaoEntity> transacoes = transacaoRespository.getAllTransacoesUsuario(cpf);
-		
-		return transacoes.stream().map(TransacaoVOFactory::converterParaVOList).toList();
+//		List<TransacaoEntity> transacoes = transacaoRespository.getAllTransacoesUsuario(cpf);
+//		
+//		return transacoes.stream().map(TransacaoVOFactory::converterParaVOList).toList();
+		return new ArrayList<>();
 	}
 	
 	
@@ -61,14 +57,15 @@ public class TransacaoService {
 		
 		validarCpfUsuario(cpf);
 		
-		LocalDate dataFim = LocalDate.now(ZoneId.of(AMERICA_SAO_PAULO));
+//		LocalDate dataFim = LocalDate.now(ZoneId.of(AMERICA_SAO_PAULO));
 		
-		LocalDate dataInicio = dataFim.with(TemporalAdjusters.firstDayOfMonth());
+//		LocalDate dataInicio = dataFim.with(TemporalAdjusters.firstDayOfMonth());
 		
-		List<TransacaoEntity> transacoes = transacaoRespository
-				.getTransacoesMensaisUsuario(cpf, dataInicio, dataFim);
-		
-		return transacoes.stream().map(TransacaoVOFactory::converterParaVOList).toList();
+//		List<TransacaoEntity> transacoes = transacaoRespository
+//				.getTransacoesMensaisUsuario(cpf, dataInicio, dataFim);
+//		
+//		return transacoes.stream().map(TransacaoVOFactory::converterParaVOList).toList();
+		return new ArrayList<>();
 	}
 	
 
@@ -79,19 +76,20 @@ public class TransacaoService {
 		}
 	}
 
-	private void validarValorTransacaoDespesa(CartaoEntity cartao, TransacaoVO vo) {
+	private void validarValorTransacaoDespesa(CartaoCreditoEntity cartao, TransacaoVO vo) {
 		
-		if(TipoTransacaoEnum.isDespesa(vo.getTipoTransacao()) &&
-				(vo.getValor().longValue() > cartao.getSaldoDisponivel().longValue())) {
-				throw new MsgException("Valor da compra maior que saldo disponivel no cartao");
-		} 
+//		if(TipoTransacaoEnum.isDespesa(vo.getTipoTransacao()) &&
+//				(vo.getValor().longValue() > cartao.getSaldoDisponivel().longValue())) {
+//				throw new MsgException("Valor da compra maior que saldo disponivel no cartao");
+//		} 
 	}
 
 	public CategoriaListVO listarPercentagemGastoCategoria(String cpf) {
 		
 		validarCpfUsuario(cpf);
 		
-		List<TransacaoEntity> transacoes = transacaoRespository.getAllTransacoesUsuario(cpf);
+//		List<TransacaoEntity> transacoes = transacaoRespository.getAllTransacoesUsuario(cpf);]
+		List<TransacaoEntity> transacoes = new ArrayList<>();
 		
 		Double alimentacao = 0.0;
 		Double belezaEstetica = 0.0;

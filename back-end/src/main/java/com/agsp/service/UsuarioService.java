@@ -1,26 +1,14 @@
 package com.agsp.service;
 
-import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.TemporalAdjusters;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.agsp.entity.LoginUsuarioEntity;
 import com.agsp.entity.UsuarioEntity;
 import com.agsp.entity.factory.UsuarioEntityFactory;
-import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.exception.DadosJaCadastradosException;
 import com.agsp.exception.MsgException;
 import com.agsp.exception.NaoEncontradoException;
-import com.agsp.repository.CartaoRepository;
-import com.agsp.repository.LoginUsuarioRepository;
-import com.agsp.repository.TransacaoRespository;
 import com.agsp.repository.UsuarioRepository;
 import com.agsp.util.Constantes;
 import com.agsp.vo.LoginVO;
@@ -35,19 +23,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsuarioService {
 	
-	private final CartaoRepository cartaoRepository;
+//	private final CartaoRepository cartaoRepository;
 	private final UsuarioRepository usuarioRepository;
-	private final TransacaoRespository transacaoRespository;
-	private final LoginUsuarioRepository loginUsuarioRepository;
+//	private final TransacaoRespository transacaoRespository;
+//	private final LoginUsuarioRepository loginUsuarioRepository;
 	
 	@Transactional
 	public UsuarioVO login(LoginVO loginVo) {
 		
 		UsuarioEntity usuario = recuperarUsuarioPorCpf(loginVo.cpf());
 		
-		validarLogin(usuario.getSenha(), loginVo.senha());
-		
-		registrarLogin(usuario);
+//		validarLogin(usuario.getSenha(), loginVo.senha());
+//		
+//		registrarLogin(usuario);
 		
 		BigDecimal saldo = getSaldoDisponivel(usuario);
 		
@@ -65,8 +53,9 @@ public class UsuarioService {
 	}
 
 	private BigDecimal getSaldoDisponivel(UsuarioEntity usuario) {
-		BigDecimal saldo =  cartaoRepository.findSaldoTotalCartoesUsuario(usuario.getId());
-		return saldo != null ? saldo : BigDecimal.valueOf(0.0);
+//		BigDecimal saldo =  cartaoRepository.findSaldoTotalCartoesUsuario(usuario.getId());
+//		return saldo != null ? saldo : BigDecimal.valueOf(0.0);
+		return BigDecimal.valueOf(0.0);
 	}
 
 	@Transactional
@@ -105,20 +94,20 @@ public class UsuarioService {
 		}
 	}
 	
-	private void validarLogin(String senhaBanco, String senhaDigitada){
-		if(!senhaBanco.equals(senhaDigitada)) {
-			throw new MsgException(Constantes.SENHA_INVALIDA);
-		}
-	}
+//	private void validarLogin(String senhaBanco, String senhaDigitada){
+//		if(!senhaBanco.equals(senhaDigitada)) {
+//			throw new MsgException(Constantes.SENHA_INVALIDA);
+//		}
+//	}
 	
-	private void registrarLogin(UsuarioEntity usuario) {
-		
-		loginUsuarioRepository.save(LoginUsuarioEntity.builder()
-				.dataHora(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
-				.usuario(usuario)
-				.token(UUID.randomUUID().toString())
-				.build());
-	}
+//	private void registrarLogin(UsuarioEntity usuario) {
+//		
+//		loginUsuarioRepository.save(LoginUsuarioEntity.builder()
+//				.dataHora(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
+//				.usuario(usuario)
+//				.token(UUID.randomUUID().toString())
+//				.build());
+//	}
 	
 	public UsuarioEntity recuperarUsuario(Long id) {
 		return usuarioRepository.findById(id)
@@ -148,28 +137,30 @@ public class UsuarioService {
 
 	private BigDecimal getTotalDespesasMensal(UsuarioEntity usuario) {
 		
-		LocalDate dataInicio = getToday().with(TemporalAdjusters.firstDayOfMonth());
+//		LocalDate dataInicio = getToday().with(TemporalAdjusters.firstDayOfMonth());
 		
-		BigDecimal despesa = transacaoRespository
-				.getTotalReceitaOrDespesaMensal(usuario.getCpf().trim(), 
-						dataInicio, getToday(), TipoTransacaoEnum.DESPESA);
-		
-		return despesa != null ? despesa : BigDecimal.valueOf(0.0);
+//		BigDecimal despesa = transacaoRespository
+//				.getTotalReceitaOrDespesaMensal(usuario.getCpf().trim(), 
+//						dataInicio, getToday(), TipoTransacaoEnum.DESPESA);
+//		
+//		return despesa != null ? despesa : BigDecimal.valueOf(0.0);
+		return BigDecimal.valueOf(0.0);
 	}
 
-	private LocalDate getToday() {
-		return LocalDate.now(ZoneId.of(AMERICA_SAO_PAULO));
-	}
+//	private LocalDate getToday() {
+//		return LocalDate.now(ZoneId.of(AMERICA_SAO_PAULO));
+//	}
 
 	private BigDecimal getTotalReceitaMensal(UsuarioEntity usuario) {
 		
-		LocalDate dataInicio = getToday().with(TemporalAdjusters.firstDayOfMonth());
+//		LocalDate dataInicio = getToday().with(TemporalAdjusters.firstDayOfMonth());
 		
-		BigDecimal receita = transacaoRespository
-				.getTotalReceitaOrDespesaMensal(usuario.getCpf().trim(), 
-						dataInicio, getToday(), TipoTransacaoEnum.RECEITA);
+//		BigDecimal receita = transacaoRespository
+//				.getTotalReceitaOrDespesaMensal(usuario.getCpf().trim(), 
+//						dataInicio, getToday(), TipoTransacaoEnum.RECEITA);
 		
-		return receita != null ? receita : BigDecimal.valueOf(0.0);
+//		return receita != null ? receita : BigDecimal.valueOf(0.0);
+		return BigDecimal.valueOf(0.0);
 	}
 
 }
