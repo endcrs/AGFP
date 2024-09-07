@@ -2,7 +2,6 @@ package com.agsp.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +17,7 @@ public class TipoTransacaoController {
 	
 	private final TipoTransacaoService tipoPagamentoService;
 	
-	@GetMapping()
+	//@GetMapping()
 	public List<DominioVO> recuperarTiposPagamento() {
 		return tipoPagamentoService.recuperarTiposTransacao();
 	}
