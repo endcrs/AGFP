@@ -8,6 +8,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -44,11 +46,12 @@ public class UsuarioEntity implements Serializable {
 	private String nome;
 	
 	@Column(name = "SOBRENOME", nullable = false, length = 75)
-	private String sobreNome;
+	private String sobrenome;
 	
 	@Column(name = "SENHA", nullable = false, length = 16)
 	private String senha;
 	
+	@CPF(message = "CPF inválido")
 	@Column(name = "CPF", nullable = false, unique = true, updatable = false, length = 11)
 	private String cpf;
 	

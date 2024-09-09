@@ -1,14 +1,22 @@
 package com.agsp.service;
 
+import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.agsp.entity.LoginUsuarioEntity;
 import com.agsp.entity.UsuarioEntity;
 import com.agsp.entity.factory.UsuarioEntityFactory;
 import com.agsp.exception.DadosJaCadastradosException;
-import com.agsp.exception.MsgException;
 import com.agsp.exception.NaoEncontradoException;
+import com.agsp.exception.copy.MsgException;
+import com.agsp.repository.LoginUsuarioRepository;
 import com.agsp.repository.UsuarioRepository;
 import com.agsp.util.Constantes;
 import com.agsp.vo.LoginVO;
@@ -16,6 +24,7 @@ import com.agsp.vo.UsuarioPutVO;
 import com.agsp.vo.UsuarioVO;
 import com.agsp.vo.factory.UsuarioVOFactory;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -26,28 +35,29 @@ public class UsuarioService {
 //	private final CartaoRepository cartaoRepository;
 	private final UsuarioRepository usuarioRepository;
 //	private final TransacaoRespository transacaoRespository;
-//	private final LoginUsuarioRepository loginUsuarioRepository;
+	private final LoginUsuarioRepository loginUsuarioRepository;
+	
 	
 	@Transactional
 	public UsuarioVO login(LoginVO loginVo) {
 		
 		UsuarioEntity usuario = recuperarUsuarioPorCpf(loginVo.cpf());
 		
-//		validarLogin(usuario.getSenha(), loginVo.senha());
+		validarLogin(usuario.getSenha(), loginVo.senha());
 //		
-//		registrarLogin(usuario);
+		registrarLogin(usuario);
 		
-		BigDecimal saldo = getSaldoDisponivel(usuario);
+//		BigDecimal saldo = getSaldoDisponivel(usuario);
+//		
+//		BigDecimal receita = getTotalReceitaMensal(usuario);
+//		BigDecimal despesa = getTotalDespesasMensal(usuario);
+//		BigDecimal lucro = receita.subtract(despesa);
 		
-		BigDecimal receita = getTotalReceitaMensal(usuario);
-		BigDecimal despesa = getTotalDespesasMensal(usuario);
-		BigDecimal lucro = receita.subtract(despesa);
+		UsuarioVO vo = UsuarioVOFactory.converterParaVO(usuario);
 		
-		UsuarioVO vo = UsuarioVOFactory.converterParaVO(usuario, saldo);
-		
-		vo.setReceita(receita);
-		vo.setDespesas(despesa);
-		vo.setLucro(lucro);
+//		vo.setReceita(receita);
+//		vo.setDespesas(despesa);
+//		vo.setLucro(lucro);
 		
 		return vo;
 	}
@@ -61,15 +71,23 @@ public class UsuarioService {
 	@Transactional
 	public UsuarioVO salvar(UsuarioVO vo) {
 		
-		validarSenhaCadastroAtualizacao(vo);
+//		validarSenhaCadastroAtualizacao(vo);
 		
 		validarCpf(vo.getCpf());
+		validarDataNascimento(vo.getDataNascimento());
 		
 		UsuarioEntity usuarioEntity = usuarioRepository.save(UsuarioEntityFactory.converterParaEntity(vo));
 		
-		return UsuarioVOFactory.converterParaVO(usuarioEntity, getSaldoDisponivel(usuarioEntity));
+		return UsuarioVOFactory.converterParaVO(usuarioEntity);
 	}
 	
+	private void validarDataNascimento(LocalDate dataNascimento) {
+		
+		if(dataNascimento.isAfter(LocalDate.now())) {
+			throw new MsgException("A data do nascimento não pode ser uma data futura");
+		}
+	}
+
 	public UsuarioVO editar(UsuarioPutVO vo) {
 		
 		UsuarioEntity usuarioBanco = recuperarUsuario(vo.getId());
@@ -78,9 +96,9 @@ public class UsuarioService {
 		
 		usuarioRepository.save(usuarioBanco);
 		
-		BigDecimal saldo = getSaldoDisponivel(usuarioBanco);
+//		BigDecimal saldo = getSaldoDisponivel(usuarioBanco);
 		
-		return UsuarioVOFactory.converterParaVO(usuarioBanco, saldo);
+		return UsuarioVOFactory.converterParaVO(usuarioBanco);
 	}
 	
 	private void validarCpf(String cpf) {
@@ -88,26 +106,20 @@ public class UsuarioService {
 			throw new DadosJaCadastradosException(Constantes.CPF_CDASTRADO);
 	}
 	
-	private void validarSenhaCadastroAtualizacao(UsuarioVO vo) {
-		if(!vo.getSenha().equals(vo.getSenhaConfirmada())) {
-			throw new MsgException(Constantes.SENHAS_DIFERENTES);
+	private void validarLogin(String senhaBanco, String senhaDigitada){
+		if(!senhaBanco.equals(senhaDigitada)) {
+			throw new MsgException(Constantes.SENHA_INVALIDA);
 		}
 	}
 	
-//	private void validarLogin(String senhaBanco, String senhaDigitada){
-//		if(!senhaBanco.equals(senhaDigitada)) {
-//			throw new MsgException(Constantes.SENHA_INVALIDA);
-//		}
-//	}
-	
-//	private void registrarLogin(UsuarioEntity usuario) {
-//		
-//		loginUsuarioRepository.save(LoginUsuarioEntity.builder()
-//				.dataHora(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
-//				.usuario(usuario)
-//				.token(UUID.randomUUID().toString())
-//				.build());
-//	}
+	private void registrarLogin(UsuarioEntity usuario) {
+		
+		loginUsuarioRepository.save(LoginUsuarioEntity.builder()
+				.dataHora(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
+				.usuario(usuario)
+				.token(UUID.randomUUID().toString())
+				.build());
+	}
 	
 	public UsuarioEntity recuperarUsuario(Long id) {
 		return usuarioRepository.findById(id)
@@ -122,15 +134,15 @@ public class UsuarioService {
 	public UsuarioVO recuperar(Long id) {
 		UsuarioEntity usuario =  recuperarUsuario(id);
 		
-		UsuarioVO vo = UsuarioVOFactory.converterParaVO(usuario, getSaldoDisponivel(usuario));
+		UsuarioVO vo = UsuarioVOFactory.converterParaVO(usuario);
 		
-		BigDecimal receita = getTotalReceitaMensal(usuario);
-		BigDecimal despesa = getTotalDespesasMensal(usuario);
-		BigDecimal lucro = receita.subtract(despesa);
+//		BigDecimal receita = getTotalReceitaMensal(usuario);
+//		BigDecimal despesa = getTotalDespesasMensal(usuario);
+//		BigDecimal lucro = receita.subtract(despesa);
 		
-		vo.setReceita(receita);
-		vo.setDespesas(despesa);
-		vo.setLucro(lucro);
+//		vo.setReceita(receita);
+//		vo.setDespesas(despesa);
+//		vo.setLucro(lucro);
 		
 		return vo;
 	}
