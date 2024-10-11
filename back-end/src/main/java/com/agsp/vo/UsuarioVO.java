@@ -27,7 +27,6 @@ public class UsuarioVO implements Serializable {
 	@NotBlank(message = "O preenchimento do campo sobrenome é obrigatório")
 	@Size(min = 4, max = 30, message = "O campo sobre deve ter no mínimo 4 caracteres máximo 30")
 	private String sobrenome;
-	
 
 	@NotBlank(message = "O preenchimento do campo senha é obrigatório")
 	@Size(min = 8, max = 25, message = "O campo senha deve ter no mínimo 8 caracteres máximo 25")

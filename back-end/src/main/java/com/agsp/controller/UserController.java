@@ -5,15 +5,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agsp.service.UsuarioService;
+import com.agsp.service.UserService;
 import com.agsp.vo.LoginVO;
-import com.agsp.vo.UsuarioPutVO;
 import com.agsp.vo.UsuarioVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,12 +23,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(value ="/usuarios")
+@RequestMapping(value ="/users")
 @RequiredArgsConstructor
 @Tag(name = "Usuários", description = "Conjunto de endpoints para gerenciar o fluxo do Usuário.")
-public class UsuarioController {
+public class UserController {
 	
-	private final UsuarioService usuarioService;
+	private final UserService usuarioService;
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,21 +50,21 @@ public class UsuarioController {
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = UsuarioVO.class))),
     })
-	public UsuarioVO salvar (@RequestBody @Valid UsuarioVO vo) {
-		return usuarioService.salvar(vo);
+	public UsuarioVO save (@RequestBody @Valid UsuarioVO vo) {
+		return usuarioService.save(vo);
 	}
 	
-	@ResponseStatus(HttpStatus.OK)
-	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Endpoint da edição do cadastro do usuário.", responses = {
-            @ApiResponse(responseCode = "201",
-                    description = "Usuario editado com sucesso",
-                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = UsuarioVO.class))),
-    })
-	public UsuarioVO editar (@RequestBody @Valid UsuarioPutVO vo) {
-		return usuarioService.editar(vo);
-	}
+//	@ResponseStatus(HttpStatus.OK)
+//	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    @Operation(summary = "Endpoint da edição do cadastro do usuário.", responses = {
+//            @ApiResponse(responseCode = "201",
+//                    description = "Usuario editado com sucesso",
+//                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+//                            schema = @Schema(implementation = UsuarioVO.class))),
+//    })
+//	public UsuarioVO edit (@RequestBody @Valid UsuarioPutVO vo) {
+//		return usuarioService.edit(vo);
+//	}
 	
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -76,7 +74,7 @@ public class UsuarioController {
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = UsuarioVO.class))),
     })
-	public UsuarioVO recuperar (@PathVariable Long id) {
-		return usuarioService.recuperar(id);
+	public UsuarioVO getUser (@PathVariable Long id) {
+		return usuarioService.getUser(id);
 	}
 }
