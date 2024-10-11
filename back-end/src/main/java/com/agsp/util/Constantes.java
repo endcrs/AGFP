@@ -12,9 +12,13 @@ public class Constantes {
 
 	public static final String SENHA_INVALIDA = "Senha invalida";
 
-	public static final String USUARIO_NAO_ENCONTRADO = "Usuario nao encontrado";
+	public static final String USUARIO_NAO_ENCONTRADO = "Usuario não encontrado";
+	
+	public static final String CONTA_NAO_ENCONTRADO = "Conta não encontrado";
+	
+	public static final String USARIO_PELO_TOKEN = "Usuario pelo token não encontrado";
 
-	public static final String CARTAO_CADASTRADO_COM_NUMERO = "Ja existe um cartao cadastrado com mesmo numero";
+	public static final String CARTAO_CADASTRADO_COM_NUMERO = "Já existe um cartao cadastrado com mesmo numero";
 
-	public static final String CARTAO_NAO_ENCONTRADO_COM_NUMERO = "Cartao nao encontada";
+	public static final String CARTAO_NAO_ENCONTRADO_COM_NUMERO = "Cartão não encontada";
 }

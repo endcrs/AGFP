@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agsp.service.CartaoService;
+import com.agsp.service.CartaoCreditoService;
 import com.agsp.vo.CartaoVO;
 import com.agsp.vo.CartoesVO;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartaoController {
 	
-	private final CartaoService cartaoService;
+	private final CartaoCreditoService cartaoService;
 	
 //	@PostMapping()
 	public CartaoVO salvar (@RequestBody @Valid CartaoVO vo) {

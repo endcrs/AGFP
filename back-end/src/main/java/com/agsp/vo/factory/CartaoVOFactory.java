@@ -2,7 +2,7 @@ package com.agsp.vo.factory;
 
 import java.util.List;
 
-import com.agsp.entity.CartaoCreditoEntity;
+import com.agsp.entity.CreditCardEntity;
 import com.agsp.vo.CartaoVO;
 import com.agsp.vo.CartoesVO;
 
@@ -10,7 +10,7 @@ public class CartaoVOFactory {
 	
 	private CartaoVOFactory() {}
 
-	public static CartaoVO converterParaVO(CartaoCreditoEntity entity) {
+	public static CartaoVO converterParaVO(CreditCardEntity entity) {
 		
 		if(entity != null) {
 			return CartaoVO.builder()
@@ -29,7 +29,7 @@ public class CartaoVOFactory {
 	}
 
 	
-	public static CartoesVO converterParaVOCadastro(CartaoCreditoEntity entity) {
+	public static CartoesVO converterParaVOCadastro(CreditCardEntity entity) {
 		
 		if(entity != null) {
 			return CartoesVO.builder()
@@ -47,7 +47,7 @@ public class CartaoVOFactory {
 			return null;
 	}
 	
-	public static List<CartoesVO> converterListParaVO(List<CartaoCreditoEntity> cartoes) {
+	public static List<CartoesVO> converterListParaVO(List<CreditCardEntity> cartoes) {
 		
 		return cartoes.stream().map(CartaoVOFactory::converterParaVOCadastro).toList();
 	}

@@ -13,9 +13,9 @@ import com.agsp.vo.DominioVO;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(value ="/bancos")
+@RequestMapping(value ="/banks")
 @RequiredArgsConstructor
-public class BancoController {
+public class BankController {
 	
 	private final BancoService bancoService;
 	
