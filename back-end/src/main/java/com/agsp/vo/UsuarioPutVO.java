@@ -18,8 +18,11 @@ public class UsuarioPutVO implements Serializable {
 	@NotNull(message = "O preenchimento do campo ID é obrigatório")
 	private Long id;
 	
-	@Size(min = 15, max = 75, message = "O campo nome completo deve ter no mínimo 15 caracteres máximo 75")
-	private String nomeCompleto;
+	@Size(min = 4, max = 30, message = "O campo nome deve ter no mínimo 4 caracteres máximo 30")
+	private String nome;
+	
+	@Size(min = 4, max = 30, message = "O campo sobre deve ter no mínimo 4 caracteres máximo 30")
+	private String sobrenome;
 
 	@PastOrPresent(message = "A data de nascimento não pode ser uma data futura")
 	private LocalDate dataNascimento;

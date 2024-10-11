@@ -3,17 +3,23 @@ package com.agsp.entity;
 import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import com.agsp.enumerator.BancoEnum;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -27,10 +33,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Entity
-@Table(name = "TB_AGFP_USUARIO")
+@Table(name = "TB_AGFP_CONTA_CORRENTE")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor @AllArgsConstructor
-public class UsuarioEntity implements Serializable {
+public class CurrentAccountEntity implements Serializable {
 	
 	private static final long serialVersionUID = -4131922305601547724L;
 
@@ -40,33 +46,26 @@ public class UsuarioEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "NOME", nullable = false, length = 75)
-	private String nome;
+	@Column(name = "BANCO")
+	@Enumerated(EnumType.STRING)
+	private BancoEnum banco;
 	
-	@Column(name = "SOBRENOME", nullable = false, length = 75)
-	private String sobreNome;
+	@Column(name = "SALDO", nullable = false)
+	private BigDecimal saldo;
 	
-	@Column(name = "SENHA", nullable = false, length = 16)
-	private String senha;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDENT", nullable = false)
+	private UserEntity usuario;
 	
-	@Column(name = "CPF", nullable = false, unique = true, updatable = false, length = 11)
-	private String cpf;
-	
-	@Column(name = "CELULAR", nullable = false, length = 11)
-	private String celular;
-	
-	@Column(name = "DATA_NASCIMENTO")
-	private LocalDate dataNascimento;
+	@Column(name = "ATIVO", nullable = false)
+	private Boolean ativo;
 	
 	@Column(name = "DATA_CADASTRO")
 	private ZonedDateTime dataCadastro;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-	private List<ContaEntity> contas;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "currentAccount")
+	private List<TransationEntity> transations;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-	private List<CartaoCreditoEntity> cartoes;
-
 	
 	@PrePersist
 	private void onCreate() {

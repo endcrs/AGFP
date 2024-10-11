@@ -6,17 +6,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.agsp.entity.CartaoCreditoEntity;
-import com.agsp.entity.TransacaoEntity;
-import com.agsp.entity.factory.TransacaoEntityFactory;
+import com.agsp.entity.TransationEntity;
 import com.agsp.enumerator.CategoriaEnum;
 import com.agsp.exception.MsgException;
-import com.agsp.repository.TransacaoRespository;
 import com.agsp.vo.CategoriaListVO;
 import com.agsp.vo.CategoriaVO;
 import com.agsp.vo.TransaListVO;
 import com.agsp.vo.TransacaoVO;
-import com.agsp.vo.factory.TransacaoVOFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,22 +20,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TransacaoService {
 	
-	private final TransacaoRespository transacaoRespository;
-	private final CartaoService cartaoService;
+//	private final TransacaoRespository transacaoRespository;
+//	private final CartaoCreditoService cartaoService;
 
 	public TransacaoVO salvar(TransacaoVO vo) {
 		
-		CartaoCreditoEntity cartao = cartaoService.recuperarPorNumero(vo.getNumeroCartao());
+//		CartaoCreditoEntity cartao = cartaoService.recuperarPorNumero(vo.getNumeroCartao());
 		
-		validarValorTransacaoDespesa(cartao, vo);
+//		validarValorTransacaoDespesa(cartao, vo);
 		
-		TransacaoEntity transacao = TransacaoEntityFactory.converterParaEntity(cartao, vo);
+//		TransacaoEntity transacao = TransacaoEntityFactory.converterParaEntity(cartao, vo);
 		
 //		cartao.setSaldoDisponivel(TipoTransacaoEnum.isDespesa(vo.getTipoTransacao())
 //				? cartao.getSaldoDisponivel().subtract(vo.getValor())
 //						: cartao.getSaldoDisponivel().add(vo.getValor()));
-		transacao = transacaoRespository.save(transacao);
-		return TransacaoVOFactory.converterParaVO(transacao);
+//		transacao = transacaoRespository.save(transacao);
+//		return TransacaoVOFactory.converterParaVO(transacao);
+		return TransacaoVO.builder().build();
 	}
 
 	public List<TransaListVO> listarTodasTransacoes(String cpf) {
@@ -76,20 +73,20 @@ public class TransacaoService {
 		}
 	}
 
-	private void validarValorTransacaoDespesa(CartaoCreditoEntity cartao, TransacaoVO vo) {
+//	private void validarValorTransacaoDespesa(CartaoCreditoEntity cartao, TransacaoVO vo) {
 		
 //		if(TipoTransacaoEnum.isDespesa(vo.getTipoTransacao()) &&
 //				(vo.getValor().longValue() > cartao.getSaldoDisponivel().longValue())) {
 //				throw new MsgException("Valor da compra maior que saldo disponivel no cartao");
 //		} 
-	}
+//	}
 
 	public CategoriaListVO listarPercentagemGastoCategoria(String cpf) {
 		
 		validarCpfUsuario(cpf);
 		
 //		List<TransacaoEntity> transacoes = transacaoRespository.getAllTransacoesUsuario(cpf);]
-		List<TransacaoEntity> transacoes = new ArrayList<>();
+		List<TransationEntity> transacoes = new ArrayList<>();
 		
 		Double alimentacao = 0.0;
 		Double belezaEstetica = 0.0;
@@ -100,7 +97,7 @@ public class TransacaoService {
 		
 		if( !transacoes.isEmpty()) {
 			
-			for(TransacaoEntity unidade : transacoes ) {
+			for(TransationEntity unidade : transacoes ) {
 				if(CategoriaEnum.ALIMENTACAO.equals(unidade.getCategoria())) {
 					alimentacao += 1;
 				}else if(CategoriaEnum.BELEZA_ESTETICA.equals(unidade.getCategoria())) {

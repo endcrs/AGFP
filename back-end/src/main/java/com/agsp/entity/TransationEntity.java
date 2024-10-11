@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import com.agsp.enumerator.BancoEnum;
+import com.agsp.enumerator.CategoriaEnum;
+import com.agsp.enumerator.StatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,18 +24,22 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Builder
-@Data
+
 @Entity
-@Table(name = "TB_AGFP_CONTA")
+@Builder
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@NoArgsConstructor @AllArgsConstructor
-public class ContaEntity implements Serializable {
+//@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "TB_AGFP_TRANSACAO")
+public class TransationEntity implements Serializable {
 	
 	private static final long serialVersionUID = -4131922305601547724L;
 
@@ -44,23 +49,29 @@ public class ContaEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "BANCO")
+	@Column(name = "CATEGORIA", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private BancoEnum banco;
+	private CategoriaEnum categoria;
 	
-	@Column(name = "SALDO", nullable = false)
-	private BigDecimal saldo;
+	@Column(name = "DATA_TRANSACAO", nullable = false)
+	private ZonedDateTime dataTransacao;
 	
-	@Column(name = "DATA_CADASTRO")
-	private ZonedDateTime dataCadastro;
+	@Column(name = "VALOR_COMPRA", nullable = false)
+	private BigDecimal valorCompra;
+	
+	@Column(name = "ATIVO", nullable = false)
+	private Boolean ativo;
+	
+	@Column(name = "STATUS", nullable = false)
+	private StatusEnum status;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDENT", nullable = false)
-	private UsuarioEntity usuario;
+	@JoinColumn(name = "CONTA_CORRENTE_ID", referencedColumnName = "IDENT", nullable = true)
+	private CurrentAccountEntity currentAccount;
 	
 	@PrePersist
 	private void onCreate() {
-		dataCadastro = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+		dataTransacao = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 	}
-
+	
 }

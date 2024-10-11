@@ -1,17 +1,17 @@
 package com.agsp.entity.factory;
 
-import com.agsp.entity.CartaoCreditoEntity;
-import com.agsp.entity.UsuarioEntity;
+import com.agsp.entity.CreditCardEntity;
+import com.agsp.entity.UserEntity;
 import com.agsp.vo.CartaoVO;
 
 public class CartaoEntityFactory {
 	
 	private CartaoEntityFactory() {}
 
-	public static CartaoCreditoEntity converterParaEntity(UsuarioEntity usuario, CartaoVO vo) {
+	public static CreditCardEntity converterParaEntity(UserEntity usuario, CartaoVO vo) {
 		
 		if(usuario != null && vo != null) {
-			return CartaoCreditoEntity.builder()
+			return CreditCardEntity.builder()
 //					.banco(vo.banco())
 //					.bandeira(vo.bandeira())
 //					.vencimento(vo.vencimento())

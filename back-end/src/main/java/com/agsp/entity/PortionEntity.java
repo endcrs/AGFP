@@ -1,10 +1,10 @@
 package com.agsp.entity;
 
-import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
-
 import java.io.Serializable;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import com.agsp.enumerator.StatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,22 +14,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
-@Data
+@Setter
+@Getter
 @Entity
-@Table(name = "TB_AGFP_LOGIN_USUARIO")
+@Table(name = "TB_AGFP_PARCELAS")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor @AllArgsConstructor
-public class LoginUsuarioEntity implements Serializable {
+public class PortionEntity implements Serializable {
 	
 	private static final long serialVersionUID = -4131922305601547724L;
 
@@ -38,20 +39,22 @@ public class LoginUsuarioEntity implements Serializable {
 	@Column(name = "IDENT")
 	@Include
 	private Long id;
-
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDENT")
-	private UserEntity usuario;
+	@JoinColumn(name = "TRANSACAO_CARTAO_CREDITO_ID", referencedColumnName = "IDENT", nullable = false)
+	private CreditCartTansationEntity creditCardTransation;
 	
-	@Column(name = "TOKEN")
-	private String token;
+	@Column(name = "VALOR_PARCELA", nullable = false)
+	private BigDecimal valorParcela;
 	
-	@Column(name = "DATA_HORA")
-	private ZonedDateTime dataHora;
+	@Column(name = "DATA_VENCIMENTO", nullable = false)
+	private LocalDate dataVencimento;
 	
-	@PrePersist
-	private void onCreate() {
-		dataHora = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
-	}
+	@Column(name = "NUMERO_PARCELAS", nullable = false)
+	private Integer numeroParcelas;
+	
+	@Column(name = "STATUS", nullable = false)
+	private StatusEnum status;
+	
 
 }

@@ -2,9 +2,9 @@ package com.agsp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.agsp.entity.TransacaoEntity;
+import com.agsp.entity.TransationEntity;
 
-public interface TransacaoRespository extends JpaRepository<TransacaoEntity, Long> {
+public interface TransacaoRespository extends JpaRepository<TransationEntity, Long> {
 
 //	@Query(value = "select t from TransacaoEntity t "
 //			+ "join t.cartao c "

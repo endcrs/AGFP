@@ -1,7 +1,7 @@
 package com.agsp.entity.factory;
 
-import com.agsp.entity.CartaoCreditoEntity;
-import com.agsp.entity.TransacaoEntity;
+import com.agsp.entity.CreditCardEntity;
+import com.agsp.entity.TransationEntity;
 import com.agsp.vo.TransacaoVO;
 
 public class TransacaoEntityFactory {
@@ -9,10 +9,10 @@ public class TransacaoEntityFactory {
 	
 	private TransacaoEntityFactory() {}
 
-	public static TransacaoEntity converterParaEntity(CartaoCreditoEntity cartao, TransacaoVO vo) {
+	public static TransationEntity converterParaEntity(CreditCardEntity cartao, TransacaoVO vo) {
 		
 		if(cartao != null && vo != null) {
-			return TransacaoEntity.builder()
+			return TransationEntity.builder()
 //				.titulo(vo.getTitulo())
 //				.categoria(vo.getCategoria())
 //				.valorCompra(vo.getValor())
