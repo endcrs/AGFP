@@ -21,18 +21,20 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "TB_AGFP_USUARIO")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor @AllArgsConstructor
-public class UsuarioEntity implements Serializable {
+public class UserEntity implements Serializable {
 	
 	private static final long serialVersionUID = -4131922305601547724L;
 
@@ -42,7 +44,7 @@ public class UsuarioEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "NOME", nullable = false, length = 75)
+	@Column(name = "NOME", nullable = false, length = 60)
 	private String nome;
 	
 	@Column(name = "SOBRENOME", nullable = false, length = 75)
@@ -51,25 +53,24 @@ public class UsuarioEntity implements Serializable {
 	@Column(name = "SENHA", nullable = false, length = 16)
 	private String senha;
 	
+	@Column(name = "CELULAR", nullable = false, length = 11)
+	private String celular;
+
 	@CPF(message = "CPF inválido")
 	@Column(name = "CPF", nullable = false, unique = true, updatable = false, length = 11)
 	private String cpf;
 	
-	@Column(name = "CELULAR", nullable = false, length = 11)
-	private String celular;
-	
 	@Column(name = "DATA_NASCIMENTO")
 	private LocalDate dataNascimento;
+	
+	@Column(name = "ATIVO", nullable = false)
+	private Boolean ativo;
 	
 	@Column(name = "DATA_CADASTRO")
 	private ZonedDateTime dataCadastro;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-	private List<ContaEntity> contas;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-	private List<CartaoCreditoEntity> cartoes;
-
+	private List<CurrentAccountEntity> accounts;
 	
 	@PrePersist
 	private void onCreate() {

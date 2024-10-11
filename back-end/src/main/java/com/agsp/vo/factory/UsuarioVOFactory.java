@@ -1,13 +1,13 @@
 package com.agsp.vo.factory;
 
-import com.agsp.entity.UsuarioEntity;
+import com.agsp.entity.UserEntity;
 import com.agsp.vo.UsuarioVO;
 
 public class UsuarioVOFactory {
 	
 	private UsuarioVOFactory() {}
 	
-	public static UsuarioVO converterParaVO(UsuarioEntity entity) {
+	public static UsuarioVO converterParaVO(UserEntity entity) {
 		if(entity != null) {
 			return UsuarioVO.builder()
 					.id(entity.getId())

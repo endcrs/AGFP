@@ -1,6 +1,6 @@
 package com.agsp.vo.factory;
 
-import com.agsp.entity.TransacaoEntity;
+import com.agsp.entity.TransationEntity;
 import com.agsp.vo.TransaListVO;
 import com.agsp.vo.TransacaoVO;
 
@@ -8,7 +8,7 @@ public class TransacaoVOFactory {
 	
 	private TransacaoVOFactory() {}
 
-	public static TransacaoVO converterParaVO(TransacaoEntity transacao) {
+	public static TransacaoVO converterParaVO(TransationEntity transacao) {
 		
 		if(transacao != null) {
 			return TransacaoVO.builder()
@@ -23,7 +23,7 @@ public class TransacaoVOFactory {
 			return null;
 	}
 
-	public static TransaListVO converterParaVOList(TransacaoEntity transacao) {
+	public static TransaListVO converterParaVOList(TransationEntity transacao) {
 		if(transacao != null) {
 			return TransaListVO.builder()
 					.id(transacao.getId())

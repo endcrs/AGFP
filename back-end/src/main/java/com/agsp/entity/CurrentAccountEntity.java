@@ -6,8 +6,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 
-import com.agsp.enumerator.CategoriaEnum;
+import com.agsp.enumerator.BancoEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,24 +20,23 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Builder
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "TB_AGFP_TRANSACAO")
+@Table(name = "TB_AGFP_CONTA_CORRENTE")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor @AllArgsConstructor
-public class TransacaoEntity implements Serializable {
+public class CurrentAccountEntity implements Serializable {
 	
 	private static final long serialVersionUID = -4131922305601547724L;
 
@@ -46,31 +46,30 @@ public class TransacaoEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "CATEGORIA", nullable = false)
+	@Column(name = "BANCO")
 	@Enumerated(EnumType.STRING)
-	private CategoriaEnum categoria;
+	private BancoEnum banco;
 	
-	@Column(name = "DATA_TRANSACAO", nullable = false)
-	private ZonedDateTime dataTransacao;
-	
-	@Column(name = "VALOR_COMPRA", nullable = false)
-	private BigDecimal valorCompra;
+	@Column(name = "SALDO", nullable = false)
+	private BigDecimal saldo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USUARIO_ID", referencedColumnName = "IDENT", nullable = false)
-	private UsuarioEntity usuario;
+	private UserEntity usuario;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CARTAO_CREDITO_ID", referencedColumnName = "IDENT", nullable = true)
-	private CartaoCreditoEntity cartaoCredito;
+	@Column(name = "ATIVO", nullable = false)
+	private Boolean ativo;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CONTA_ID", referencedColumnName = "IDENT", nullable = true)
-	private ContaEntity conta;
+	@Column(name = "DATA_CADASTRO")
+	private ZonedDateTime dataCadastro;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "currentAccount")
+	private List<TransationEntity> transations;
+	
 	
 	@PrePersist
 	private void onCreate() {
-		dataTransacao = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+		dataCadastro = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 	}
-	
+
 }
