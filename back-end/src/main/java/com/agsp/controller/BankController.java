@@ -2,6 +2,7 @@ package com.agsp.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class BankController {
 	
 	private final BancoService bancoService;
 	
-//	@GetMapping()
+	@GetMapping()
 	public List<DominioVO> recuperarBancos(@RequestParam(value="tipo", required = true) TipoBancoEnum tipo) {
 		return bancoService.recuperarBancos(tipo);
 	}

@@ -3,11 +3,13 @@ package com.agsp.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.service.AccountService;
+import com.agsp.vo.AccountUpdateVO;
 import com.agsp.vo.AccountVO;
 
 import jakarta.validation.Valid;
@@ -25,6 +27,11 @@ public class AccountController {
 		return accountService.createdAccount(vo);
 	}
 	
+	@PutMapping()
+	public AccountVO updateAccount (@RequestBody @Valid AccountUpdateVO vo) {
+		return accountService.updateAccount(vo);
+	}
+		
 	@GetMapping(value = "/{id}")
 	public AccountVO createdAccount (@PathVariable(value = "id") Long id) {
 		return accountService.getAccount(id);

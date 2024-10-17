@@ -63,6 +63,7 @@ public class TransationEntity implements Serializable {
 	private Boolean ativo;
 	
 	@Column(name = "STATUS", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private StatusEnum status;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
