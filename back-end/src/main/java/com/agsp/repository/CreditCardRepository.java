@@ -4,11 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.agsp.entity.CreditCardEntity;
 
-public interface CartaoCreditoRepository extends JpaRepository<CreditCardEntity, Long> {
+public interface CreditCardRepository extends JpaRepository<CreditCardEntity, Long> {
 
 //	List<CartaoCreditoEntity> findByUsuarioCpf(String cpf);
 
-//	boolean existsByNumero(String numero);
+	boolean existsByNumero(String numero);
 
 //	Optional<CartaoCreditoEntity> findByNumero(String numeroCartao);
 
