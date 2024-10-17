@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.service.UserService;
 import com.agsp.vo.LoginVO;
+import com.agsp.vo.UsuarioPutVO;
 import com.agsp.vo.UsuarioVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,17 +56,17 @@ public class UserController {
 		return usuarioService.save(vo);
 	}
 	
-//	@ResponseStatus(HttpStatus.OK)
-//	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Operation(summary = "Endpoint da edição do cadastro do usuário.", responses = {
-//            @ApiResponse(responseCode = "201",
-//                    description = "Usuario editado com sucesso",
-//                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = UsuarioVO.class))),
-//    })
-//	public UsuarioVO edit (@RequestBody @Valid UsuarioPutVO vo) {
-//		return usuarioService.edit(vo);
-//	}
+	@ResponseStatus(HttpStatus.OK)
+	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Endpoint da edição do cadastro do usuário.", responses = {
+            @ApiResponse(responseCode = "201",
+                    description = "Usuario editado com sucesso",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = UsuarioVO.class))),
+    })
+	public UsuarioVO edit (@RequestBody @Valid UsuarioPutVO vo) {
+		return usuarioService.edit(vo);
+	}
 	
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

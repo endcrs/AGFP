@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(value ="/tipos-bancos")
 @RequiredArgsConstructor
-public class TipoBancoController {
+public class FlagTypeController {
 	
 	private final TipoBancoService tipoBancoService;
 	

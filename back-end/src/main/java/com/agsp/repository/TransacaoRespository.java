@@ -1,10 +1,18 @@
 package com.agsp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.agsp.entity.TransationEntity;
 
 public interface TransacaoRespository extends JpaRepository<TransationEntity, Long> {
+
+	@Query(value = "select t.id from TransationEntity t "
+	+ "join t.currentAccount c "
+	+ "where c.id = :accountId ")
+	List<Long> hasTransationCurrentAccount(Long accountId);
 
 //	@Query(value = "select t from TransacaoEntity t "
 //			+ "join t.cartao c "

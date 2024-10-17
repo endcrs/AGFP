@@ -49,14 +49,14 @@ public class CreditCardEntity implements Serializable {
 	@Include
 	private Long id;
 	
-	@Column(name = "NUMERO_CARTAO", nullable = false, length = 20, unique =  true)
+	@Column(name = "NUMERO_CARTAO", nullable = false, length = 16, unique =  true)
 	private String numero;
 	
 	@Column(name = "LIMITE", nullable = false)
 	private BigDecimal limite;
 	
-	@Column(name = "VALIDADE_CARTAO")
-	private LocalDate validade;
+	@Column(name = "VALIDADE_CARTAO", nullable = false)
+	private String validade;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TIPO_BANDEIRA", nullable = false)
@@ -65,14 +65,14 @@ public class CreditCardEntity implements Serializable {
 	@Column(name = "FATURA_ATUAL", nullable = false)
 	private BigDecimal facturaAtual;
 	
-	@Column(name = "VENCIMENTO")
-	private LocalDate vencimento;
+	@Column(name = "VENCIMENTO", nullable = false, length = 5)
+	private Integer vencimento;
 	
 	@Column(name = "FECHAMENTO")
 	private LocalDate fechamento;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CONTA_ID", referencedColumnName = "IDENT", nullable = true)
+	@JoinColumn(name = "CONTA_ID", referencedColumnName = "IDENT", nullable = false)
 	private CurrentAccountEntity account;
 	
 	@Column(name = "ATIVO", nullable = false)

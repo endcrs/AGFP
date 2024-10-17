@@ -18,6 +18,7 @@ public class CurrentAccountEntityFactory {
 					.dataCadastro(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
 					.saldo(account.saldo())
 					.banco(account.banco())
+					.ativo(Boolean.TRUE)
 					.usuario(user)
 					.build();
 		} else {

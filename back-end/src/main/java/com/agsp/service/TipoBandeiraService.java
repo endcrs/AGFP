@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TipoBandeiraService {
 	
-	public List<DominioVO> recuperarTiposBandeiras() {
+	public List<DominioVO> getFlagTypes() {
 		return TipoBandeiraVOFactory.converterListParaVO(TipoBandeiraEnum.getTiposBandeira());
 	}
 
