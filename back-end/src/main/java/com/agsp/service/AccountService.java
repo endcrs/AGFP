@@ -8,7 +8,7 @@ import com.agsp.entity.factory.CurrentAccountEntityFactory;
 import com.agsp.exception.MsgException;
 import com.agsp.exception.NaoEncontradoException;
 import com.agsp.repository.CurrentAccountRepository;
-import com.agsp.repository.TransacaoRespository;
+import com.agsp.repository.TransactionRepository;
 import com.agsp.repository.UserRepository;
 import com.agsp.util.Constantes;
 import com.agsp.vo.AccountOwnerVO;
@@ -23,11 +23,11 @@ import lombok.RequiredArgsConstructor;
 public class AccountService {
 	
 	private final UserRepository userRepository;
-	private final TransacaoRespository transacaoRespository;
+	private final TransactionRepository transacaoRespository;
 	private final CurrentAccountRepository currentAccountRepository;
 	
 	@Transactional
-	public AccountVO createdAccount(AccountVO vo) {
+	public AccountVO createAccount(AccountVO vo) {
 		
 		UserEntity user = userRepository.findById(vo.idUsuario()).get();
 		

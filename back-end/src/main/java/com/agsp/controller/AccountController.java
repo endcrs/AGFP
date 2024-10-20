@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.service.AccountService;
+import com.agsp.service.AccountTransactionService;
 import com.agsp.vo.AccountUpdateVO;
 import com.agsp.vo.AccountVO;
+import com.agsp.vo.TransactionVO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +23,11 @@ import lombok.RequiredArgsConstructor;
 public class AccountController {
 	
 	private final AccountService accountService;
+	private final AccountTransactionService accountTransactionService;
 	
 	@PostMapping()
 	public AccountVO createdAccount (@RequestBody @Valid AccountVO vo) {
-		return accountService.createdAccount(vo);
+		return accountService.createAccount(vo);
 	}
 	
 	@PutMapping()
@@ -35,6 +38,16 @@ public class AccountController {
 	@GetMapping(value = "/{id}")
 	public AccountVO createdAccount (@PathVariable(value = "id") Long id) {
 		return accountService.getAccount(id);
+	}
+	
+	@PostMapping(value = "/transaction")
+	public TransactionVO createTransaction (@RequestBody @Valid TransactionVO transaction) {
+		return accountTransactionService.createTransaction(transaction);
+	}
+	
+	@PutMapping(value = "/transaction")
+	public TransactionVO updateTransaction (@RequestBody @Valid TransactionVO transaction) {
+		return accountTransactionService.updateTransaction(transaction);
 	}
 	
 
