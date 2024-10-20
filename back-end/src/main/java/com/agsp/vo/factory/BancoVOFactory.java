@@ -21,8 +21,8 @@ public class BancoVOFactory {
 	}
 	
 
-	public static List<DominioVO> conveterListParaVO(List<BancoEnum> devenvolvidores) {
-		return devenvolvidores.stream().map(BancoVOFactory::converterParaVO).toList();
+	public static List<DominioVO> converterListParaVO(List<BancoEnum> bancos) {
+		return bancos.stream().map(BancoVOFactory::converterParaVO).toList();
 	}
 
 

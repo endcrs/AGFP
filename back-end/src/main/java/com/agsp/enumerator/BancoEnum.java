@@ -39,7 +39,14 @@ public enum BancoEnum {
 				BancoEnum.MERCADO_PAGO, BancoEnum.PICPAY, BancoEnum.BANCO_ORIGINAL);
 	}
 	
-
+	public static List<BancoEnum> getBancos() {
+		return Arrays.asList(BancoEnum.BANCO_BRASIL, BancoEnum.ITAU, 
+				BancoEnum.BRADESCO, BancoEnum.CAIXA_ECONOMICA, BancoEnum.SANTANDER,
+				BancoEnum.NUBANK, BancoEnum.BANCO_INTER, BancoEnum.PAGBANK, 
+				BancoEnum.C6_BANK, BancoEnum.STONE, BancoEnum.NEON, BancoEnum.NEXT, 
+				BancoEnum.MERCADO_PAGO, BancoEnum.PICPAY, BancoEnum.BANCO_ORIGINAL);
+	}
+	
 	private BancoEnum(int id, String descricao) {
 		this.descricao = descricao;
 		this.id = id;

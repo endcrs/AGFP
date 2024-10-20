@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.agsp.entity.TransationEntity;
 
-public interface TransacaoRespository extends JpaRepository<TransationEntity, Long> {
+public interface TransactionRepository extends JpaRepository<TransationEntity, Long> {
 
 	@Query(value = "select t.id from TransationEntity t "
 	+ "join t.currentAccount c "

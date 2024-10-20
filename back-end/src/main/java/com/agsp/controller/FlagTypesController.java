@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(value ="/flag-types")
 @RequiredArgsConstructor
-public class TipoBandeiraController {
+public class FlagTypesController {
 	
 	private final TipoBandeiraService tipoBandeiraService;
 	

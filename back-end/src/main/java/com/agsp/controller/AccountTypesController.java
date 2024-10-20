@@ -5,21 +5,21 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agsp.service.TipoTransacaoService;
+import com.agsp.service.TipoBancoService;
 import com.agsp.vo.DominioVO;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(value ="/tipos-transacao")
+@RequestMapping(value ="/tipos-bancos")
 @RequiredArgsConstructor
-public class TipoTransacaoController {
+public class AccountTypesController {
 	
-	private final TipoTransacaoService tipoPagamentoService;
+	private final TipoBancoService tipoBancoService;
 	
 	//@GetMapping()
-	public List<DominioVO> recuperarTiposPagamento() {
-		return tipoPagamentoService.recuperarTiposTransacao();
+	public List<DominioVO> recuperarTiposConta () {
+		return tipoBancoService.recuperarTipoConta();
 	}
 
 }
