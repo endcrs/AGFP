@@ -1,12 +1,16 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
-import { InputSelect, InputText } from "../components/InputText";
 import { useEffect, useState } from "react";
-import { Button } from "../components/Button";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+import { InputSelect, InputText } from "../components/InputText";
+import { Button } from "../components/Button";
+
+
 import { useAuth } from "../contexts/Auth";
 import api from "../services/api";
+
 import { convertDateToAPIFormat, formatDate } from "../utils/formatData";
-import { formatValue } from "../utils/formatValue";
+
 
 export default function CadastroResgistro() {
     const {authData} = useAuth();
@@ -152,17 +156,17 @@ export default function CadastroResgistro() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#000',
-      justifyContent: 'center',
-      alignItems: 'center',
-      
-    },
-    title: {
-      marginBottom: 50,
-      fontSize:22,
-      color: 'white',
-      fontWeight: 'bold',
-    }
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+  title: {
+    marginBottom: 50,
+    fontSize:22,
+    color: 'white',
+    fontWeight: 'bold',
+  }
+});

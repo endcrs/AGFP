@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import CreditCard, { CARD_SIDE } from '../components/CreditCard';
+import CreditCard, { CARD_SIDE } from './CreditCard';
 import { formatValue } from "../utils/formatValue";
 import { useSharedValue } from "react-native-reanimated";
 

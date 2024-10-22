@@ -1,14 +1,17 @@
+import { useState } from "react";
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import logo from '../asset/logo.png';
 import { InputText } from "../components/InputText";
-import { useState } from "react";
 import { Button } from "../components/Button";
-import { useNavigation } from "@react-navigation/native";
+
 import api from "../services/api";
+
 import { formatCPF } from "../utils/formatCPF";
 import { convertDateToAPIFormat, formatDate } from "../utils/formatData";
 import { formatPhoneNumber } from "../utils/formatPhone";
+
 
 export default function CadastroUser() {
   const navigation = useNavigation();
@@ -69,7 +72,7 @@ export default function CadastroUser() {
             const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
             
             //realizando cadastro na API
-            await api.post("/usuarios",
+            await api.post("/users",
                 {
                     nomeCompleto: nome,
                     cpf: cpfsemPontuacao,
@@ -179,16 +182,16 @@ export default function CadastroUser() {
 
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#000',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    spam: {
-      fontSize: 15,
-      color: "#9F9898",
-      fontWeight: '500',
-      textDecorationLine: 'underline',
-    }
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spam: {
+    fontSize: 15,
+    color: "#9F9898",
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+  }
+});

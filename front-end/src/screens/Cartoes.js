@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View,RefreshControl } from 'react-native';
-import { ButtonPlus } from '../components/Button';
+import { ScrollView, StyleSheet, View,RefreshControl, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import { ButtonPlus } from '../components/Button';
+import { CardCartao } from '../components/Card';
+
+import { useAuth } from '../contexts/Auth';
 import api from '../services/api';
 
-import { CardCartao } from '../components/Card';
-import { useAuth } from '../contexts/Auth';
 import { formatCardNumber, formatValidate } from '../utils/formatCreditCard';
 
 export default function Cartoes() {
@@ -35,9 +37,12 @@ export default function Cartoes() {
 
   return (
     <View style={styles.container}>
-      <ButtonPlus onPress={() => navigation.navigate('CadastroCartao')}/>
+      <View style={styles.cardTitle}>
+        <Text style={{color:'#fff', fontSize:20, fontWeight:'700'}}>CARTÕES</Text>
+        <ButtonPlus onPress={() => navigation.navigate('CadastroCartao')}/>
+      </View>
       
-      <View style={[styles.session, {height: '95%'}]}>
+      <View style={styles.session}>
         <ScrollView 
           vertical={true}
           refreshControl={
@@ -60,26 +65,29 @@ export default function Cartoes() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
     flex: 1,
     backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center',    
+    padding: 10,
   },
-  title: {
-    fontSize:22,
-    fontWeight: 'bold',
+  cardTitle:{
+    width: '95%',
+    height: 70,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection: 'row',
   },
   session: {
     backgroundColor:'#1f1f1f',
     width: '100%',
-    minHeight: 100,
-    height:'auto',
+    height:'90%',
     borderRadius: 10,
     marginTop: 10,
     marginBottom: 10,
     padding:10,
   },
 });
+

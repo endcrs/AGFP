@@ -1,13 +1,15 @@
+import { useState } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import logo from '../asset/logo.png';
-
-import { useState } from 'react';
 import { Button } from '../components/Button.js';
 import { InputText } from '../components/InputText.js';
+
 import { useAuth } from '../contexts/Auth';
-import { useNavigation } from '@react-navigation/native';
+
 import { formatCPF } from '../utils/formatCPF';
+
 
 export default function Login() {
   const navigation = useNavigation();
@@ -69,6 +71,7 @@ export default function Login() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

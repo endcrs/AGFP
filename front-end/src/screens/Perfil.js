@@ -1,12 +1,18 @@
+import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
+
 import { Button } from '../components/Button';
 import { useAuth } from '../contexts/Auth';
 import { InputText } from '../components/InputText';
-import { useEffect, useState } from 'react';
+
+import api from '../services/api';
+
 import { formatCPF } from '../utils/formatCPF';
 import { convertDateToAPIFormat, convertDateToFormFormat, formatDate } from '../utils/formatData';
 import { formatPhoneNumber } from '../utils/formatPhone';
-import api from '../services/api';
+
+
+
 
 export default function Perfil() {
   //Hook para signout

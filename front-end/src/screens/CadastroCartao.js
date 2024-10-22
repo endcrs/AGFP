@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { InputSelect, InputText } from '../components/InputText';
 import { Button } from '../components/Button';
 
 import { useAuth } from '../contexts/Auth';
 import api from '../services/api';
+
 import { formatCardNumber, formatValidate } from '../utils/formatCreditCard';
-import { useNavigation } from '@react-navigation/native';
+
 
 export default function CadastroCartao() {
   const navigation = useNavigation();
@@ -190,18 +193,19 @@ export default function CadastroCartao() {
 )
 }
 
+
 const styles = StyleSheet.create({
-container: {
-  flex: 1,
-  backgroundColor: '#000',
-  justifyContent: 'center',
-  alignItems: 'center',
-  
-},
-title: {
-  marginBottom: 50,
-  fontSize:22,
-  color: 'white',
-  fontWeight: 'bold',
-}
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+  title: {
+    marginBottom: 50,
+    fontSize:22,
+    color: 'white',
+    fontWeight: 'bold',
+  }
 });
