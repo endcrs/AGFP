@@ -29,7 +29,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "TB_AGFP_TRANSACAO_CARTAO_CREDITO")
-class CreditCartTansationEntity implements Serializable {
+public class CreditCardTansationEntity implements Serializable {
 	
 	private static final long serialVersionUID = 432727693281136927L;
 	
@@ -51,7 +51,7 @@ class CreditCartTansationEntity implements Serializable {
 	private CreditCardEntity creditCard;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "creditCardTransation")
-	private List<PortionEntity> portions;
+	private List<InstallmentEntity> portions;
 	
 	
 }
