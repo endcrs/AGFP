@@ -15,6 +15,7 @@ import com.agsp.repository.CreditCardRepository;
 import com.agsp.repository.CurrentAccountRepository;
 import com.agsp.util.Constantes;
 import com.agsp.vo.CardVO;
+import com.agsp.vo.CreditCardUpdateVO;
 import com.agsp.vo.CreditCardVO;
 import com.agsp.vo.factory.CreditCardVOFactory;
 
@@ -26,9 +27,10 @@ import lombok.RequiredArgsConstructor;
 public class CreditCardService {
 	
 //	private final UserService usuarioService;
-	private final CreditCardRepository creditCarRepository;
+	private final CreditCardRepository creditCardRepository;
 	private final CurrentAccountRepository currentAccountRepository;
 	
+	@Transactional
 	public CreditCardVO creatCard(CreditCardVO vo) {
 		
 //		validarIdUsuario(vo);
@@ -43,9 +45,32 @@ public class CreditCardService {
 		
 		CreditCardEntity creditCard = CartaoEntityFactory.converterParaEntity(account, vo);
 		
-		creditCard = creditCarRepository.save(creditCard);
+		creditCard = creditCardRepository.save(creditCard);
 		
 		return CreditCardVOFactory.converterParaVO(creditCard);
+	}
+	
+	@Transactional
+	public CreditCardUpdateVO updateCard(CreditCardUpdateVO vo) {
+		
+//		validarIdUsuario(vo);
+//		validateAccountId(vo);
+		validateCreditCardId(vo);
+//		validateCreditCarNumber(vo.numero());
+		
+		CreditCardEntity creditCard = getCreditCard(vo.getId());
+		
+//		validarSaldo(usuario, vo.limite());
+		
+//		CreditCardEntity creditCard = CartaoEntityFactory.converterParaEntity(account, vo);
+		
+		creditCard = creditCardRepository.save(creditCard);
+		
+//		return CreditCardVOFactory.converterParaVO(creditCard);
+		return CreditCardUpdateVO.builder()
+				.id(creditCard.getId())
+				.limite(creditCard.getLimite())
+				.build();
 	}
 	
 //	private void validarSaldo(UsuarioEntity usuario, BigDecimal limite) {
@@ -54,11 +79,16 @@ public class CreditCardService {
 //		}
 //	}
 
+	private void validateCreditCardId(CreditCardUpdateVO vo) {
+		if(vo.getId() == null) {
+			throw new MsgException("É obrigatório o preenchimento do campo ID");
+		}
+	}
+
 	private void validateAccountId(CreditCardVO vo) {
 		if(vo.idConta() == null) {
 			throw new MsgException("É obrigatório o preenchimento do campo ID conta");
 		}
-		
 	}
 
 	private CurrentAccountEntity getLinkedAccount(Long accoutId) {
@@ -67,8 +97,7 @@ public class CreditCardService {
 	}
 
 	private void validateCreditCarNumber(String numero) {
-		boolean existsByNumero = creditCarRepository.existsByNumero(numero);
-		if(existsByNumero) 
+		if(creditCardRepository.existsByNumero(numero)) 
 			throw new DadosJaCadastradosException (Constantes.CARTAO_CADASTRADO_COM_NUMERO);
 	}
 
@@ -92,7 +121,7 @@ public class CreditCardService {
 	}
 	
 	public CreditCardEntity getCreditCard(Long cardId) {
-		return creditCarRepository.findById(cardId)
+		return creditCardRepository.findById(cardId)
 				.orElseThrow(() -> new NaoEncontradoException("Cartão crédito não encontrado"));
 }
 
@@ -105,7 +134,7 @@ public class CreditCardService {
 		}
 		
 		card.setAtivo(Boolean.FALSE);
-		creditCarRepository.save(card);
+		creditCardRepository.save(card);
 	}
 	
 //	public CartaoCreditoEntity recuperarPorNumero(String numeroCartao) {

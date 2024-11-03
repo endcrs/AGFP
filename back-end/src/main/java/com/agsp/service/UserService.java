@@ -112,13 +112,29 @@ public class UserService {
 	
 	private void registrarLogin(UserEntity usuario) {
 		
+//		LoginUsuarioEntity r =loginUsuarioRepository.save(LoginUsuarioEntity.builder()
+//				.dataHora(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
+//				.usuario(usuario)
+//				.token(UUID.randomUUID().toString())
+//				.build());
+		
 		loginUsuarioRepository.save(LoginUsuarioEntity.builder()
-				.dataHora(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
+				.dataHora(getZoneDateTimeNow())
 				.usuario(usuario)
 				.token(UUID.randomUUID().toString())
 				.build());
+		
+//		loginUsuarioRepository.save(r);
+//		r.setDataHora(getZoneDateTimeNow());
+//		loginUsuarioRepository.saveAndFlush(r);
+		
+		//System.out.println(r.toString());
 	}
 	
+	private ZonedDateTime getZoneDateTimeNow() {
+		return ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+	}
+
 	public UserEntity getUserEntity(Long id) {
 		return usuarioRepository.findById(id)
 				.orElseThrow(() -> new NaoEncontradoException(Constantes.USUARIO_NAO_ENCONTRADO));

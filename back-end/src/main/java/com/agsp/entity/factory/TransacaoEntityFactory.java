@@ -7,26 +7,46 @@ import java.time.ZonedDateTime;
 
 import com.agsp.entity.CurrentAccountEntity;
 import com.agsp.entity.TransationEntity;
+import com.agsp.enumerator.CategoriaEnum;
 import com.agsp.enumerator.StatusEnum;
-import com.agsp.vo.TransactionVO;
+import com.agsp.enumerator.TipoTransacaoEnum;
+import com.agsp.vo.TransactionCreditCardVO;
+import com.agsp.vo.TransactionCurrentAccountVO;
 
 public class TransacaoEntityFactory {
 	
 	private TransacaoEntityFactory() {}
 
-	public static TransationEntity converterParaEntity(TransactionVO vo, CurrentAccountEntity account) {
+	public static TransationEntity convertTransactionToEntity(TransactionCurrentAccountVO tAccount, 
+			TransactionCreditCardVO tCard, CurrentAccountEntity account) {
 		
-		if(vo != null) {
+		
+		CategoriaEnum  categoria = null;
+		
+		if(tAccount != null && account != null) {
+			categoria = TipoTransacaoEnum.isReceita(tAccount.getTipo()) ? CategoriaEnum.NULA : tAccount.getCategoria();
 			return TransationEntity.builder()
 					.ativo(Boolean.TRUE)
 					.dataTransacao(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
 					.status(StatusEnum.ATIVO)
-					.categoria(vo.getCategoria())
-					.valorCompra(vo.getValor())
-					.currentAccount(account)
+					.categoria(categoria)
+					.valorCompra(tAccount.getValor())
+					.tipo(tAccount.getTipo())
+					.currentAccount(account != null ? account : null)
+					.transacao("CONTA")
 					.build();
 		} else 
-			return null;
+			categoria = TipoTransacaoEnum.isReceita(tCard.getTipo()) ? CategoriaEnum.NULA : tCard.getCategoria();
+			return TransationEntity.builder()
+					.ativo(Boolean.TRUE)
+					.dataTransacao(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
+					.status(StatusEnum.ATIVO)
+					.categoria(categoria)
+					.valorCompra(tCard.getValor())
+					.tipo(tCard.getTipo())
+					.currentAccount(account)
+					.transacao("CARTAO")
+					.build();
 	}
 
 }
