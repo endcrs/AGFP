@@ -7,7 +7,7 @@ async function singIn(cpf: string, password: string): Promise<AuthData>{
     return new Promise((resolve, reject) => {
         
         //simulação de consulta a API
-        api.post("/usuarios/login",
+        api.post("/users/login",
             {
                 cpf:cpf,
                 senha:password
@@ -16,7 +16,7 @@ async function singIn(cpf: string, password: string): Promise<AuthData>{
             resolve({
                 token: response.data.id,
                 cpf: response.data.cpf,
-                name: response.data.nomeCompleto
+                name: response.data.nome
             })
         }).catch(function (error) {
             reject(new Error('Credenciais Inválidas'));

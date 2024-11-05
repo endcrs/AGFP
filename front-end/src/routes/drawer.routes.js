@@ -19,7 +19,7 @@ export default function DrawerRoutes() {
                 backgroundColor:'#000', // Mudando a cor da header
             },
             drawerLabelStyle:{
-                fontSize: 17, // Almentando a fonte do texto
+                fontSize: 17, // Aumentando a fonte do texto
             },
             drawerStyle:{
                 backgroundColor: '#131313', // Cor do fundo da barra de guias  
