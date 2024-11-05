@@ -1,12 +1,11 @@
 import { AuthData } from '../contexts/Auth';
 import api from './api';
 
-// funtção que irá realizar o login na aplicação
+// função que irá realizar o login na aplicação
 async function singIn(cpf: string, password: string): Promise<AuthData>{
 
     return new Promise((resolve, reject) => {
         
-        //simulação de consulta a API
         api.post("/users/login",
             {
                 cpf:cpf,

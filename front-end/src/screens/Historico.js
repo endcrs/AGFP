@@ -24,7 +24,7 @@ export default function Historico() {
         //atualização dos dados
         setTimeout(() => {
 
-            api.get(`transacoes/listar-todos?cpf=${authData.cpf}`)
+            api.get(`transactions/${authData.cpf}`)
             .then((response) => {
             const data = response.data.sort((a, b) => b.id - a.id)
             setTransacoes(data)
@@ -36,7 +36,7 @@ export default function Historico() {
 
   // Retorna os dados que o usuário
     useEffect(() => {
-        api.get(`transacoes/listar-todos?cpf=${authData.cpf}`)
+        api.get(`transactions/${authData.cpf}`)
         .then((response) => {
         const data = response.data.sort((a, b) => b.id - a.id)
         setTransacoes(data)

@@ -19,10 +19,10 @@ export default function Perfil() {
   const {signOut, authData} = useAuth();
 
   const [nome, setNome] = useState('');
+  const [sobrenome, setSobrenome] = useState('');
   const [cpf, setCPF] = useState('');
   const [dataNasc, setDataNasc] = useState('');
   const [numCelular, setNumCelular] = useState(''); 
-  const [saldo, setSaldo] = useState(''); 
   
   
   const [previousText, setPreviousText] = useState('');
@@ -30,29 +30,7 @@ export default function Perfil() {
   const [btnEditar, setBtnEditar] = useState('Editar');
   const [color, setColor] = useState('#727272');
   
-
-  //puxando os dados do usuário
-  useEffect(() => {
-    //puxando os dados do usuário assim que a pagina é acionada
-    puxarUsuario();
-  }, []);
-
-  	//puxando os dados do usuário
-	async function puxarUsuario() {
-		await api.get(`/usuarios/${authData.token}`)
-		.then(function (response){
-			setNome(response.data.nomeCompleto),
-			adicionarPontuacaoCpf(response.data.cpf),
-			formataDataNascForm(response.data.dataNascimento),
-			adicionarPontuacaoPhone(response.data.celular),
-			setSaldo(response.data.saldo)
-		}).catch(function (error){
-			//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
-			//Alert.alert('Erro ao Puxar usuário!', 'usuário não encontrado');
-		});
-  	}
-
-
+  
   //adiciona pontuação ao Cpf
   const adicionarPontuacaoCpf = (text) => {
     const formattedCPF = formatCPF(text);
@@ -71,19 +49,41 @@ export default function Perfil() {
 	adicionarPontuacaoDateNasc(formatToform);
   }
 
+  //puxando os dados do usuário
+  useEffect(() => {
+    //puxando os dados do usuário assim que a pagina é acionada
+    puxarUsuario();
+  }, []);
+
+  //puxando os dados do usuário
+	async function puxarUsuario() {
+		await api.get(`/users/${authData.token}`)
+		.then(function (response){
+			setNome(response.data.nome),
+      setSobrenome(response.data.sobrenome),
+			adicionarPontuacaoCpf(response.data.cpf),
+			formataDataNascForm(response.data.dataNascimento),
+			adicionarPontuacaoPhone(response.data.celular)
+		}).catch(function (error){
+			//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
+			Alert.alert('Erro ao Puxar usuário!', 'usuário não encontrado');
+		});
+  }
+
+
+
   //adiciona pontuações numero do cliente
   const adicionarPontuacaoPhone = (text) => {
-      const formattedPhone = formatPhoneNumber(text);
-
-      if (text.length < previousText.length) {
-          // mantendo o texto sem formatação formatação
-          setNumCelular(text);
-      } else {
-          // setando o numero formatato na caixa de texto
-          setNumCelular(formattedPhone);
-      }
-      // mantendo o valor do campo, ao tentar excluir o número
-      setPreviousText(text);
+    const formattedPhone = formatPhoneNumber(text);
+    if (text.length < previousText.length) {
+        // mantendo o texto sem formatação formatação
+        setNumCelular(text);
+    } else {
+        // setando o numero formatato na caixa de texto
+        setNumCelular(formattedPhone);
+    }
+    // mantendo o valor do campo, ao tentar excluir o número
+    setPreviousText(text);
   }
 
 
@@ -103,17 +103,17 @@ export default function Perfil() {
 		const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
 		
       // Atualizando o usuário
-	  await api.put('usuarios',
+	  await api.put('users',
 		{
 			id: authData.token,
-			nomeCompleto: nome,
+			nome: nome,
+      sobrenome: sobrenome,
 			dataNascimento: dataNascParaAPI,
 			celular: numCelularSemPontuacao,
-			saldo: 0,
 		}
 
 	  ).then(function (response) {
-		//Informa que o cadastro foi um sucesso e direciona para a pagina de login
+		//Informa que a atualização foi realizada com sucesso e altera o botão para o status principal
 			Alert.alert('Atualização realizada com sucesso!');
 			puxarUsuario();
 			setBtnEditar('Editar');
@@ -134,7 +134,7 @@ export default function Perfil() {
     puxarUsuario();
     setBtnEditar('Editar');
     setColor('#727272');
-	setIsEditable(false);
+	  setIsEditable(false);
   }
 
 
@@ -145,6 +145,14 @@ export default function Perfil() {
         onChangeText={setNome}
         value={nome}
         placeholder="Nome"
+        color={color}
+        editable={isEditable}
+      />
+
+      <InputText
+        onChangeText={setSobrenome}
+        value={sobrenome}
+        placeholder="Sobrenome"
         color={color}
         editable={isEditable}
       />
