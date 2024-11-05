@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 
 import com.agsp.enumerator.CategoriaEnum;
 import com.agsp.enumerator.StatusEnum;
+import com.agsp.enumerator.TipoTransacaoEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -66,9 +67,16 @@ public class TransationEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusEnum status;
 	
+	@Column(name = "TIPO_TRANSACAO", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private TipoTransacaoEnum tipo;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CONTA_CORRENTE_ID", referencedColumnName = "IDENT", nullable = true)
+	@JoinColumn(name = "CONTA_CORRENTE_ID", referencedColumnName = "IDENT", nullable = false)
 	private CurrentAccountEntity currentAccount;
+	
+	@Column(name = "TRANSACAO", nullable = false)
+	private String transacao;
 	
 	@PrePersist
 	private void onCreate() {

@@ -5,15 +5,18 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.service.CreditCardService;
+import com.agsp.service.CreditCardTransactionService;
 import com.agsp.vo.CardVO;
+import com.agsp.vo.CreditCardUpdateVO;
 import com.agsp.vo.CreditCardVO;
+import com.agsp.vo.TransactionCreditCardVO;
+import com.agsp.vo.TransactionCurrentAccountVO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +27,16 @@ import lombok.RequiredArgsConstructor;
 public class CreditCardController {
 	
 	private final CreditCardService creditCardService;
+	private final CreditCardTransactionService creditCardTransactionService;
 	
 	@PostMapping()
-	public CreditCardVO salvar (@RequestBody @Valid CreditCardVO vo) {
+	public CreditCardVO createCard (@RequestBody @Valid CreditCardVO vo) {
 		return creditCardService.creatCard(vo);
+	}
+	
+//	@PutMapping()
+	public CreditCardUpdateVO updateCard (@RequestBody @Valid CreditCardUpdateVO vo) {
+		return creditCardService.updateCard(vo);
 	}
 	
 //	@GetMapping()
@@ -40,9 +49,19 @@ public class CreditCardController {
 		return creditCardService.getCreditCardById(id);
 	}
 	
-	@PutMapping(value ="/disable-card/{id}")
+//	@PutMapping(value ="/disable-card/{id}")
 	public void disableCard(@PathVariable(value ="id") Long id) {
 		creditCardService.disableCard(id);
 	}
+	
+	@PostMapping(value = "/transactions")
+	public TransactionCurrentAccountVO createTransaction (@RequestBody @Valid TransactionCreditCardVO transaction) {
+		return creditCardTransactionService.createTransaction(transaction);
+	}
+	
+//	@PutMapping(value = "/transaction")
+//	public TransactionCurrentAccountVO updateTransaction (@RequestBody @Valid TransactionCurrentAccountVO transaction) {
+//		return creditCardTransactionService.updateTransaction(transaction);
+//	}
 
 }

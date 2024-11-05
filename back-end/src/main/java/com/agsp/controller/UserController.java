@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(value ="/users")
 @RequiredArgsConstructor
-@Tag(name = "Usuários", description = "Conjunto de endpoints para gerenciar o fluxo do Usuário.")
+@Tag(name = "user-controller", description = "Conjunto de endpoints para gerenciar o fluxo do Usuário.")
 public class UserController {
 	
 	private final UserService usuarioService;

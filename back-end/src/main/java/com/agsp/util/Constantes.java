@@ -18,7 +18,7 @@ public class Constantes {
 	
 	public static final String USARIO_PELO_TOKEN = "Usuario pelo token não encontrado";
 
-	public static final String CARTAO_CADASTRADO_COM_NUMERO = "Já existe um cartao cadastrado com mesmo numero";
+	public static final String CARTAO_CADASTRADO_COM_NUMERO = "Já existe um cartão cadastrado com mesmo numero";
 
 	public static final String CARTAO_NAO_ENCONTRADO_COM_NUMERO = "Cartão não encontada";
 }

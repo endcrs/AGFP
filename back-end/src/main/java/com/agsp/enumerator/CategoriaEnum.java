@@ -11,7 +11,9 @@ public enum CategoriaEnum {
 	ESPORTE_LAZER(503, "Esporte e Lazer"),
 	EDUCACAO(504, "Educação"),
 	SAUDE(505, "Saúde"),
-	TRANSPORTE(506, "Transporte");
+	TRANSPORTE(506, "Transporte"),
+	
+	NULA(507, "Nula");
 	
 	
 	private int id;

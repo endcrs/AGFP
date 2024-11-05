@@ -82,7 +82,7 @@ public class CreditCardEntity implements Serializable {
 	private ZonedDateTime dataCadastro;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "creditCard")
-	private List<CreditCartTansationEntity> transations;
+	private List<CreditCardTansationEntity> transations;
 	
 	@PrePersist
 	private void onCreate() {
