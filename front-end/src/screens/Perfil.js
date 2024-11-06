@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../components/Button';
 import { useAuth } from '../contexts/Auth';
-import { InputText } from '../components/InputText';
+import { InputText, MaskedInput } from '../components/InputText';
 
 import api from '../services/api';
 
@@ -61,9 +61,9 @@ export default function Perfil() {
 		.then(function (response){
 			setNome(response.data.nome),
       setSobrenome(response.data.sobrenome),
-			adicionarPontuacaoCpf(response.data.cpf),
+			setCPF(response.data.cpf),
 			formataDataNascForm(response.data.dataNascimento),
-			adicionarPontuacaoPhone(response.data.celular)
+			setNumCelular(response.data.celular)
 		}).catch(function (error){
 			//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
 			Alert.alert('Erro ao Puxar usuário!', 'usuário não encontrado');
@@ -141,6 +141,7 @@ export default function Perfil() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Meu Perfil</Text>
+
       <InputText
         onChangeText={setNome}
         value={nome}
@@ -157,30 +158,43 @@ export default function Perfil() {
         editable={isEditable}
       />
 
-      <InputText
-        onChangeText={adicionarPontuacaoCpf}
+      <MaskedInput
+        type={'cpf'}
+        onChangeText={text => setCPF(text)}
         value={cpf}
         placeholder="CPF"
         color={'#727272'}
         editable={false}
       />
       
-      <InputText
-        onChangeText={adicionarPontuacaoDateNasc}
+      <MaskedInput
+        type="datetime"
         value={dataNasc}
+        onChangeText={setDataNasc}
+        options={{
+          format: 'DD/MM/YYYY'
+        }}
         placeholder="Data Nascimento"
         keyboardType="numeric"
         color={color}
         editable={isEditable}
       />
-      <InputText
-        onChangeText={adicionarPontuacaoPhone}
+
+      <MaskedInput
+        type="cel-phone"
         value={numCelular}
+        onChangeText={setNumCelular}
         placeholder="Celular"
         keyboardType="numeric"
+        options={{
+          maskType: 'BRL',
+          withDDD: true,
+          dddMask: '(99) '
+        }}
         color={color}
         editable={isEditable}
       />
+
       <View style={styles.containerBtn}>
         <Button style={{width:120}} title={btnEditar} onPress={() => editarUsuario() } />
 

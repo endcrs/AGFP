@@ -3,7 +3,7 @@ import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-na
 import { useNavigation } from "@react-navigation/native";
 
 import logo from '../asset/logo.png';
-import { InputText } from "../components/InputText";
+import { InputText, MaskedInput } from "../components/InputText";
 import { Button } from "../components/Button";
 
 import api from "../services/api";
@@ -103,8 +103,6 @@ export default function CadastroUser() {
       Alert.alert('Cadastro não realizado!',"Nenhuma caixa pode está vazia!");
     }
 
-
-
   }
 
   return (
@@ -129,29 +127,40 @@ export default function CadastroUser() {
         placeholderTextColor="#727272"
       />
 
-      <InputText
-        onChangeText={adicionarPontuacaoCpf}
+      <MaskedInput
+        type={'cpf'}
+        onChangeText={text => setCPF(text)}
         value={cpf}
-        maxLength={14}    
-        placeholder="CPF"
+        placeholder="CPF"    
         keyboardType="numeric"
-        placeholderTextColor="#727272"
+        placeholderTextColor={'#727272'}
       />
 
-      <InputText
-        onChangeText={adicionarPontuacaoDateNasc}
+      <MaskedInput
+        type="datetime"
         value={dataNasc}
-        placeholder="DD/MM/AAAA"
+        onChangeText={setDataNasc}
+        options={{
+          format: 'DD/MM/YYYY'
+        }}
+        placeholder="Data Nascimento"
         keyboardType="numeric"
-        placeholderTextColor="#727272"
+        color={color}
+        editable={isEditable}
       />
 
-      <InputText
-        onChangeText={adicionarPontuacaoPhone}
+      <MaskedInput
+        type="cel-phone"
         value={numCelular}
+        onChangeText={setNumCelular}
         placeholder="xx xxxx-xxxx"
-        maxLength={15}
         keyboardType="numeric"
+        options={{
+          maskType: 'BRL',
+          withDDD: true,
+          dddMask: '(99) '
+        }}
+        
         placeholderTextColor="#727272"
       />
 
