@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
+import { TextInputMask } from 'react-native-masked-text';
 
 export function InputText(props) {
   return (
@@ -13,6 +13,23 @@ export function InputText(props) {
     />
   );
 }
+
+export function MaskedInput({ type, value, onChangeText, placeholder, options, style, ...props }) {
+  return (
+    <TextInputMask
+      type={type}
+      value={value}
+      onChangeText={onChangeText}
+      placeholder={placeholder}
+      options={options}
+      style={[styles.input, style]}
+      {...props}
+    />
+  );
+};
+
+
+
 
 export function InputSelect(props) {
 

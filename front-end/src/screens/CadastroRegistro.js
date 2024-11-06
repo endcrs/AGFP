@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { InputSelect, InputText } from "../components/InputText";
+import { InputSelect, InputText, MaskedInput } from "../components/InputText";
 import { Button } from "../components/Button";
 
 
@@ -13,14 +13,14 @@ import { convertDateToAPIFormat, formatDate } from "../utils/formatData";
 
 
 export default function CadastroResgistro() {
-    const {authData} = useAuth();
-    const navigation = useNavigation();
-    
-    const [titulo, setTitulo] = useState('');
-    const [valor, setValor] = useState('');
-    const [cartao, setCartao] = useState('');
-    const [data, setData] = useState('');
-    const [categoria, setCategoria] = useState('');
+	const {authData} = useAuth();
+	const navigation = useNavigation();
+	
+	const [titulo, setTitulo] = useState('');
+	const [valor, setValor] = useState('');
+	const [cartao, setCartao] = useState('');
+	const [data, setData] = useState('');
+	const [categoria, setCategoria] = useState('');
 	const [tipoTransacao, setTipoTransacao] = useState('');
 
 	// Listas
@@ -32,17 +32,17 @@ export default function CadastroResgistro() {
 	//puxando os categorias e cartões
 	useEffect(() => {
 		// Listar cartões do usuários
-		api.get(`/cartoes?cpf=${authData.cpf}`)
+		api.get(`/cards/${authData.token}`)
 			.then((response)=> setDataCartao(response.data))
 			.catch((err)=>console.log(err));
 
-		// Listar cartões da categoria dos cartões
-		api.get('/categorias')
+		// Listar cartões da categoria
+		api.get('/categories')
 			.then((response)=> setDataCategoria(response.data))
 			.catch((err)=>console.log(err));
 
 		// Listar tipo de transação
-		api.get('/tipos-transacao')
+		api.get('/transaction-types')
 			.then((response)=> setDataTipoTransacao(response.data))
 			.catch((err)=>console.log(err));
 	}, []);
@@ -82,77 +82,85 @@ export default function CadastroResgistro() {
 		}
 	}
 
-    return(
-        <View style={styles.container}>
-          <Text style={styles.title}>NOVO REGISTRO</Text>
+  return(
+			<View style={styles.container}>
+				<Text style={styles.title}>NOVO REGISTRO</Text>
 
-		<InputText
-			onChangeText={setTitulo}
-			value={titulo}
-			placeholder="Titulo"
-			maxLength={20}
-			placeholderTextColor="#727272"
-		/>
+			<InputText
+				onChangeText={setTitulo}
+				value={titulo}
+				placeholder="Titulo"
+				maxLength={20}
+				placeholderTextColor="#727272"
+			/>
 
-		<InputText
-			onChangeText={setValor}
-			value={valor}
-			placeholder="Valor"
-			keyboardType="numeric"
-			placeholderTextColor="#727272"
-		/>
+			<MaskedInput
+				type={'money'}
+				value={valor}
+				onChangeText={text => setValor(text)}
+				style={styles.input}
+        keyboardType="numeric"
+				placeholder="Digite o valor"
+				options={{
+					precision: 2,
+					separator: ',',
+					delimiter: '.',
+					unit: 'R$ ',
+					suffixUnit: ''
+				}}
+			/>
 
-		<InputSelect
-			value={tipoTransacao}
-			data={dataTipoTransacao}
-			placeholder="Tipo de Transação"
-			placeholderTextColor="#727272"
-			labelField="descricao"
-      		valueField="codigo"
-			onChange={item => {
-				setTipoTransacao(item.codigo)
-			}}
-		/>
+			<InputSelect
+				value={tipoTransacao}
+				data={dataTipoTransacao}
+				placeholder="Tipo de Transação"
+				placeholderTextColor="#727272"
+				labelField="descricao"
+				valueField="codigo"
+				onChange={item => {
+					setTipoTransacao(item.codigo)
+				}}
+			/>
 
-		<InputSelect
-            value={cartao}
-            data={dataCartao}
-            placeholder="Cartão"
-            placeholderTextColor="#727272"
-			labelField="nome"
-      		valueField="numero"
-			onChange={item => {
-				setCartao(item.numero)
-			}}
-        />	
+			<InputSelect
+				value={cartao}
+				data={dataCartao}
+				placeholder="Cartão"
+				placeholderTextColor="#727272"
+				labelField="nome"
+				valueField="numero"
+				onChange={item => {
+					setCartao(item.numero)
+				}}
+			/>	
 
-		<InputText
-			onChangeText={adicionarPontuacaoDate}
-			value={data}
-			placeholder="Data"
-			keyboardType="numeric"
-			placeholderTextColor="#727272"
-		/>
+			<InputText
+				onChangeText={adicionarPontuacaoDate}
+				value={data}
+				placeholder="Data"
+				keyboardType="numeric"
+				placeholderTextColor="#727272"
+			/>
 
-		<InputSelect
-			value={categoria}
-			data={dataCategoria}
-			placeholder="Categoria"
-			placeholderTextColor="#727272"
-			labelField="descricao"
-      		valueField="codigo"
-			onChange={item => {
-				setCategoria(item.codigo)
-			}}
-		/>
+			<InputSelect
+				value={categoria}
+				data={dataCategoria}
+				placeholder="Categoria"
+				placeholderTextColor="#727272"
+				labelField="descricao"
+				valueField="codigo"
+				onChange={item => {
+					setCategoria(item.codigo)
+				}}
+			/>
 
-		<Button
-			style={{marginTop:20, width:150}}
-			title='Salvar'
-			onPress={() => cadastroTransacao()}
-		/>
-        </View>
-    )
+			<Button
+				style={{marginTop:20, width:150}}
+				title='Salvar'
+				onPress={() => cadastroTransacao()}
+			/>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

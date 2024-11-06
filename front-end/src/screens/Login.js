@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import logo from '../asset/logo.png';
 import { Button } from '../components/Button.js';
-import { InputText } from '../components/InputText.js';
+import { InputText, MaskedInput } from '../components/InputText.js';
 
 import { useAuth } from '../contexts/Auth';
 
@@ -39,13 +39,14 @@ export default function Login() {
         source={logo}
         style={{width: 180, height: 180, marginBottom: 30,}}
       />
-      <InputText
-        onChangeText={adicionarPontuacao}
+
+      <MaskedInput
+        type={'cpf'}
+        onChangeText={text => setCPF(text)}
         value={cpf}
-        placeholder="CPF"
-        maxLength={14}        
+        placeholder="CPF"    
         keyboardType="numeric"
-        placeholderTextColor="#727272"
+        placeholderTextColor={'#727272'}
       />
 
       <InputText

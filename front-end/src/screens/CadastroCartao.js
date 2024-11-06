@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { InputSelect, InputText } from '../components/InputText';
+import { InputSelect, InputText, MaskedInput } from '../components/InputText';
 import { Button } from '../components/Button';
 
 import { useAuth } from '../contexts/Auth';
@@ -35,11 +35,11 @@ export default function CadastroCartao() {
 
   // Retorna os dados dos selects
   useEffect(() => {
-    api.get('/tipos-bancos')
+    api.get('/banks')
     .then((response)=> setDataTipoConta(response.data))
     .catch((err)=>console.log(err));
 
-    api.get('/tipos-bandeira')
+    api.get('/flag-types')
       .then((response) => setDataBandeira(response.data))
       .catch((err) => console.log(err));
   }, []);
@@ -47,13 +47,12 @@ export default function CadastroCartao() {
   // Atualiza os bancos sempre que o tipo de conta mudar
   async function getTipoConta(item)
   {
-      await api.get('/bancos?tipo=' + item.codigo)
-        .then((response) =>
-          {
-            setDataBanco(response.data);
-          }
-      )
-        .catch((err) => console.log(err));
+    await api.get('/bancos?tipo=' + item.codigo)
+      .then((response) =>
+      {
+        setDataBanco(response.data);
+      })
+      .catch((err) => console.log(err));
   }
 
   //adiciona formatação do numero do cartão
@@ -71,34 +70,35 @@ export default function CadastroCartao() {
   async function cadastroCartao()
   {
     if (nomeCartao != "" && numeroCartao != "" && tipoConta != "" && banco != "" && bandeira != "" && saldo != "" && vencimento != "")
-      {
-        const cartaoSemEspaco = numeroCartao.replace(/\D/g, '');
-        const vencimentoSemBarra = vencimento.replace(/\D/g, '');
+    {
+      const cartaoSemEspaco = numeroCartao.replace(/\D/g, '');
+      const vencimentoSemBarra = vencimento.replace(/\D/g, '');
 
-        //realizando cadastro na API
-        await api.post("/cartoes",
-        {
-          idUsuario: authData.token,
-          banco: banco,
-          tipoBanco: tipoConta,
-          bandeira: bandeira,
-          vencimento: vencimentoSemBarra,
-          saldo: saldo,
-          nome: nomeCartao,
-          numero: cartaoSemEspaco,
-          cvv: cvv
-        }
-    ).then(function (response) {
-        //Informa que o cadastro foi um sucesso e direciona para a pagina de login
-        Alert.alert('Cadastro realizado com sucesso!', 'Seu cartão foi inserido com sucesso!');
-        navigation.goBack();
-    }).catch(function (error){
-        //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
-        Alert.alert(
-            'Cadastro não realizado!',
-            error.response.headers.mensagem);
-    });
+      //realizando cadastro na API
+      await api.post("/cards",
+      {
+        idUsuario: authData.token,
+        banco: banco,
+        tipoBanco: tipoConta,
+        bandeira: bandeira,
+        vencimento: vencimentoSemBarra,
+        saldo: saldo,
+        nome: nomeCartao,
+        numero: cartaoSemEspaco,
+        cvv: cvv
       }
+      ).then(function (response) {
+          //Informa que o cadastro foi um sucesso e direciona para a pagina de login
+          Alert.alert('Cadastro realizado com sucesso!', 'Seu cartão foi inserido com sucesso!');
+          navigation.goBack();
+      }).catch(function (error){
+          //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
+          Alert.alert(
+              'Cadastro não realizado!',
+              error.response.headers.mensagem);
+      });
+
+    }
   }
 
   return(
@@ -107,18 +107,21 @@ export default function CadastroCartao() {
 
       <InputText
         onChangeText={setNomeCartao}
-          value={nomeCartao}
-        placeholder="Nome do Cartão"
+        value={nomeCartao}
+        placeholder="Digite um apelido para o cartão"
         placeholderTextColor="#727272"
       />
 
-      <InputText
-        onChangeText={adicionarFormatacaoCartao}
-          value={numeroCartao}
-        placeholder="Número do Cartão"
+      <MaskedInput
+        type="custom"
+        value={numeroCartao}
+        onChangeText={setNumeroCartao}
+        placeholder="Digite o número do cartão"
         placeholderTextColor="#727272"
-        maxLength={19}
-        keyboardType="numeric"  
+        options={{
+          mask: '9999 9999 9999 9999'  // Formato de cartão de crédito
+        }}
+        keyboardType="numeric"  // Apenas números
       />
 
       <InputSelect
@@ -159,29 +162,32 @@ export default function CadastroCartao() {
         }}
       />
 
-      <InputText
-        onChangeText={setSaldo}
-        value={saldo}
-        placeholder="Saldo"
+      <MaskedInput
+				type={'money'}
+				value={saldo}
         keyboardType="numeric"
-        placeholderTextColor="#727272"
-      />
+				onChangeText={text => setSaldo(text)}
+				style={styles.input}
+				placeholder="Digite o limite do cartão"
+				options={{
+					precision: 2,
+					separator: ',',
+					delimiter: '.',
+					unit: 'R$ ',
+					suffixUnit: ''
+				}}
+			/>
 
-      <InputText
-        onChangeText={adicionarFormatacaoVencimento}
+      <MaskedInput
+        type="custom"
         value={vencimento}
-        placeholder="Vencimento"
+        onChangeText={setVencimento}
+        placeholder="Digite a data de vencimento do cartão"
         placeholderTextColor="#727272"
-        keyboardType="numeric"
-      />
-
-      <InputText
-        onChangeText={setCvv}
-        value={cvv}
-        placeholder="cvv"
-        placeholderTextColor="#727272"
-        maxLength={3}
-        keyboardType="numeric"
+        options={{
+          mask: '99/99'  // Formato de cartão de crédito
+        }}
+        keyboardType="numeric"  // Apenas números
       />
 
       <Button
@@ -190,7 +196,7 @@ export default function CadastroCartao() {
         onPress={ () => cadastroCartao()}
       />
     </View>
-)
+  )
 }
 
 

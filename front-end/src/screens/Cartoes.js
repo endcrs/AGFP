@@ -18,22 +18,23 @@ export default function Cartoes() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    // Simular a atualização dos dados
     setTimeout(() => {
-      api.get('/cartoes?cpf=' + authData.cpf)
-        .then((response)=> setCartoes(response.data))
-        .catch((err)=>console.log(err));
+      puxarCartoes();
       setRefreshing(false);
     }, 1000);
   }, []);
 
   // Retorna os dados que o usuário
   useEffect(() => {
-      api.get('/cartoes?cpf=' + authData.cpf)
-      .then((response)=> setCartoes(response.data))
-      .catch((err)=>console.log(err));
+    puxarCartoes();
   }, []);
   
+
+  async function puxarCartoes() {
+    await api.get(`/cards/${authData.token}`)
+    .then((response)=> setCartoes(response.data))
+    .catch((err)=>console.log(err));
+  }
 
   return (
     <View style={styles.container}>

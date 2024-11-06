@@ -46,7 +46,7 @@ export default function Painel() {
   }, []);
 
   async function puxarTransacoesMensais(){
-      await api.get(`/transacoes/mensais?cpf=${authData.cpf}`)
+      await api.get(`/accounts/transactions/monthly/${authData.token}`)
             .then((response) => {
               const data = response.data.sort((a, b) => b.id - a.id)
               setTransacoes(data)
@@ -54,7 +54,7 @@ export default function Painel() {
   }
 
   async function puxarCategorias(){
-      await api.get(`/transacoes/listar-percentagem-gasto-categoria?cpf=${authData.cpf}`)
+      await api.get(`/accounts/transactions/percentage-spent-by-category/${authData.cpf}`)
         .then((response) => {
           setCategoria(response.data)
         }).catch((err)=>console.log(err));
@@ -151,15 +151,16 @@ export default function Painel() {
             <ScrollView horizontal={true}>
               
                 {Object.entries(categoria).map(([categoria, {percentagem}]) => (
-                  <View kay={categoria} style={styles.CardCategoria}>
+                  <View kay={categoria} style={styles.CardCategoria}> 
                     <CircularProgress 
                       activeStrokeColor={obterCorPorCategoria(categoria)}
                       value={Math.round(percentagem)}
                       valueSuffix={'%'}
                     />
                     <Text style={styles.textCategoria}>{formatarTextoCategoria(categoria) }</Text>  
-                    </View>
-                ))}
+                  </View>
+                ))
+                }
                 
             </ScrollView>
             

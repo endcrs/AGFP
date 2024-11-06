@@ -23,25 +23,24 @@ export default function Historico() {
         setRefreshing(true);
         //atualização dos dados
         setTimeout(() => {
-
-            api.get(`transacoes/listar-todos?cpf=${authData.cpf}`)
-            .then((response) => {
-            const data = response.data.sort((a, b) => b.id - a.id)
-            setTransacoes(data)
-            }).catch((err)=>console.log(err));
-
-            setRefreshing(false);
+          puxarHistorico();
+          setRefreshing(false);
         }, 1000);
     }, []);
 
   // Retorna os dados que o usuário
-    useEffect(() => {
-        api.get(`transacoes/listar-todos?cpf=${authData.cpf}`)
-        .then((response) => {
-        const data = response.data.sort((a, b) => b.id - a.id)
-        setTransacoes(data)
-        }).catch((err)=>console.log(err));
-    }, []);
+  useEffect(() => {
+    puxarHistorico();
+  }, []);
+
+  async function puxarHistorico() {
+    await api.get(`transactions/${authData.token}`)
+      .then((response) => {
+      const data = response.data.sort((a, b) => b.id - a.id);
+      setTransacoes(data);
+      }).catch((err)=>console.log(err));
+  }
+
 
   return (
     <View style={styles.container}>
