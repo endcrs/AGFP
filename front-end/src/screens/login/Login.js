@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import logo from '../asset/logo.png';
-import { Button } from '../components/Button.js';
-import { InputText, MaskedInput } from '../components/InputText.js';
+import logo from '../../asset/logo.png';
+import { Button } from '../../components/Button.js';
+import { InputText, MaskedInput } from '../../components/InputText.js';
 
-import { useAuth } from '../contexts/Auth';
+import { useAuth } from '../../contexts/Auth';
 
-import { formatCPF } from '../utils/formatCPF';
+import { formatCPF } from '../../utils/formatCPF';
 
 
 export default function Login() {

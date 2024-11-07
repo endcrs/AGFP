@@ -2,15 +2,15 @@ import { useState } from "react";
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import logo from '../asset/logo.png';
-import { InputText, MaskedInput } from "../components/InputText";
-import { Button } from "../components/Button";
+import logo from '../../asset/logo.png';
+import { InputText, MaskedInput } from "../../components/InputText";
+import { Button } from "../../components/Button";
 
-import api from "../services/api";
+import api from "../../services/api";
 
-import { formatCPF } from "../utils/formatCPF";
-import { convertDateToAPIFormat, formatDate } from "../utils/formatData";
-import { formatPhoneNumber } from "../utils/formatPhone";
+import { formatCPF } from "../../utils/formatCPF";
+import { convertDateToAPIFormat, formatDate } from "../../utils/formatData";
+import { formatPhoneNumber } from "../../utils/formatPhone";
 
 
 export default function CadastroUser() {

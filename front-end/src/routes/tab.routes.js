@@ -2,11 +2,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 
-import Painel from '../screens/Painel';
-import Historico from '../screens/Historico';
-import Cartoes from '../screens/Cartoes';
-import CadastroResgistro from '../screens/CadastroRegistro';
-import CadastroCartao from '../screens/CadastroCartao';
+import Painel from '../screens/usuario/Painel';
+import Historico from '../screens/transacao/Historico';
+import Cartoes from '../screens/cartao/Cartoes';
+import CadastroResgistro from '../screens/transacao/CadastroRegistro';
+import CadastroCartao from '../screens/cartao/CadastroCartao';
 
 const Tab = createBottomTabNavigator()
 

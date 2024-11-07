@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { ButtonPlus } from '../components/Button';
-import CardRegistro from '../components/Card';
-import { useAuth } from '../contexts/Auth';
+import { ButtonPlus } from '../../components/Button';
+import CardRegistro from '../../components/Card';
+import { useAuth } from '../../contexts/Auth';
 
-import api from '../services/api';
+import api from '../../services/api';
 
-import { convertDateToFormFormat } from '../utils/formatData';
+import { convertDateToFormFormat } from '../../utils/formatData';
 
 
 export default function Historico() {    

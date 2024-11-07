@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View,RefreshControl, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { ButtonPlus } from '../components/Button';
-import { CardCartao } from '../components/Card';
+import { ButtonPlus } from '../../components/Button';
+import { CardCartao } from '../../components/Card';
 
-import { useAuth } from '../contexts/Auth';
-import api from '../services/api';
+import { useAuth } from '../../contexts/Auth';
+import api from '../../services/api';
 
-import { formatCardNumber, formatValidate } from '../utils/formatCreditCard';
+import { formatCardNumber, formatValidate } from '../../utils/formatCreditCard';
 
 export default function Cartoes() {
   const {authData} = useAuth();

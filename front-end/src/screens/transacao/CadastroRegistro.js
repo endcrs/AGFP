@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { InputSelect, InputText, MaskedInput } from "../components/InputText";
-import { Button } from "../components/Button";
+import { InputSelect, InputText, MaskedInput } from "../../components/InputText";
+import { Button } from "../../components/Button";
 
 
-import { useAuth } from "../contexts/Auth";
-import api from "../services/api";
+import { useAuth } from "../../contexts/Auth";
+import api from "../../services/api";
 
-import { convertDateToAPIFormat, formatDate } from "../utils/formatData";
+import { convertDateToAPIFormat, formatDate } from "../../utils/formatData";
 
 
 export default function CadastroResgistro() {
@@ -100,7 +100,8 @@ export default function CadastroResgistro() {
 				onChangeText={text => setValor(text)}
 				style={styles.input}
         keyboardType="numeric"
-				placeholder="Digite o valor"
+				placeholder="Digite o valor da transação"
+				placeholderTextColor="#727272"
 				options={{
 					precision: 2,
 					separator: ',',

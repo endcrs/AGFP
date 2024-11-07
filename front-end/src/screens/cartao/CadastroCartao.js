@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { InputSelect, InputText, MaskedInput } from '../components/InputText';
-import { Button } from '../components/Button';
+import { InputSelect, InputText, MaskedInput } from '../../components/InputText';
+import { Button } from '../../components/Button';
 
-import { useAuth } from '../contexts/Auth';
-import api from '../services/api';
+import { useAuth } from '../../contexts/Auth';
+import api from '../../services/api';
 
-import { formatCardNumber, formatValidate } from '../utils/formatCreditCard';
+import { formatCardNumber, formatValidate } from '../../utils/formatCreditCard';
 
 
 export default function CadastroCartao() {
@@ -169,6 +169,7 @@ export default function CadastroCartao() {
 				onChangeText={text => setSaldo(text)}
 				style={styles.input}
 				placeholder="Digite o limite do cartão"
+        placeholderTextColor="#727272"
 				options={{
 					precision: 2,
 					separator: ',',
