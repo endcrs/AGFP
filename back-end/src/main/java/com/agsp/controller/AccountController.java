@@ -2,6 +2,7 @@ package com.agsp.controller;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import com.agsp.service.AccountTransactionService;
 import com.agsp.vo.AccountUpdateVO;
 import com.agsp.vo.AccountVO;
 import com.agsp.vo.CategoriaListVO;
+import com.agsp.vo.SaldoAtualVO;
 import com.agsp.vo.TransactionCurrentAccountVO;
 
 import jakarta.validation.Valid;
@@ -73,4 +75,8 @@ public class AccountController {
 		return accountTransactionService.listPercentageSpentByCategory(accountId);
 	}
 	
+	@GetMapping(value = "/monthly-expenses/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public SaldoAtualVO getDespesaMensal (@PathVariable Long id) {
+		return accountService.monthlyExpenses(id);
+	}
 }
