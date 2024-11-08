@@ -32,7 +32,6 @@ public class UserService {
 	
 //	private final CartaoRepository cartaoRepository;
 	private final UserRepository usuarioRepository;
-//	private final TransacaoRespository transacaoRespository;
 	private final LoginUsuarioRepository loginUsuarioRepository;
 	
 	
@@ -161,6 +160,8 @@ public class UserService {
 		return vo;
 	}
 
+	
+
 //	private BigDecimal getTotalDespesasMensal(UsuarioEntity usuario) {
 		
 //		LocalDate dataInicio = getToday().with(TemporalAdjusters.firstDayOfMonth());
@@ -173,9 +174,6 @@ public class UserService {
 //		return BigDecimal.valueOf(0.0);
 //	}
 
-//	private LocalDate getToday() {
-//		return LocalDate.now(ZoneId.of(AMERICA_SAO_PAULO));
-//	}
 
 //	private BigDecimal getTotalReceitaMensal(UsuarioEntity usuario) {
 		

@@ -1,5 +1,10 @@
 package com.agsp.service;
 
+import static com.agsp.util.Constantes.AMERICA_SAO_PAULO;
+
+import java.math.BigDecimal;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +13,17 @@ import org.springframework.stereotype.Service;
 import com.agsp.entity.CurrentAccountEntity;
 import com.agsp.entity.UserEntity;
 import com.agsp.entity.factory.CurrentAccountEntityFactory;
+import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.exception.MsgException;
 import com.agsp.exception.NaoEncontradoException;
 import com.agsp.repository.CurrentAccountRepository;
+import com.agsp.repository.TransactionRepository;
 import com.agsp.repository.UserRepository;
 import com.agsp.util.Constantes;
 import com.agsp.vo.AccountOwnerVO;
 import com.agsp.vo.AccountUpdateVO;
 import com.agsp.vo.AccountVO;
+import com.agsp.vo.SaldoAtualVO;
 import com.agsp.vo.factory.CurrentAccountVOFactory;
 
 import jakarta.transaction.Transactional;
@@ -26,7 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class AccountService {
 	
 	private final UserRepository userRepository;
-//	private final TransactionRepository transacaoRespository;
+	private final TransactionRepository transactionRespository;
+	private final UserRepository usuarioRepository;
 	private final CurrentAccountRepository currentAccountRepository;
 	
 	@Transactional
@@ -119,6 +128,36 @@ public class AccountService {
 			vos.add(CurrentAccountVOFactory.toVO(a));
 		});
 		return vos;
+	}
+	
+	public SaldoAtualVO monthlyExpenses(Long id) {
+		
+		UserEntity usuario =  getUserEntity(id);
+		
+		ZonedDateTime dataFim = getToday();
+		ZonedDateTime dataInicio = getToday().withDayOfMonth(1);
+		
+		BigDecimal saldoAtual = currentAccountRepository.getTotalSaldoMensal(usuario.getId());
+		BigDecimal despesa = transactionRespository.getTotalMonthlyExpensesOrRevenues
+				(usuario.getId(), dataInicio, dataFim, TipoTransacaoEnum.DESPESA);
+		BigDecimal receita = transactionRespository.getTotalMonthlyExpensesOrRevenues
+				(usuario.getId(), dataInicio, dataFim, TipoTransacaoEnum.RECEITA);
+		
+		return SaldoAtualVO.builder()
+				.saldoAtual(saldoAtual != null ? saldoAtual : new BigDecimal(0.0))
+				.despesa(despesa != null ?  despesa : new BigDecimal(0.0))
+				.receita(receita != null ? receita : new BigDecimal(0.0))
+				.build();
+	}
+	
+	private ZonedDateTime getToday() {
+		return ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
+	}
+
+
+	public UserEntity getUserEntity(Long id) {
+		return usuarioRepository.findById(id)
+				.orElseThrow(() -> new NaoEncontradoException(Constantes.USUARIO_NAO_ENCONTRADO));
 	}
 
 }

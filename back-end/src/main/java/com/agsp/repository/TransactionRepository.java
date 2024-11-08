@@ -1,5 +1,6 @@
 package com.agsp.repository;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -62,4 +63,16 @@ public interface TransactionRepository extends JpaRepository<TransationEntity, L
 //			@Param(value = "startDate")LocalDate startDate, 
 //			@Param(value = "endDate")LocalDate endDate,
 //			@Param(value = "tipoTransacao") TipoTransacaoEnum tipoTransacao);
+	
+	@Query(value = "select sum(t.valorCompra) from TransationEntity t "
+			+ "join t.currentAccount c "
+			+ "join c.usuario u "
+			+ "where u.id = :usuarioId and t.dataTransacao between :startDate "
+			+ "and :endDate and t.tipo = :tipoTransacao and t.transacao ='CONTA' ")
+	BigDecimal getTotalMonthlyExpensesOrRevenues(
+			@Param(value = "usuarioId") Long usuarioId, 
+			@Param(value = "startDate")ZonedDateTime startDate, 
+			@Param(value = "endDate")ZonedDateTime endDate,
+			@Param(value = "tipoTransacao") TipoTransacaoEnum tipoTransacao);
+
 }
