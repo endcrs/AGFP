@@ -1,45 +1,46 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View,RefreshControl, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { ScrollView, StyleSheet, View,RefreshControl, Text, Alert } from 'react-native';
 
-import { ButtonPlus } from '../../components/Button';
-import { CardCartao } from '../../components/Card';
-
-import { useAuth } from '../../contexts/Auth';
+import { ButtonPlus } from "../../components/Button";
+import { useAuth } from "../../contexts/Auth";
+import { useNavigation } from "@react-navigation/native";
 import api from '../../services/api';
+import { CardConta } from '../../components/Card';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { formatCardNumber, formatValidate } from '../../utils/formatCreditCard';
 
-export default function Cartoes() {
+
+export default function Contas() {
   const {authData} = useAuth();
-  const [cartoes, setCartoes] = useState([]);
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
+
+  const [contas, setContas] = useState([]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
+      puxarContasPorUsuario();
       setRefreshing(false);
     }, 1000);
   }, []);
 
-  // Retorna os dados que o usuário
   useEffect(() => {
-    puxarCartoes();
-  }, []);
-  
+    puxarContasPorUsuario();
+  })
 
-  async function puxarCartoes() {
-    await api.get(`/cards/${authData.id}`)
-    .then((response)=> setCartoes(response.data))
-    .catch((err)=>console.log(err));
-  }
+  //Buscando contas do usuário logado
+  async function puxarContasPorUsuario() {
+    await api.get(`/accounts/by-user/${authData.id}`)
+    .then((response) => setContas(response.data))
+    .catch((err) => console.log(err));
+  } 
 
   return (
     <View style={styles.container}>
       <View style={styles.cardTitle}>
-        <Text style={{color:'#fff', fontSize:20, fontWeight:'700'}}>CARTÕES</Text>
-        <ButtonPlus onPress={() => navigation.navigate('CadastroCartao')}/>
+        <Text style={{color:'#fff', fontSize:20, fontWeight:'700'}}>CONTAS</Text>
+        <ButtonPlus onPress={() => navigation.navigate('CadastroConta')}/>
       </View>
       
       <View style={styles.session}>
@@ -49,22 +50,21 @@ export default function Cartoes() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           >
-          {cartoes.map((cartao, index) => (
-            <CardCartao 
-                key={index}
-                nomeCartao={cartao.nome}
-                numeroCartao={formatCardNumber(cartao.numero)}
-                validade={formatValidate(cartao.vencimento)}
-                cvv={cartao.cvv}
+          {contas.map((conta, index) => (
+            <CardConta
+              key={index}
+              banco={conta.banco}
+              saldo={conta.saldo}
             />
-          ))}
+          ))
+
+          }
             
         </ScrollView>
       </View>
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -90,4 +90,3 @@ const styles = StyleSheet.create({
     padding:10,
   },
 });
-

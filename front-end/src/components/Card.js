@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CreditCard, { CARD_SIDE } from './CreditCard';
 import { formatValue } from "../utils/formatValue";
 import { useSharedValue } from "react-native-reanimated";
+import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 
 export default function CardRegistro({titulo, valor, categoria, data, tipoTransacao}){
     return(
@@ -58,6 +59,17 @@ export function CardCartao({nomeCartao, numeroCartao, validade, cvv}){
 }
 
 
+export function CardConta({saldo, banco, onpress}){
+
+  return(
+    <View style={styles.cardRegistro}>
+      <Text style={styles.itemRegistro}>{banco}</Text>
+      <Text style={styles.itemRegistro}>{formatValue(saldo)}</Text>
+    </View>
+  );
+
+}
+
 const styles = StyleSheet.create({
   cardRegistro:{
     width: '100%',
@@ -66,7 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     backgroundColor: '#474747',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
   },

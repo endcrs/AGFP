@@ -32,7 +32,7 @@ export default function CadastroResgistro() {
 	//puxando os categorias e cartões
 	useEffect(() => {
 		// Listar cartões do usuários
-		api.get(`/cards/${authData.token}`)
+		api.get(`/cards/${authData.id}`)
 			.then((response)=> setDataCartao(response.data))
 			.catch((err)=>console.log(err));
 

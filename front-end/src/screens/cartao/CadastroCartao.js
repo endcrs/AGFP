@@ -25,7 +25,6 @@ export default function CadastroCartao() {
   const [bandeira, setBandeira] = useState('');
   const [saldo, setSaldo] = useState('');
   const [vencimento, setVencimento] = useState('');
-  const [cvv, setCvv] = useState('');
 
   // variáveis de dados dos inputs de select
   const [dataBanco, setDataBanco] = useState([]);
@@ -77,7 +76,7 @@ export default function CadastroCartao() {
       //realizando cadastro na API
       await api.post("/cards",
       {
-        idUsuario: authData.token,
+        idUsuario: authData.id,
         banco: banco,
         tipoBanco: tipoConta,
         bandeira: bandeira,
@@ -103,7 +102,7 @@ export default function CadastroCartao() {
 
   return(
     <View style={styles.container}>
-      <Text style={styles.title}>NOVO CARTÃO DE DÉBITO</Text>
+      <Text style={styles.title}>NOVO CARTÃO DE CRÉDITO</Text>
 
       <InputText
         onChangeText={setNomeCartao}

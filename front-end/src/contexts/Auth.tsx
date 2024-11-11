@@ -7,7 +7,7 @@ import { Alert } from "react-native";
 
 //Objeto a ser criado no login 
 export interface AuthData{
-    token: string;
+    id: string;
     cpf: string;
     name: string;
 };

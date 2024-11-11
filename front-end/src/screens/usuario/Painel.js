@@ -46,7 +46,7 @@ export default function Painel() {
   }, []);
 
   async function puxarTransacoesMensais(){
-      await api.get(`/accounts/transactions/monthly/${authData.token}`)
+      await api.get(`/accounts/transactions/monthly/${authData.id}`)
             .then((response) => {
               const data = response.data.sort((a, b) => b.id - a.id)
               setTransacoes(data)
@@ -61,7 +61,7 @@ export default function Painel() {
   }
 
   async function puxarDadosFinanceiro(){
-      await api.get(`/usuarios/${authData.token}`)
+      await api.get(`/usuarios/${authData.id}`)
         .then((response) => {
           setSaldo(response.data.saldo);
           setReceita(response.data.receita);
