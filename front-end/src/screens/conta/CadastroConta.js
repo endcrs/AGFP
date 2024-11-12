@@ -21,6 +21,9 @@ export default function CadastroConta(){
   const [dataBanco, setDataBanco] = useState([]);
 
   useEffect(() => {
+    Alert.alert('Atenção!',
+      'Verifique e coloque as informações com cuidado, pois não será possivel realizar a alteração futuramente!');
+
     //buscando bancos pré-cadastrados
     api.get('/banks')
     .then((response)=> setDataBanco(response.data))

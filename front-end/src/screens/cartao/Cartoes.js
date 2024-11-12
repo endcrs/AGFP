@@ -30,9 +30,9 @@ export default function Cartoes() {
   
 
   async function puxarCartoes() {
-    await api.get(`/cards/${authData.id}`)
-    .then((response)=> setCartoes(response.data))
-    .catch((err)=>console.log(err));
+    // await api.get(`/cards/${authData.id}`)
+    // .then((response)=> setCartoes(response.data))
+    // .catch((err)=>console.log(err));
   }
 
   return (
