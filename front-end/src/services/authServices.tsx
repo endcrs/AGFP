@@ -13,7 +13,7 @@ async function singIn(cpf: string, password: string): Promise<AuthData>{
             }
         ).then(function (response) {
             resolve({
-                token: response.data.id,
+                id: response.data.id,
                 cpf: response.data.cpf,
                 name: response.data.nome
             })

@@ -34,7 +34,7 @@ export default function Historico() {
   }, []);
 
   async function puxarHistorico() {
-    await api.get(`transactions/${authData.token}`)
+    await api.get(`transactions/${authData.id}`)
       .then((response) => {
       const data = response.data.sort((a, b) => b.id - a.id);
       setTransacoes(data);

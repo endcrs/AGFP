@@ -57,7 +57,7 @@ export default function Perfil() {
 
   //puxando os dados do usuário
 	async function puxarUsuario() {
-		await api.get(`/users/${authData.token}`)
+		await api.get(`/users/${authData.id}`)
 		.then(function (response){
 			setNome(response.data.nome),
       setSobrenome(response.data.sobrenome),
@@ -103,9 +103,9 @@ export default function Perfil() {
 		const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
 		
       // Atualizando o usuário
-	  await api.put('users',
+	  await api.put('/users',
 		{
-			id: authData.token,
+			id: authData.id,
 			nome: nome,
       sobrenome: sobrenome,
 			dataNascimento: dataNascParaAPI,

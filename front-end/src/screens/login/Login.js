@@ -19,12 +19,6 @@ export default function Login() {
   const [cpf, setCPF] = useState('');
   const [senha, setSenha] = useState('');
 
-  //adicionando pontuação ao CPF
-  const adicionarPontuacao = (text) => {
-    const formattedCPF = formatCPF(text);
-    setCPF(formattedCPF);
-  }
-
   //tirando pontuação ao CPF para realizar o acesso a aplicação
   const login = () =>{
     const cpfsemPontuacao = cpf.replace(/\D/g, '');

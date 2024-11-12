@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { InputSelect, InputText, MaskedInput } from '../../components/InputText';
+import { InputSelect, MaskedInput } from '../../components/InputText';
 import { Button } from '../../components/Button';
 
 import { useAuth } from '../../contexts/Auth';
@@ -20,97 +20,80 @@ export default function CadastroCartao() {
   const [numeroCartao, setNumeroCartao] = useState('');
 
   // Variaveis Selecionadas
-  const [tipoConta, setTipoConta] = useState('');
   const [banco, setBanco] = useState('');
   const [bandeira, setBandeira] = useState('');
-  const [saldo, setSaldo] = useState('');
+  const [limite, setlimite] = useState('');
+  const [validade, setvalidade] = useState('');
   const [vencimento, setVencimento] = useState('');
-  const [cvv, setCvv] = useState('');
 
   // variáveis de dados dos inputs de select
   const [dataBanco, setDataBanco] = useState([]);
-  const [dataTipoConta, setDataTipoConta] = useState([]);
+  //const [dataTipoConta, setDataTipoConta] = useState([]);
   const [dataBandeira, setDataBandeira] = useState([]);
 
 
   // Retorna os dados dos selects
   useEffect(() => {
-    api.get('/banks')
-    .then((response)=> setDataTipoConta(response.data))
+    Alert.alert('Atenção!',
+      'Verifique e coloque as informações com cuidado, pois não será possivel realizar a alteração futuramente!');
+
+    api.get(`/accounts/by-user/${authData.id}`)
+    .then((response)=> setDataBanco(response.data))
     .catch((err)=>console.log(err));
 
     api.get('/flag-types')
-      .then((response) => setDataBandeira(response.data))
-      .catch((err) => console.log(err));
+    .then((response) => setDataBandeira(response.data))
+    .catch((err) => console.log(err));
   }, []);
 
-  // Atualiza os bancos sempre que o tipo de conta mudar
-  async function getTipoConta(item)
-  {
-    await api.get('/bancos?tipo=' + item.codigo)
-      .then((response) =>
-      {
-        setDataBanco(response.data);
-      })
-      .catch((err) => console.log(err));
-  }
-
-  //adiciona formatação do numero do cartão
-  const adicionarFormatacaoCartao = (text) => {
-    const cardCardNumber = formatCardNumber(text);
-    setNumeroCartao(cardCardNumber);
-  }
-
-    //adiciona formatação do numero do cartão
-  const adicionarFormatacaoVencimento = (text) => {
-    const cardVencimento = formatValidate(text);
-    setVencimento(cardVencimento);
-  }
+  // // Atualiza os bancos sempre que o tipo de conta mudar
+  // async function getTipoConta(item)
+  // {
+  //   await api.get('/bancos?tipo=' + item.codigo)
+  //     .then((response) =>
+  //     {
+  //       setDataBanco(response.data);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
 
   async function cadastroCartao()
   {
-    if (nomeCartao != "" && numeroCartao != "" && tipoConta != "" && banco != "" && bandeira != "" && saldo != "" && vencimento != "")
+    if (numeroCartao != ""  && banco != "" && bandeira != "" && limite != "" && validade != "")
     {
       const cartaoSemEspaco = numeroCartao.replace(/\D/g, '');
-      const vencimentoSemBarra = vencimento.replace(/\D/g, '');
-
+      const limiteSemFormatacao = limite.replace(/,00$/, "").replace(/\D/g, '');
       //realizando cadastro na API
       await api.post("/cards",
       {
-        idUsuario: authData.token,
-        banco: banco,
-        tipoBanco: tipoConta,
+        idConta: banco,
         bandeira: bandeira,
-        vencimento: vencimentoSemBarra,
-        saldo: saldo,
-        nome: nomeCartao,
+        validade: validade,
+        limite: limiteSemFormatacao,
         numero: cartaoSemEspaco,
-        cvv: cvv
+        vencimento: vencimento
       }
       ).then(function (response) {
-          //Informa que o cadastro foi um sucesso e direciona para a pagina de login
-          Alert.alert('Cadastro realizado com sucesso!', 'Seu cartão foi inserido com sucesso!');
-          navigation.goBack();
+        //Informa que o cadastro foi um sucesso e direciona para a pagina dos cartões
+        Alert.alert('Sucesso!', 'Seu cartão foi inserido com sucesso!');
+        navigation.goBack();
+        
       }).catch(function (error){
-          //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
-          Alert.alert(
-              'Cadastro não realizado!',
-              error.response.headers.mensagem);
+        //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
+        Alert.alert(
+            'Cadastro não realizado!');
+
+            console.log(error.toJSON());
       });
 
+    }else{
+      Alert.alert('Preencha todos os campos!', 'Tenha atenção ao preencher, ele não poderá ser alterado!');
     }
   }
 
   return(
     <View style={styles.container}>
-      <Text style={styles.title}>NOVO CARTÃO DE DÉBITO</Text>
-
-      <InputText
-        onChangeText={setNomeCartao}
-        value={nomeCartao}
-        placeholder="Digite um apelido para o cartão"
-        placeholderTextColor="#727272"
-      />
+      <Text style={styles.title}>NOVO CARTÃO DE CRÉDITO</Text>
 
       <MaskedInput
         type="custom"
@@ -125,28 +108,14 @@ export default function CadastroCartao() {
       />
 
       <InputSelect
-        data={dataTipoConta}
-        placeholder="Tipo de Conta"
-        placeholderTextColor="#727272"
-        value={tipoConta}
-        labelField="descricao"
-      	valueField="codigo"
-        onChange={item => {
-          setTipoConta(item.codigo)
-          setBanco('');
-          getTipoConta(item)
-        }}
-      />
-
-      <InputSelect
         data={dataBanco}
-        placeholder="Banco"
+        placeholder="Selecione o banco referente ao cartão"
         placeholderTextColor="#727272"
         value={banco}
-        labelField="descricao"
-      	valueField="codigo"
+        labelField="banco"
+      	valueField="id"
         onChange={item => {
-          setBanco(item.codigo)
+          setBanco(item.id)
         }}
       />
 
@@ -164,9 +133,9 @@ export default function CadastroCartao() {
 
       <MaskedInput
 				type={'money'}
-				value={saldo}
+				value={limite}
         keyboardType="numeric"
-				onChangeText={text => setSaldo(text)}
+				onChangeText={text => setlimite(text)}
 				style={styles.input}
 				placeholder="Digite o limite do cartão"
         placeholderTextColor="#727272"
@@ -182,8 +151,20 @@ export default function CadastroCartao() {
       <MaskedInput
         type="custom"
         value={vencimento}
-        onChangeText={setVencimento}
-        placeholder="Digite a data de vencimento do cartão"
+        onChangeText={text => setVencimento(text)}
+        placeholder="Digite o dia do vencimento da fatura do cartão"
+        placeholderTextColor="#727272"
+        options={{
+          mask: '99'  // Formato de cartão de crédito
+        }}
+        keyboardType="numeric"  // Apenas números
+      />
+
+      <MaskedInput
+        type="custom"
+        value={validade}
+        onChangeText={text => setvalidade(text)}
+        placeholder="Digite a data de validade do cartão"
         placeholderTextColor="#727272"
         options={{
           mask: '99/99'  // Formato de cartão de crédito
