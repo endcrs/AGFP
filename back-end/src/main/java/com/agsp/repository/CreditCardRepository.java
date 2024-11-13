@@ -1,6 +1,9 @@
 package com.agsp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.agsp.entity.CreditCardEntity;
 
@@ -9,6 +12,13 @@ public interface CreditCardRepository extends JpaRepository<CreditCardEntity, Lo
 //	List<CartaoCreditoEntity> findByUsuarioCpf(String cpf);
 
 	boolean existsByNumero(String numero);
+
+	
+	@Query(value = "select card from CreditCardEntity card "
+			+ "join card.account acount "
+			+ "join account.usuario user "
+			+ "where user.id = :usuarioId ")
+	List<CreditCardEntity> findCardByUserId(Long usuarioId);
 
 //	Optional<CartaoCreditoEntity> findByNumero(String numeroCartao);
 

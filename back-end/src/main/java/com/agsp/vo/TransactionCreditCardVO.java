@@ -28,6 +28,9 @@ public class TransactionCreditCardVO implements Serializable {
 	
 	private TipoTransacaoEnum tipo;
 	
+	@NotNull(message = "O preenchimento do título é obrigatório")
+	private String titulo;
+	
 	private StatusEnum status;
 	
 	@NotNull(message = "O preenchimento do campo valor é obrigatório")

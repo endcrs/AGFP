@@ -30,6 +30,7 @@ public class CartaoEntityFactory {
 					.limite(vo.limite())
 					.validade(vo.validade())
 					.bandeira(vo.bandeira())
+					.nome(vo.nome())
 					.facturaAtual(BigDecimal.ZERO)
 					.vencimento(vo.vencimento()) // receber dia no parametro
 					.fechamento(fechamento.minusDays(5)) //contruir dia apartir do dia venciemento menos 5 dias

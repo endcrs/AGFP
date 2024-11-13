@@ -34,7 +34,11 @@ public record CreditCardVO(
 		Integer vencimento,
 		
 		@NotNull(message = "O prenchimento do ID conta é obrigatório")
-		Long idConta
+		Long idConta,
+		
+		@NotBlank(message = "O prenchimento do campo nome é obrigatório")
+		@Size(max = 15,  message = "O campo numero deve ter 15 caracteres.")
+		String nome
 		
 //		@NotNull(message = "O prenchimento do ID usuário é obrigatório")
 //		Long idUsuario

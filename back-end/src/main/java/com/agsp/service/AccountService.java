@@ -154,7 +154,6 @@ public class AccountService {
 		return ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 	}
 
-
 	public UserEntity getUserEntity(Long id) {
 		return usuarioRepository.findById(id)
 				.orElseThrow(() -> new NaoEncontradoException(Constantes.USUARIO_NAO_ENCONTRADO));

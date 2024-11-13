@@ -28,6 +28,9 @@ public class CreditCardUpdateVO {
 	@Size(max = 5, min = 5,  message = "O campo vencimento deve ter 4 caracteres. Exemplo 05/24")
 	private String validade;
 	
+	@Size(max = 15,  message = "O campo numero deve ter 15 caracteres.")
+	String nome;
+	
 	Integer vencimento;
 	
 }

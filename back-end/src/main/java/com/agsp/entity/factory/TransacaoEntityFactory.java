@@ -30,6 +30,7 @@ public class TransacaoEntityFactory {
 					.dataTransacao(ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO)))
 					.status(StatusEnum.ATIVO)
 					.categoria(categoria)
+					.titulo(tAccount.getTitulo())
 					.valorCompra(tAccount.getValor())
 					.tipo(tAccount.getTipo())
 					.currentAccount(account != null ? account : null)
@@ -44,6 +45,7 @@ public class TransacaoEntityFactory {
 					.categoria(categoria)
 					.valorCompra(tCard.getValor())
 					.tipo(tCard.getTipo())
+					.titulo(tCard.getTitulo())
 					.currentAccount(account)
 					.transacao("CARTAO")
 					.build();

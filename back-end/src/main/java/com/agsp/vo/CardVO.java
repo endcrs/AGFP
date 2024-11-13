@@ -24,6 +24,7 @@ public class CardVO implements Serializable{
 	private String validade;
 	private TipoBandeiraEnum bandeira;
 	private boolean status;
+	private String nome;
 	
 
 }
