@@ -66,6 +66,8 @@ public class CreditCardService {
 		
 		creditCard = creditCardRepository.save(creditCard);
 		
+//		creditCard.set
+		
 //		return CreditCardVOFactory.converterParaVO(creditCard);
 		return CreditCardUpdateVO.builder()
 				.id(creditCard.getId())
@@ -135,6 +137,28 @@ public class CreditCardService {
 		
 		card.setAtivo(Boolean.FALSE);
 		creditCardRepository.save(card);
+	}
+
+	public List<CardVO> getCreditsCardByUserid(Long usuarioId) {
+		
+		List<CreditCardEntity> cards = creditCardRepository.findCardByUserId(usuarioId);
+		
+		List<CardVO> vos = new ArrayList<>();
+		
+		cards.forEach( c -> {
+			
+			vos.add(CardVO.builder()
+					.id(c.getId())
+					.facturaAtual(c.getFacturaAtual())
+					.numero(c.getNumero())
+					.nome(c.getNome())
+					.bandeira(c.getBandeira())
+					.limite(c.getLimite())
+					.vencimento(c.getVencimento())
+					.build());
+		});
+		
+		return vos;
 	}
 	
 //	public CartaoCreditoEntity recuperarPorNumero(String numeroCartao) {

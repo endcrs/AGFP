@@ -28,6 +28,9 @@ public class TransactionCurrentAccountVO implements Serializable {
 	
 	private StatusEnum status;
 	
+	@NotNull(message = "O preenchimento do título é obrigatório")
+	private String titulo;
+	
 	@NotNull(message = "O preenchimento do campo valor é obrigatório")
 	@Positive(message = "Valor deve ser um valor positivo")
 	private BigDecimal valor;

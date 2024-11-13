@@ -142,6 +142,7 @@ public class AccountTransactionService {
 					.id(t.getId())
 					.categoria(t.getCategoria())
 					.status(t.getStatus())
+					.titulo(t.getTitulo())
 					.valor(t.getValorCompra())
 					.build());
 		});
@@ -165,6 +166,7 @@ public class AccountTransactionService {
 					.id(t.getId())
 					.categoria(t.getCategoria())
 					.status(t.getStatus())
+					.titulo(t.getTitulo())
 					.valor(t.getValorCompra())
 					.build());
 		});

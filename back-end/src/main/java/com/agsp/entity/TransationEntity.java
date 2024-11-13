@@ -78,6 +78,9 @@ public class TransationEntity implements Serializable {
 	@Column(name = "TRANSACAO", nullable = false)
 	private String transacao;
 	
+	@Column(name = "TITULO", nullable = false, length = 15)
+	private String titulo;
+	
 	@PrePersist
 	private void onCreate() {
 		dataTransacao = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));

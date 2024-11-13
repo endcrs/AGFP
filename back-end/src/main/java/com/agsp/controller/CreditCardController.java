@@ -49,6 +49,11 @@ public class CreditCardController {
 		return creditCardService.getCreditCardById(id);
 	}
 	
+	@GetMapping(value = "/by-user/{usuarioId}")
+	public List<CardVO> getCreditsCardByUserid(@PathVariable(value ="usuarioId") Long usuarioId) {
+		return creditCardService.getCreditsCardByUserid(usuarioId);
+	}
+	
 //	@PutMapping(value ="/disable-card/{id}")
 	public void disableCard(@PathVariable(value ="id") Long id) {
 		creditCardService.disableCard(id);
