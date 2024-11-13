@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.service.AccountService;
 import com.agsp.service.AccountTransactionService;
+import com.agsp.vo.AccountResponseVO;
 import com.agsp.vo.AccountUpdateVO;
 import com.agsp.vo.AccountVO;
 import com.agsp.vo.CategoriaListVO;
 import com.agsp.vo.SaldoAtualVO;
+import com.agsp.vo.TransactionCurrentAccountResponseVO;
 import com.agsp.vo.TransactionCurrentAccountVO;
 
 import jakarta.validation.Valid;
@@ -41,12 +43,12 @@ public class AccountController {
 	}
 		
 	@GetMapping(value = "/{id}")
-	public AccountVO createdAccount (@PathVariable(value = "id") Long id) {
+	public AccountResponseVO createdAccount (@PathVariable(value = "id") Long id) {
 		return accountService.getAccount(id);
 	}
 	
 	@GetMapping(value = "/by-user/{usuarioId}")
-	public List<AccountVO> getAccounts (@PathVariable(value = "usuarioId") Long usuarioId) {
+	public List<AccountResponseVO> getAccounts (@PathVariable(value = "usuarioId") Long usuarioId) {
 		return accountService.getAccounts(usuarioId);
 	}
 	
@@ -61,12 +63,12 @@ public class AccountController {
 	}
 	
 	@GetMapping(value = "/transactions/{accountId}")
-	public List<TransactionCurrentAccountVO> getTransactions (@PathVariable(value = "accountId") Long accountId) {
+	public List<TransactionCurrentAccountResponseVO> getTransactions (@PathVariable(value = "accountId") Long accountId) {
 		return accountTransactionService.getTransactions(accountId);
 	}
 	
 	@GetMapping(value = "/transactions/monthly/{accountId}")
-	public List<TransactionCurrentAccountVO> getMensalTransactions (@PathVariable(value = "accountId") Long accountId) {
+	public List<TransactionCurrentAccountResponseVO> getMensalTransactions (@PathVariable(value = "accountId") Long accountId) {
 		return accountTransactionService.getMensalTransactions(accountId);
 	}
 	
