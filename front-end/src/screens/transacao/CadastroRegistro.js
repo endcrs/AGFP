@@ -18,23 +18,22 @@ export default function CadastroResgistro() {
 	
 	const [titulo, setTitulo] = useState('');
 	const [valor, setValor] = useState('');
-	const [cartao, setCartao] = useState('');
-	const [data, setData] = useState('');
+  const [banco, setBanco] = useState('');
 	const [categoria, setCategoria] = useState('');
 	const [tipoTransacao, setTipoTransacao] = useState('');
 
 	// Listas
 	const [dataTipoTransacao, setDataTipoTransacao] = useState([]);
 	const [dataCategoria, setDataCategoria] = useState([]);
-	const [dataCartao, setDataCartao] = useState([]);
+	const [dataBanco, setDataBanco] = useState([]);
 
 
 	//puxando os categorias e cartões
 	useEffect(() => {
 		// Listar cartões do usuários
-		// api.get(`/cards/${authData.id}`)
-		// 	.then((response)=> setDataCartao(response.data))
-		// 	.catch((err)=>console.log(err));
+		api.get(`/accounts/by-user/${authData.id}`)
+			.then((response)=> setDataBanco(response.data))
+			.catch((err)=>console.log(err));
 
 		// Listar cartões da categoria
 		api.get('/categories')
@@ -48,49 +47,54 @@ export default function CadastroResgistro() {
 	}, []);
 
 	//adicona pontuações na data de nascimento
-    const adicionarPontuacaoDate = (text) => {
-        const formattedDate = formatDate(text);
-        setData(formattedDate);
-    };
+    // const adicionarPontuacaoDate = (text) => {
+    //     const formattedDate = formatDate(text);
+    //     setData(formattedDate);
+    // };
 
 	async function cadastroTransacao()
 	{
-		if (titulo != "" && valor != "" && cartao != "" && data != "" && categoria != "")
+		if (titulo != "" && valor != "" && categoria != "" && banco != "")
 		{
-			const dataParaAPI = convertDateToAPIFormat(data);
+			const valorSemFormatacao =  limite.replace(/,00$/, "").replace(/\D/g, '');;
 
 			//realizando cadastro na API
-			await api.post("/transacoes",
-			{
-				titulo: titulo,
-				valor: valor,
-				numeroCartao: cartao,
-				dataTransacao: dataParaAPI,
-				categoria: categoria,
-				tipoTransacao: tipoTransacao
-			}
-		).then(function (response) {
-			//Informa que o cadastro foi um sucesso e direciona para a pagina de login
-			Alert.alert('Cadastro realizado com sucesso!', 'Sua Transação foi inserido com sucesso!');
-			navigation.goBack();
-		}).catch(function (error){
-			//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
-			Alert.alert(
-				'Cadastro não realizado!',
-				error.response.headers.mensagem);
-		});
+			await api.post("/accounts/transactions",
+				{
+					titulo: titulo,
+					idConta: banco,
+					valor: valorSemFormatacao,
+					status: "ATIVO",
+					categoria: categoria,
+					tipo: tipoTransacao
+			
+				}
+			).then(function (response) {
+				//Informa que o cadastro foi um sucesso e direciona para a pagina de login
+				Alert.alert('Cadastro realizado com sucesso!', 'Sua Transação foi inserido com sucesso!');
+				navigation.goBack();
+			}).catch(function (error){
+				//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
+				Alert.alert(
+					'Cadastro não realizado!',
+					'Tente novamente mais tarde!');
+
+					console.log(error.toJSON());
+			});
+		}else{
+			Alert.alert('Preencha todos os campos!', 'Tenha atenção ao preencher, ele não poderá ser alterado!');
 		}
 	}
 
   return(
-			<View style={styles.container}>
-				<Text style={styles.title}>NOVO REGISTRO</Text>
+		<View style={styles.container}>
+			<Text style={styles.title}>NOVO REGISTRO</Text>
 
 			<InputText
 				onChangeText={setTitulo}
 				value={titulo}
-				placeholder="Titulo"
-				maxLength={20}
+				placeholder="Digite um titulo para da transação"
+				maxLength={15}
 				placeholderTextColor="#727272"
 			/>
 
@@ -124,29 +128,21 @@ export default function CadastroResgistro() {
 			/>
 
 			<InputSelect
-				value={cartao}
-				data={dataCartao}
-				placeholder="Cartão"
+				value={banco}
+				data={dataBanco}
+				placeholder="Selecione o banco"
 				placeholderTextColor="#727272"
-				labelField="nome"
-				valueField="numero"
+				labelField="banco"
+				valueField="id"
 				onChange={item => {
-					setCartao(item.numero)
+					setBanco(item.id)
 				}}
 			/>	
-
-			<InputText
-				onChangeText={adicionarPontuacaoDate}
-				value={data}
-				placeholder="Data"
-				keyboardType="numeric"
-				placeholderTextColor="#727272"
-			/>
 
 			<InputSelect
 				value={categoria}
 				data={dataCategoria}
-				placeholder="Categoria"
+				placeholder="Selecione a Categoria"
 				placeholderTextColor="#727272"
 				labelField="descricao"
 				valueField="codigo"

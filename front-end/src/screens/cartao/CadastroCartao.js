@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { InputSelect, MaskedInput } from '../../components/InputText';
+import { InputSelect, InputText, MaskedInput } from '../../components/InputText';
 import { Button } from '../../components/Button';
 
 import { useAuth } from '../../contexts/Auth';
@@ -34,8 +34,6 @@ export default function CadastroCartao() {
 
   // Retorna os dados dos selects
   useEffect(() => {
-    Alert.alert('Atenção!',
-      'Verifique e coloque as informações com cuidado, pois não será possivel realizar a alteração futuramente!');
 
     api.get(`/accounts/by-user/${authData.id}`)
     .then((response)=> setDataBanco(response.data))
@@ -59,7 +57,7 @@ export default function CadastroCartao() {
 
   async function cadastroCartao()
   {
-    if (numeroCartao != ""  && banco != "" && bandeira != "" && limite != "" && validade != "")
+    if (numeroCartao != ""  && banco != "" && bandeira != "" && limite != "" && validade != "" && nomeCartao !="")
     {
       const cartaoSemEspaco = numeroCartao.replace(/\D/g, '');
       const limiteSemFormatacao = limite.replace(/,00$/, "").replace(/\D/g, '');
@@ -71,7 +69,8 @@ export default function CadastroCartao() {
         validade: validade,
         limite: limiteSemFormatacao,
         numero: cartaoSemEspaco,
-        vencimento: vencimento
+        vencimento: vencimento,
+        nome: nomeCartao
       }
       ).then(function (response) {
         //Informa que o cadastro foi um sucesso e direciona para a pagina dos cartões
@@ -81,7 +80,8 @@ export default function CadastroCartao() {
       }).catch(function (error){
         //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
         Alert.alert(
-            'Cadastro não realizado!');
+            'Cadastro não realizado!',
+            'Tente novamente mais tarde!');
 
             console.log(error.toJSON());
       });
@@ -94,6 +94,14 @@ export default function CadastroCartao() {
   return(
     <View style={styles.container}>
       <Text style={styles.title}>NOVO CARTÃO DE CRÉDITO</Text>
+
+
+      <InputText
+        placeholder="Digite um apelido para o cartão"
+        placeholderTextColor="#727272"
+        value={nomeCartao}
+        onChangeText={setNomeCartao}
+      />
 
       <MaskedInput
         type="custom"
@@ -122,7 +130,7 @@ export default function CadastroCartao() {
       <InputSelect
         value={bandeira}
         data={dataBandeira}
-        placeholder="Bandeira"
+        placeholder="Selecione a bandeira do cartão"
         placeholderTextColor="#727272"
         labelField="descricao"
       	valueField="codigo"

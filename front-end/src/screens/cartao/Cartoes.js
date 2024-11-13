@@ -19,6 +19,7 @@ export default function Cartoes() {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
+      puxarCartoes();
       setRefreshing(false);
     }, 1000);
   }, []);
@@ -30,9 +31,9 @@ export default function Cartoes() {
   
 
   async function puxarCartoes() {
-    // await api.get(`/cards/${authData.id}`)
-    // .then((response)=> setCartoes(response.data))
-    // .catch((err)=>console.log(err));
+    await api.get(`/cards/by-user/${authData.id}`)
+    .then((response)=> setCartoes(response.data))
+    .catch((err)=>console.log(err));
   }
 
   return (
@@ -54,8 +55,7 @@ export default function Cartoes() {
                 key={index}
                 nomeCartao={cartao.nome}
                 numeroCartao={formatCardNumber(cartao.numero)}
-                validade={formatValidate(cartao.vencimento)}
-                cvv={cartao.cvv}
+                validade={cartao.validade} 
             />
           ))}
             

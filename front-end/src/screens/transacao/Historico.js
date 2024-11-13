@@ -63,11 +63,10 @@ export default function Historico() {
             {transacoes.map((transacao, index) => (
                 <CardRegistro 
                     key={index}
-                    tipoTransacao={transacao.tipoTranscao.codigo}
+                    //tipoTransacao={transacao.tipoTranscao.codigo}
                     titulo={transacao.titulo}
                     valor={transacao.valor}
-                    categoria={transacao.categoria.descricao}
-                    data={convertDateToFormFormat(transacao.dataTransacao)}
+                    categoria={transacao.categoria}
                 /> 
             ))}
         
