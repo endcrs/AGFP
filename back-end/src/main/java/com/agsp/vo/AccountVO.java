@@ -25,9 +25,7 @@ public record AccountVO(
 		BancoEnum banco,
 		
 		AccountOwnerVO usuario,
-		ZonedDateTime dataCriacao,
-		DominioVO bancoD
-		
+		ZonedDateTime dataCriacao		
 		
 		) {
 

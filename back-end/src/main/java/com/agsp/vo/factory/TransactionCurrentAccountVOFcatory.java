@@ -2,24 +2,23 @@ package com.agsp.vo.factory;
 
 import com.agsp.entity.TransationEntity;
 import com.agsp.vo.DominioVO;
-import com.agsp.vo.TransactionCurrentAccountVO;
+import com.agsp.vo.TransactionCurrentAccountResponseVO;
 
 public class TransactionCurrentAccountVOFcatory {
 
-	public static TransactionCurrentAccountVO convertToVO(TransationEntity t) {
+	public static TransactionCurrentAccountResponseVO convertToVO(TransationEntity t) {
 		
 		if(t != null) {
-			return TransactionCurrentAccountVO.builder()
+			return TransactionCurrentAccountResponseVO.builder()
 					.id(t.getId())
-					.categoria(t.getCategoria())
 					.status(t.getStatus())
 					.titulo(t.getTitulo())
 					.valor(t.getValorCompra())
-					.tipoTransacao(DominioVO.builder()
+					.tipo(DominioVO.builder()
 							.codigo(t.getTipo().name())
 							.descricao(t.getTipo().getDescricao())
 							.build())
-					.categoriaTransacao(DominioVO.builder()
+					.categoria(DominioVO.builder()
 							.codigo(t.getCategoria().name())
 							.descricao(t.getCategoria().getDescricao())
 							.build())

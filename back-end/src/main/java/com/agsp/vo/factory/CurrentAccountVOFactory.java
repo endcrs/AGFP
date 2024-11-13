@@ -19,6 +19,7 @@ public class CurrentAccountVOFactory {
 							.build())
 					.dataCriacao(account.getDataCadastro())
 					.banco(DominioVO.builder()
+							.id(null)
 							.codigo(account.getBanco().name())
 							.descricao(account.getBanco().getDescricao())
 							.build())

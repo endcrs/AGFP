@@ -2,7 +2,6 @@ package com.agsp.vo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 
 import com.agsp.enumerator.CategoriaEnum;
 import com.agsp.enumerator.StatusEnum;
@@ -39,7 +38,4 @@ public class TransactionCurrentAccountVO implements Serializable {
 //	@NotNull(message = "O preenchimento do campo tipo transação é obrigatório")
 	private TipoTransacaoEnum tipo;
 	
-	private ZonedDateTime dataTransacao;
-	private DominioVO tipoTransacao;
-	private DominioVO categoriaTransacao;
 }

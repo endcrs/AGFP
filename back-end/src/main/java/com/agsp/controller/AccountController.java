@@ -18,6 +18,7 @@ import com.agsp.vo.AccountUpdateVO;
 import com.agsp.vo.AccountVO;
 import com.agsp.vo.CategoriaListVO;
 import com.agsp.vo.SaldoAtualVO;
+import com.agsp.vo.TransactionCurrentAccountResponseVO;
 import com.agsp.vo.TransactionCurrentAccountVO;
 
 import jakarta.validation.Valid;
@@ -62,12 +63,12 @@ public class AccountController {
 	}
 	
 	@GetMapping(value = "/transactions/{accountId}")
-	public List<TransactionCurrentAccountVO> getTransactions (@PathVariable(value = "accountId") Long accountId) {
+	public List<TransactionCurrentAccountResponseVO> getTransactions (@PathVariable(value = "accountId") Long accountId) {
 		return accountTransactionService.getTransactions(accountId);
 	}
 	
 	@GetMapping(value = "/transactions/monthly/{accountId}")
-	public List<TransactionCurrentAccountVO> getMensalTransactions (@PathVariable(value = "accountId") Long accountId) {
+	public List<TransactionCurrentAccountResponseVO> getMensalTransactions (@PathVariable(value = "accountId") Long accountId) {
 		return accountTransactionService.getMensalTransactions(accountId);
 	}
 	

@@ -23,6 +23,7 @@ import com.agsp.repository.CurrentAccountRepository;
 import com.agsp.repository.TransactionRepository;
 import com.agsp.vo.CategoriaListVO;
 import com.agsp.vo.CategoriaVO;
+import com.agsp.vo.TransactionCurrentAccountResponseVO;
 import com.agsp.vo.TransactionCurrentAccountVO;
 import com.agsp.vo.factory.TransactionCurrentAccountVOFcatory;
 
@@ -132,12 +133,12 @@ public class AccountTransactionService {
 			throw new MsgException("Não foi possivel efectuar a compra valor da compra maior que saldo disponivel");
 	}
 	
-	public List<TransactionCurrentAccountVO> getTransactions(Long accountId) {
+	public List<TransactionCurrentAccountResponseVO> getTransactions(Long accountId) {
 		
 		List<TransationEntity> transactions = transactionRepository
 				.findByCurrentAccountIdAndTipoAndStatus(accountId, TipoTransacaoEnum.DESPESA, StatusEnum.ATIVO);
 		
-		List<TransactionCurrentAccountVO> vos = new ArrayList<>();
+		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
 			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
 		});
@@ -145,7 +146,7 @@ public class AccountTransactionService {
 		return vos;
 	}
 
-	public List<TransactionCurrentAccountVO> getMensalTransactions(Long accountId) {
+	public List<TransactionCurrentAccountResponseVO> getMensalTransactions(Long accountId) {
 		
 		ZonedDateTime dataFim = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 		
@@ -155,7 +156,7 @@ public class AccountTransactionService {
 				.findMensalTransactionByCurrentAccountIdAndTipoAndStatus
 				(accountId, TipoTransacaoEnum.DESPESA, StatusEnum.ATIVO, dataInicio, dataFim);
 		
-		List<TransactionCurrentAccountVO> vos = new ArrayList<>();
+		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
 			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
 		});
