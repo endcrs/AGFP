@@ -61,11 +61,11 @@ export default function Painel() {
   }
 
   async function puxarDadosFinanceiro(){
-      await api.get(`/usuarios/${authData.id}`)
+      await api.get(`/accounts/monthly-expenses/${authData.id}`)
         .then((response) => {
-          setSaldo(response.data.saldo);
-          setReceita(response.data.receita);
-          setDespesa(response.data.despesas);
+          setSaldo(response.data.saldoAtual);
+          setReceita(response.data.despesa);
+          setDespesa(response.data.receita);
           setLucro(response.data.lucro);
         }).catch((err)=>console.log(err));
     }

@@ -153,6 +153,7 @@ public class CreditCardService {
 					.numero(c.getNumero())
 					.nome(c.getNome())
 					.bandeira(c.getBandeira())
+					.validade(c.getValidade())
 					.limite(c.getLimite())
 					.vencimento(c.getVencimento())
 					.build());

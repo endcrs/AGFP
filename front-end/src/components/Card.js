@@ -2,7 +2,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CreditCard, { CARD_SIDE } from './CreditCard';
 import { formatValue } from "../utils/formatValue";
 import { useSharedValue } from "react-native-reanimated";
-import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 
 export default function CardRegistro({titulo, valor, categoria, data, tipoTransacao}){
     return(
