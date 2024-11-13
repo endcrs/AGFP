@@ -21,6 +21,7 @@ import com.agsp.repository.TransactionRepository;
 import com.agsp.repository.UserRepository;
 import com.agsp.util.Constantes;
 import com.agsp.vo.AccountOwnerVO;
+import com.agsp.vo.AccountResponseVO;
 import com.agsp.vo.AccountUpdateVO;
 import com.agsp.vo.AccountVO;
 import com.agsp.vo.SaldoAtualVO;
@@ -100,7 +101,7 @@ public class AccountService {
 //	}
 
 
-	public AccountVO getAccount(Long id) {
+	public AccountResponseVO getAccount(Long id) {
 		
 		CurrentAccountEntity account = getCurrentAccountEntity(id);
 		
@@ -118,12 +119,12 @@ public class AccountService {
 	}
 
 
-	public List<AccountVO> getAccounts(Long usuarioId) {
+	public List<AccountResponseVO> getAccounts(Long usuarioId) {
 		
 		List<CurrentAccountEntity> accounts = currentAccountRepository.findByUsuarioId(usuarioId);
 		
 		//melhorar isso depois 
-		List<AccountVO> vos = new ArrayList<>();
+		List<AccountResponseVO> vos = new ArrayList<>();
 		accounts.forEach(a -> {
 			vos.add(CurrentAccountVOFactory.toVO(a));
 		});

@@ -3,21 +3,25 @@ package com.agsp.vo.factory;
 import com.agsp.entity.CurrentAccountEntity;
 import com.agsp.entity.UserEntity;
 import com.agsp.vo.AccountOwnerVO;
-import com.agsp.vo.AccountVO;
+import com.agsp.vo.AccountResponseVO;
+import com.agsp.vo.DominioVO;
 
 public class CurrentAccountVOFactory {
 
-	public static AccountVO toVO(CurrentAccountEntity account) {
+	public static AccountResponseVO toVO(CurrentAccountEntity account) {
 		if(account != null) {
-			return AccountVO.builder()
+			return AccountResponseVO.builder()
 					.id(account.getId())
-					.banco(account.getBanco())
 					.saldo(account.getSaldo())
 					.usuario(AccountOwnerVO.builder()
 							.id(account.getUsuario().getId())
 							.nome(getFullName(account.getUsuario()))
 							.build())
 					.dataCriacao(account.getDataCadastro())
+					.banco(DominioVO.builder()
+							.codigo(account.getBanco().name())
+							.descricao(account.getBanco().getDescricao())
+							.build())
 					.build();
 		} return
 				null;

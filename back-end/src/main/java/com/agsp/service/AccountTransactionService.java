@@ -24,6 +24,7 @@ import com.agsp.repository.TransactionRepository;
 import com.agsp.vo.CategoriaListVO;
 import com.agsp.vo.CategoriaVO;
 import com.agsp.vo.TransactionCurrentAccountVO;
+import com.agsp.vo.factory.TransactionCurrentAccountVOFcatory;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -138,13 +139,7 @@ public class AccountTransactionService {
 		
 		List<TransactionCurrentAccountVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
-			vos.add(TransactionCurrentAccountVO.builder()
-					.id(t.getId())
-					.categoria(t.getCategoria())
-					.status(t.getStatus())
-					.titulo(t.getTitulo())
-					.valor(t.getValorCompra())
-					.build());
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
 		});
 		
 		return vos;
@@ -162,13 +157,7 @@ public class AccountTransactionService {
 		
 		List<TransactionCurrentAccountVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
-			vos.add(TransactionCurrentAccountVO.builder()
-					.id(t.getId())
-					.categoria(t.getCategoria())
-					.status(t.getStatus())
-					.titulo(t.getTitulo())
-					.valor(t.getValorCompra())
-					.build());
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
 		});
 		
 		return vos;

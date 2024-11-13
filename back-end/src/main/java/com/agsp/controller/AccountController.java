@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agsp.service.AccountService;
 import com.agsp.service.AccountTransactionService;
+import com.agsp.vo.AccountResponseVO;
 import com.agsp.vo.AccountUpdateVO;
 import com.agsp.vo.AccountVO;
 import com.agsp.vo.CategoriaListVO;
@@ -41,12 +42,12 @@ public class AccountController {
 	}
 		
 	@GetMapping(value = "/{id}")
-	public AccountVO createdAccount (@PathVariable(value = "id") Long id) {
+	public AccountResponseVO createdAccount (@PathVariable(value = "id") Long id) {
 		return accountService.getAccount(id);
 	}
 	
 	@GetMapping(value = "/by-user/{usuarioId}")
-	public List<AccountVO> getAccounts (@PathVariable(value = "usuarioId") Long usuarioId) {
+	public List<AccountResponseVO> getAccounts (@PathVariable(value = "usuarioId") Long usuarioId) {
 		return accountService.getAccounts(usuarioId);
 	}
 	
