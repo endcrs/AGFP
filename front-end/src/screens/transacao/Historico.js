@@ -1,11 +1,15 @@
-import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ButtonPlus } from '../components/Button';
-import CardRegistro from '../components/Card';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../contexts/Auth';
 import { useCallback, useEffect, useState } from 'react';
-import api from '../services/api';
-import { convertDateToFormFormat, formatDate } from '../utils/formatData';
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import { ButtonPlus } from '../../components/Button';
+import CardRegistro from '../../components/Card';
+import { useAuth } from '../../contexts/Auth';
+
+import api from '../../services/api';
+
+import { convertDateToFormFormat } from '../../utils/formatData';
+
 
 export default function Historico() {    
     const {authData} = useAuth();
@@ -19,25 +23,24 @@ export default function Historico() {
         setRefreshing(true);
         //atualização dos dados
         setTimeout(() => {
-
-            api.get(`transacoes/listar-todos?cpf=${authData.cpf}`)
-            .then((response) => {
-            const data = response.data.sort((a, b) => b.id - a.id)
-            setTransacoes(data)
-            }).catch((err)=>console.log(err));
-
-            setRefreshing(false);
+          puxarHistorico();
+          setRefreshing(false);
         }, 1000);
     }, []);
 
   // Retorna os dados que o usuário
-    useEffect(() => {
-        api.get(`transacoes/listar-todos?cpf=${authData.cpf}`)
-        .then((response) => {
-        const data = response.data.sort((a, b) => b.id - a.id)
-        setTransacoes(data)
-        }).catch((err)=>console.log(err));
-    }, []);
+  useEffect(() => {
+    puxarHistorico();
+  }, []);
+
+  async function puxarHistorico() {
+    await api.get(`transactions/${authData.id}`)
+      .then((response) => {
+      const data = response.data.sort((a, b) => b.id - a.id);
+      setTransacoes(data);
+      }).catch((err)=>console.log(err));
+  }
+
 
   return (
     <View style={styles.container}>
@@ -60,11 +63,10 @@ export default function Historico() {
             {transacoes.map((transacao, index) => (
                 <CardRegistro 
                     key={index}
-                    tipoTransacao={transacao.tipoTranscao.codigo}
+                    //tipoTransacao={transacao.tipoTranscao.codigo}
                     titulo={transacao.titulo}
                     valor={transacao.valor}
-                    categoria={transacao.categoria.descricao}
-                    data={convertDateToFormFormat(transacao.dataTransacao)}
+                    categoria={transacao.categoria}
                 /> 
             ))}
         
@@ -81,11 +83,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     alignItems: 'center',    
     padding: 10,
-  },
-  title: {
-    fontSize:22,
-    color: 'white',
-    fontWeight: 'bold',
   },
   cardTitle:{
     width: '95%',

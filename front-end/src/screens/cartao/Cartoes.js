@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View,RefreshControl } from 'react-native';
-import { ButtonPlus } from '../components/Button';
+import { ScrollView, StyleSheet, View,RefreshControl, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import api from '../services/api';
 
-import { CardCartao } from '../components/Card';
-import { useAuth } from '../contexts/Auth';
-import { formatCardNumber, formatValidate } from '../utils/formatCreditCard';
+import { ButtonPlus } from '../../components/Button';
+import { CardCartao } from '../../components/Card';
+
+import { useAuth } from '../../contexts/Auth';
+import api from '../../services/api';
+
+import { formatCardNumber, formatValidate } from '../../utils/formatCreditCard';
 
 export default function Cartoes() {
   const {authData} = useAuth();
@@ -16,28 +18,32 @@ export default function Cartoes() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    // Simular a atualização dos dados
     setTimeout(() => {
-      api.get('/cartoes?cpf=' + authData.cpf)
-        .then((response)=> setCartoes(response.data))
-        .catch((err)=>console.log(err));
+      puxarCartoes();
       setRefreshing(false);
     }, 1000);
   }, []);
 
   // Retorna os dados que o usuário
   useEffect(() => {
-      api.get('/cartoes?cpf=' + authData.cpf)
-      .then((response)=> setCartoes(response.data))
-      .catch((err)=>console.log(err));
+    puxarCartoes();
   }, []);
   
 
+  async function puxarCartoes() {
+    await api.get(`/cards/by-user/${authData.id}`)
+    .then((response)=> setCartoes(response.data))
+    .catch((err)=>console.log(err));
+  }
+
   return (
     <View style={styles.container}>
-      <ButtonPlus onPress={() => navigation.navigate('CadastroCartao')}/>
+      <View style={styles.cardTitle}>
+        <Text style={{color:'#fff', fontSize:20, fontWeight:'700'}}>CARTÕES</Text>
+        <ButtonPlus onPress={() => navigation.navigate('CadastroCartao')}/>
+      </View>
       
-      <View style={[styles.session, {height: '95%'}]}>
+      <View style={styles.session}>
         <ScrollView 
           vertical={true}
           refreshControl={
@@ -49,8 +55,7 @@ export default function Cartoes() {
                 key={index}
                 nomeCartao={cartao.nome}
                 numeroCartao={formatCardNumber(cartao.numero)}
-                validade={formatValidate(cartao.vencimento)}
-                cvv={cartao.cvv}
+                validade={cartao.validade} 
             />
           ))}
             
@@ -60,26 +65,29 @@ export default function Cartoes() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
     flex: 1,
     backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center',    
+    padding: 10,
   },
-  title: {
-    fontSize:22,
-    fontWeight: 'bold',
+  cardTitle:{
+    width: '95%',
+    height: 70,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection: 'row',
   },
   session: {
     backgroundColor:'#1f1f1f',
     width: '100%',
-    minHeight: 100,
-    height:'auto',
+    height:'90%',
     borderRadius: 10,
     marginTop: 10,
     marginBottom: 10,
     padding:10,
   },
 });
+

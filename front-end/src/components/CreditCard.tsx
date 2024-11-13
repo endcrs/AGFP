@@ -5,6 +5,7 @@ import Animated, { useAnimatedStyle, SharedValue, interpolate, withTiming } from
 type CreditCardProps = {
     cardSide: SharedValue<number>
     nomeCartao: string;
+    nomeUsuario: string;
     numeroCartao: string;
     validade: string;
     cvv: string;
@@ -16,7 +17,7 @@ export enum CARD_SIDE {
     back = 1,
 }
 
-export default function CreditCard({ cardSide, nomeCartao, numeroCartao, validade, cvv }: CreditCardProps){
+export default function CreditCard({ cardSide, nomeCartao, numeroCartao, validade }: CreditCardProps){
     // Animações do giro do cartão
     const frontAnimatedStyle = useAnimatedStyle(() => {
         const rotateValue = interpolate(cardSide.value, [CARD_SIDE.front, CARD_SIDE.back], [0, 180])
@@ -47,11 +48,11 @@ export default function CreditCard({ cardSide, nomeCartao, numeroCartao, validad
             <Animated.View style={[styles.card, styles.front, frontAnimatedStyle]}>
                 <View style={styles.header}>
                     <View style={[styles.circle, styles.logo]}/>
-                    <Text>Meu Cartão</Text>
+                    <Text>{nomeCartao}</Text>
                 </View>
 
                 <View style={styles.footer}>
-                    <Text>{nomeCartao}</Text>
+                    <Text></Text>
 
                     <View style={styles.flag}>
                         <View style={[styles.circle, styles.red]}/>
@@ -70,11 +71,6 @@ export default function CreditCard({ cardSide, nomeCartao, numeroCartao, validad
                     <View>
                         <Text style={styles.label}>Validade</Text>
                         <Text style={styles.value}>{validade}</Text>
-                    </View>
-
-                    <View>
-                        <Text style={styles.label}>CVV</Text>
-                        <Text style={styles.value}>{cvv}</Text>
                     </View>
                 </View>
             </Animated.View>

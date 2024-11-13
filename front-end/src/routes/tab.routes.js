@@ -2,13 +2,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 
-import Painel from '../screens/Painel';
-import Historico from '../screens/Historico';
-import Cartoes from '../screens/Cartoes';
-import CadastroResgistro from '../screens/CadastroRegistro';
-import CadastroCartao from '../screens/CadastroCartao';
+import Painel from '../screens/usuario/Painel';
+import Historico from '../screens/transacao/Historico';
+import Cartoes from '../screens/cartao/Cartoes';
+import CadastroResgistro from '../screens/transacao/CadastroRegistro';
+import CadastroCartao from '../screens/cartao/CadastroCartao';
 
-const Tab = createBottomTabNavigator()
+import Contas from '../screens/conta/Contas';
+import CadastroConta from '../screens/conta/CadastroConta';
+
+const Tab = createBottomTabNavigator();
 
 export default function TabRoutes(){
     return (
@@ -40,7 +43,17 @@ export default function TabRoutes(){
                     tabBarLabel: 'Histórico'
                 }}
             />
+
             <Tab.Screen 
+                name="ContasTab"
+                component={ContasNavigation}
+                options={{
+                    tabBarIcon: ({ color, size }) => <Ionicons name='wallet' color={color} size={size}/>,
+                    tabBarLabel: 'Contas'
+                }}
+            />
+
+            <Tab.Screen
                 name="CartoesTab"
                 component={CartaoNavigation}
                 options={{
@@ -48,6 +61,7 @@ export default function TabRoutes(){
                     tabBarLabel: 'Cartões'
                 }}
             />
+            
         </Tab.Navigator>
     )
 }
@@ -118,5 +132,31 @@ function CartaoNavigation() {
                 component={CadastroCartao}
             />
         </CartaoStack.Navigator>
+    )
+}
+
+/*Rotas stack da tela de contas bancarias*/
+
+const ContaStack = createNativeStackNavigator();
+
+function ContasNavigation() {
+    return(
+        <ContaStack.Navigator
+            initialRouteName='Contas'
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <ContaStack.Screen
+                name="Contas"
+                component={Contas}
+            />
+            <ContaStack.Screen
+                name="CadastroConta"
+                component={CadastroConta}
+            />
+
+
+        </ContaStack.Navigator>
     )
 }

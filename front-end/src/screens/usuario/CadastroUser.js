@@ -1,20 +1,24 @@
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-import logo from '../asset/logo.png';
-import { InputText } from "../components/InputText";
 import { useState } from "react";
-import { Button } from "../components/Button";
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import api from "../services/api";
-import { formatCPF } from "../utils/formatCPF";
-import { convertDateToAPIFormat, formatDate } from "../utils/formatData";
-import { formatPhoneNumber } from "../utils/formatPhone";
+
+import logo from '../../asset/logo.png';
+import { InputText, MaskedInput } from "../../components/InputText";
+import { Button } from "../../components/Button";
+
+import api from "../../services/api";
+
+import { formatCPF } from "../../utils/formatCPF";
+import { convertDateToAPIFormat, formatDate } from "../../utils/formatData";
+import { formatPhoneNumber } from "../../utils/formatPhone";
+
 
 export default function CadastroUser() {
   const navigation = useNavigation();
 
   /*Variaveis de acesso */
   const [nome, setNome] = useState('');
+  const [sobrenome, setSobrenome] = useState('');
   const [cpf, setCPF] = useState('');
   const [dataNasc, setDataNasc] = useState('');
   const [numCelular, setNumCelular] = useState('');
@@ -63,45 +67,41 @@ export default function CadastroUser() {
         //verificando as senha se estão iguais
         if(senha == confSenha){
             
-            //tirando as pontuções para enviar os dados para o banco
-            const cpfsemPontuacao = cpf.replace(/\D/g, '');
-            const numCelularSemPontuacao = numCelular.replace(/\D/g, '');
-            const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
+          //tirando as pontuções para enviar os dados para o banco
+          const cpfsemPontuacao = cpf.replace(/\D/g, '');
+          const numCelularSemPontuacao = numCelular.replace(/\D/g, '');
+          const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
             
-            //realizando cadastro na API
-            await api.post("/usuarios",
-                {
-                    nomeCompleto: nome,
-                    cpf: cpfsemPontuacao,
-                    dataNascimento: dataNascParaAPI,
-                    celular: numCelularSemPontuacao,
-                    saldo: 0,
-                    senha: senha,
-                    senhaConfirmada: confSenha,
-                }
-            ).then(function (response) {
-                //Informa que o cadastro foi um sucesso e direciona para a pagina de login
-                Alert.alert('Cadastro realizado com sucesso!');
-                navigation.goBack();
-            }).catch(function (error){
-                //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
-                Alert.alert(
-                    'Cadastro não realizado!',
-                    error.response.headers.mensagem);
-					
-					console.log(error.response);
+          //realizando cadastro na API
+          await api.post("/users",
+            {
+              nome: nome,
+              sobrenome: sobrenome,
+              cpf: cpfsemPontuacao,
+              dataNascimento: dataNascParaAPI,
+              celular: numCelularSemPontuacao,
+              senha: senha,
+            }
+          ).then(function (response) {
+            //Informa que o cadastro foi um sucesso e direciona para a pagina de login
+            Alert.alert('Cadastro realizado com sucesso!');
+            navigation.goBack();
+          }).catch(function (error){
+            //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
+            Alert.alert(
+            'Cadastro não realizado!',
+            'Tente novamente mais tarde!');
+      
+            console.log(error.response);
 
-
-            });
+          });
         }else{
-            Alert.alert('Cadastro não realizado!',"Senha e a confirmação de senha precisam ser iguais!")
+          Alert.alert('Cadastro não realizado!',"Senha e a confirmação de senha precisam ser iguais!")
         }
 
     }else{
       Alert.alert('Cadastro não realizado!',"Nenhuma caixa pode está vazia!");
     }
-
-
 
   }
 
@@ -121,27 +121,46 @@ export default function CadastroUser() {
       />
 
       <InputText
-        onChangeText={adicionarPontuacaoCpf}
-        value={cpf}
-        maxLength={14}    
-        placeholder="CPF"
-        keyboardType="numeric"
+        onChangeText={setSobrenome}
+        value={sobrenome}
+        placeholder="Sobrenome"
         placeholderTextColor="#727272"
       />
 
-      <InputText
-        onChangeText={adicionarPontuacaoDateNasc}
-        value={dataNasc}
-        placeholder="DD/MM/AAAA"
+      <MaskedInput
+        type={'cpf'}
+        onChangeText={text => setCPF(text)}
+        value={cpf}
+        placeholder="CPF"    
         keyboardType="numeric"
-        placeholderTextColor="#727272"
+        placeholderTextColor={'#727272'}
       />
-      <InputText
-        onChangeText={adicionarPontuacaoPhone}
-        value={numCelular}
-        placeholder="xx xxxx-xxxx"
-        maxLength={15}
+
+      <MaskedInput
+        type="datetime"
+        value={dataNasc}
+        onChangeText={setDataNasc}
+        options={{
+          format: 'DD/MM/YYYY'
+        }}
+        placeholder="Data Nascimento"
         keyboardType="numeric"
+        color={color}
+        editable={isEditable}
+      />
+
+      <MaskedInput
+        type="cel-phone"
+        value={numCelular}
+        onChangeText={setNumCelular}
+        placeholder="xx xxxx-xxxx"
+        keyboardType="numeric"
+        options={{
+          maskType: 'BRL',
+          withDDD: true,
+          dddMask: '(99) '
+        }}
+        
         placeholderTextColor="#727272"
       />
 
@@ -179,16 +198,16 @@ export default function CadastroUser() {
 
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#000',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    spam: {
-      fontSize: 15,
-      color: "#9F9898",
-      fontWeight: '500',
-      textDecorationLine: 'underline',
-    }
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spam: {
+    fontSize: 15,
+    color: "#9F9898",
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+  }
+});

@@ -1,13 +1,15 @@
-import { Image, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
-
-import logo from '../asset/logo.png';
-
 import { useState } from 'react';
-import { Button } from '../components/Button.js';
-import { InputText } from '../components/InputText.js';
-import { useAuth } from '../contexts/Auth';
+import { Image, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { formatCPF } from '../utils/formatCPF';
+
+import logo from '../../asset/logo.png';
+import { Button } from '../../components/Button.js';
+import { InputText, MaskedInput } from '../../components/InputText.js';
+
+import { useAuth } from '../../contexts/Auth';
+
+import { formatCPF } from '../../utils/formatCPF';
+
 
 export default function Login() {
   const navigation = useNavigation();
@@ -16,12 +18,6 @@ export default function Login() {
   
   const [cpf, setCPF] = useState('');
   const [senha, setSenha] = useState('');
-
-  //adicionando pontuação ao CPF
-  const adicionarPontuacao = (text) => {
-    const formattedCPF = formatCPF(text);
-    setCPF(formattedCPF);
-  }
 
   //tirando pontuação ao CPF para realizar o acesso a aplicação
   const login = () =>{
@@ -37,13 +33,14 @@ export default function Login() {
         source={logo}
         style={{width: 180, height: 180, marginBottom: 30,}}
       />
-      <InputText
-        onChangeText={adicionarPontuacao}
+
+      <MaskedInput
+        type={'cpf'}
+        onChangeText={text => setCPF(text)}
         value={cpf}
-        placeholder="CPF"
-        maxLength={14}        
+        placeholder="CPF"    
         keyboardType="numeric"
-        placeholderTextColor="#727272"
+        placeholderTextColor={'#727272'}
       />
 
       <InputText
@@ -69,6 +66,7 @@ export default function Login() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

@@ -1,14 +1,17 @@
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, FlatList, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import CircularProgress from 'react-native-circular-progress-indicator';
-
-import { ButtonPlus } from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
-import CardRegistro from '../components/Card';
-import { useAuth } from '../contexts/Auth';
-import { useCallback, useEffect, useState } from 'react';
-import api from '../services/api';
-import { convertDateToFormFormat } from '../utils/formatData';
-import { formatValue } from '../utils/formatValue';
+
+import { ButtonPlus } from '../../components/Button';
+import CardRegistro from '../../components/Card';
+
+import { useAuth } from '../../contexts/Auth';
+import api from '../../services/api';
+
+import { convertDateToFormFormat } from '../../utils/formatData';
+import { formatValue } from '../../utils/formatValue';
+
 
 export default function Painel() {
   const {authData} = useAuth();
@@ -43,7 +46,7 @@ export default function Painel() {
   }, []);
 
   async function puxarTransacoesMensais(){
-      await api.get(`/transacoes/mensais?cpf=${authData.cpf}`)
+      await api.get(`/accounts/transactions/monthly/${authData.id}`)
             .then((response) => {
               const data = response.data.sort((a, b) => b.id - a.id)
               setTransacoes(data)
@@ -51,18 +54,18 @@ export default function Painel() {
   }
 
   async function puxarCategorias(){
-      await api.get(`/transacoes/listar-percentagem-gasto-categoria?cpf=${authData.cpf}`)
+      await api.get(`/accounts/transactions/percentage-spent-by-category/${authData.cpf}`)
         .then((response) => {
           setCategoria(response.data)
         }).catch((err)=>console.log(err));
   }
 
   async function puxarDadosFinanceiro(){
-      await api.get(`/usuarios/${authData.token}`)
+      await api.get(`/accounts/monthly-expenses/${authData.id}`)
         .then((response) => {
-          setSaldo(response.data.saldo);
-          setReceita(response.data.receita);
-          setDespesa(response.data.despesas);
+          setSaldo(response.data.saldoAtual);
+          setReceita(response.data.despesa);
+          setDespesa(response.data.receita);
           setLucro(response.data.lucro);
         }).catch((err)=>console.log(err));
     }
@@ -109,85 +112,86 @@ export default function Painel() {
 
   return (
 
-      <View style={styles.container}>
-        {/*Sessão Valores*/}
+    <View style={styles.container}>
+      {/*Sessão Valores*/}
 
-        <ScrollView
-          style={styles.scrollView}
-          vertical={true}
-          refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.session}>
-            <ScrollView  horizontal={true} >
-                <View style={[styles.cardValor, {backgroundColor:'#5100ff'}]} >
-                  <Text style={styles.itemValor}>Saldo</Text>
-                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(saldo)}</Text>
-                </View>
+      <ScrollView
+        style={styles.scrollView}
+        vertical={true}
+        refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={styles.session}>
+          <ScrollView  horizontal={true} >
+              <View style={[styles.cardValor, {backgroundColor:'#5100ff'}]} >
+                <Text style={styles.itemValor}>Saldo</Text>
+                <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(saldo)}</Text>
+              </View>
 
-                <View style={[styles.cardValor, {backgroundColor:'#0093D1'}]} >
-                  <Text style={styles.itemValor}>Receita</Text>
-                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(receita)}</Text>
-                </View>
-                
-                <View style={[styles.cardValor, {backgroundColor:'#FF0000'}]}>
-                  <Text style={styles.itemValor}>Despesa</Text>
-                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(despesa)}</Text>
-                </View>
-
-                <View style={[styles.cardValor, {backgroundColor:'#00d649'}]}>
-                  <Text style={styles.itemValor}>Lucro</Text>
-                  <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(lucro)}</Text>
-                </View>
-            </ScrollView>
-          </View>
-
-          {/*Sessão Categorias*/}
-          <View style={styles.session}>
-            <ScrollView horizontal={true}>
+              <View style={[styles.cardValor, {backgroundColor:'#0093D1'}]} >
+                <Text style={styles.itemValor}>Receita</Text>
+                <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(receita)}</Text>
+              </View>
               
-                {Object.entries(categoria).map(([categoria, {percentagem}]) => (
-                  <View kay={categoria} style={styles.CardCategoria}>
-                    <CircularProgress 
-                      activeStrokeColor={obterCorPorCategoria(categoria)}
-                      value={Math.round(percentagem)}
-                      valueSuffix={'%'}
-                    />
-                    <Text style={styles.textCategoria}>{formatarTextoCategoria(categoria) }</Text>  
-                    </View>
-                ))}
-                
-            </ScrollView>
+              <View style={[styles.cardValor, {backgroundColor:'#FF0000'}]}>
+                <Text style={styles.itemValor}>Despesa</Text>
+                <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(despesa)}</Text>
+              </View>
+
+              <View style={[styles.cardValor, {backgroundColor:'#00d649'}]}>
+                <Text style={styles.itemValor}>Lucro</Text>
+                <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(lucro)}</Text>
+              </View>
+          </ScrollView>
+        </View>
+
+        {/*Sessão Categorias*/}
+        <View style={styles.session}>
+          <ScrollView horizontal={true}>
             
-          </View>
-        </ScrollView>
-
-
-        {/*Sessão Gastos recentes */}
-
-        <View style={[styles.session, {height: '49%'}]}>
-          <View style={styles.titleCard}>
-            <Text style={{color:'#fff', fontSize:18, fontWeight:'700'}}>GASTOS RECENTES</Text>
-            <ButtonPlus onPress={() => navigation.navigate('CadastroRegistro')}/>
-          </View>
-
-          <FlatList
-            data={transacoes}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-                <CardRegistro
-                  tipoTransacao={item.tipoTranscao.codigo}
-                  titulo={item.titulo}
-                  valor={item.valor}
-                  categoria={item.categoria.descricao}
-                  data={convertDateToFormFormat(item.dataTransacao)}
-                /> 
-            )}
-          />
+              {Object.entries(categoria).map(([categoria, {percentagem}]) => (
+                <View kay={categoria} style={styles.CardCategoria}> 
+                  <CircularProgress 
+                    activeStrokeColor={obterCorPorCategoria(categoria)}
+                    value={Math.round(percentagem)}
+                    valueSuffix={'%'}
+                  />
+                  <Text style={styles.textCategoria}>{formatarTextoCategoria(categoria) }</Text>  
+                </View>
+              ))
+              }
+              
+          </ScrollView>
           
         </View>
+      </ScrollView>
+
+
+      {/*Sessão Gastos recentes */}
+
+      <View style={[styles.session, {height: '49%'}]}>
+        <View style={styles.titleCard}>
+          <Text style={{color:'#fff', fontSize:18, fontWeight:'700'}}>GASTOS RECENTES</Text>
+          <ButtonPlus onPress={() => navigation.navigate('CadastroRegistro')}/>
+        </View>
+
+        <FlatList
+          data={transacoes}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <CardRegistro
+              tipoTransacao={item.tipoTranscao.codigo}
+              titulo={item.titulo}
+              valor={item.valor}
+              categoria={item.categoria.descricao}
+              data={convertDateToFormFormat(item.dataTransacao)}
+            /> 
+          )}
+        />
+        
       </View>
+    </View>
   );
 }
 

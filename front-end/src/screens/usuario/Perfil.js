@@ -1,22 +1,28 @@
-import { Alert, StyleSheet, Text, View } from 'react-native';
-import { Button } from '../components/Button';
-import { useAuth } from '../contexts/Auth';
-import { InputText } from '../components/InputText';
 import { useEffect, useState } from 'react';
-import { formatCPF } from '../utils/formatCPF';
-import { convertDateToAPIFormat, convertDateToFormFormat, formatDate } from '../utils/formatData';
-import { formatPhoneNumber } from '../utils/formatPhone';
-import api from '../services/api';
+import { Alert, StyleSheet, Text, View } from 'react-native';
+
+import { Button } from '../../components/Button';
+import { useAuth } from '../../contexts/Auth';
+import { InputText, MaskedInput } from '../../components/InputText';
+
+import api from '../../services/api';
+
+import { formatCPF } from '../../utils/formatCPF';
+import { convertDateToAPIFormat, convertDateToFormFormat, formatDate } from '../../utils/formatData';
+import { formatPhoneNumber } from '../../utils/formatPhone';
+
+
+
 
 export default function Perfil() {
   //Hook para signout
   const {signOut, authData} = useAuth();
 
   const [nome, setNome] = useState('');
+  const [sobrenome, setSobrenome] = useState('');
   const [cpf, setCPF] = useState('');
   const [dataNasc, setDataNasc] = useState('');
   const [numCelular, setNumCelular] = useState(''); 
-  const [saldo, setSaldo] = useState(''); 
   
   
   const [previousText, setPreviousText] = useState('');
@@ -24,29 +30,7 @@ export default function Perfil() {
   const [btnEditar, setBtnEditar] = useState('Editar');
   const [color, setColor] = useState('#727272');
   
-
-  //puxando os dados do usuário
-  useEffect(() => {
-    //puxando os dados do usuário assim que a pagina é acionada
-    puxarUsuario();
-  }, []);
-
-  	//puxando os dados do usuário
-	async function puxarUsuario() {
-		await api.get(`/usuarios/${authData.token}`)
-		.then(function (response){
-			setNome(response.data.nomeCompleto),
-			adicionarPontuacaoCpf(response.data.cpf),
-			formataDataNascForm(response.data.dataNascimento),
-			adicionarPontuacaoPhone(response.data.celular),
-			setSaldo(response.data.saldo)
-		}).catch(function (error){
-			//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
-			//Alert.alert('Erro ao Puxar usuário!', 'usuário não encontrado');
-		});
-  	}
-
-
+  
   //adiciona pontuação ao Cpf
   const adicionarPontuacaoCpf = (text) => {
     const formattedCPF = formatCPF(text);
@@ -65,19 +49,41 @@ export default function Perfil() {
 	adicionarPontuacaoDateNasc(formatToform);
   }
 
+  //puxando os dados do usuário
+  useEffect(() => {
+    //puxando os dados do usuário assim que a pagina é acionada
+    puxarUsuario();
+  }, []);
+
+  //puxando os dados do usuário
+	async function puxarUsuario() {
+		await api.get(`/users/${authData.id}`)
+		.then(function (response){
+			setNome(response.data.nome),
+      setSobrenome(response.data.sobrenome),
+			setCPF(response.data.cpf),
+			formataDataNascForm(response.data.dataNascimento),
+			setNumCelular(response.data.celular)
+		}).catch(function (error){
+			//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
+			Alert.alert('Erro ao Puxar usuário!', 'usuário não encontrado');
+		});
+  }
+
+
+
   //adiciona pontuações numero do cliente
   const adicionarPontuacaoPhone = (text) => {
-      const formattedPhone = formatPhoneNumber(text);
-
-      if (text.length < previousText.length) {
-          // mantendo o texto sem formatação formatação
-          setNumCelular(text);
-      } else {
-          // setando o numero formatato na caixa de texto
-          setNumCelular(formattedPhone);
-      }
-      // mantendo o valor do campo, ao tentar excluir o número
-      setPreviousText(text);
+    const formattedPhone = formatPhoneNumber(text);
+    if (text.length < previousText.length) {
+        // mantendo o texto sem formatação formatação
+        setNumCelular(text);
+    } else {
+        // setando o numero formatato na caixa de texto
+        setNumCelular(formattedPhone);
+    }
+    // mantendo o valor do campo, ao tentar excluir o número
+    setPreviousText(text);
   }
 
 
@@ -97,17 +103,17 @@ export default function Perfil() {
 		const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
 		
       // Atualizando o usuário
-	  await api.put('usuarios',
+	  await api.put('/users',
 		{
-			id: authData.token,
-			nomeCompleto: nome,
+			id: authData.id,
+			nome: nome,
+      sobrenome: sobrenome,
 			dataNascimento: dataNascParaAPI,
 			celular: numCelularSemPontuacao,
-			saldo: 0,
 		}
 
 	  ).then(function (response) {
-		//Informa que o cadastro foi um sucesso e direciona para a pagina de login
+		//Informa que a atualização foi realizada com sucesso e altera o botão para o status principal
 			Alert.alert('Atualização realizada com sucesso!');
 			puxarUsuario();
 			setBtnEditar('Editar');
@@ -128,13 +134,14 @@ export default function Perfil() {
     puxarUsuario();
     setBtnEditar('Editar');
     setColor('#727272');
-	setIsEditable(false);
+	  setIsEditable(false);
   }
 
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Meu Perfil</Text>
+
       <InputText
         onChangeText={setNome}
         value={nome}
@@ -144,29 +151,50 @@ export default function Perfil() {
       />
 
       <InputText
-        onChangeText={adicionarPontuacaoCpf}
+        onChangeText={setSobrenome}
+        value={sobrenome}
+        placeholder="Sobrenome"
+        color={color}
+        editable={isEditable}
+      />
+
+      <MaskedInput
+        type={'cpf'}
+        onChangeText={text => setCPF(text)}
         value={cpf}
         placeholder="CPF"
         color={'#727272'}
         editable={false}
       />
       
-      <InputText
-        onChangeText={adicionarPontuacaoDateNasc}
+      <MaskedInput
+        type="datetime"
         value={dataNasc}
+        onChangeText={setDataNasc}
+        options={{
+          format: 'DD/MM/YYYY'
+        }}
         placeholder="Data Nascimento"
         keyboardType="numeric"
         color={color}
         editable={isEditable}
       />
-      <InputText
-        onChangeText={adicionarPontuacaoPhone}
+
+      <MaskedInput
+        type="cel-phone"
         value={numCelular}
+        onChangeText={setNumCelular}
         placeholder="Celular"
         keyboardType="numeric"
+        options={{
+          maskType: 'BRL',
+          withDDD: true,
+          dddMask: '(99) '
+        }}
         color={color}
         editable={isEditable}
       />
+
       <View style={styles.containerBtn}>
         <Button style={{width:120}} title={btnEditar} onPress={() => editarUsuario() } />
 
