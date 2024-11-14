@@ -27,7 +27,7 @@ export default function Contas() {
 
   useEffect(() => {
     puxarContasPorUsuario();
-  })
+  });
 
   //Buscando contas do usuário logado
   async function puxarContasPorUsuario() {
@@ -50,13 +50,13 @@ export default function Contas() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           >
-          {contas.map((conta, index) => (
-            <CardConta
-              key={index}
-              banco={conta.banco}
+           {contas.map((conta, index) => (
+            <CardConta   
+            key={index}
+              banco={conta.banco.descricao}
               saldo={conta.saldo}
-            />
-          ))
+             />
+           ))
 
           }
             

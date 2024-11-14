@@ -120,7 +120,7 @@ export default function CadastroCartao() {
         placeholder="Selecione o banco referente ao cartão"
         placeholderTextColor="#727272"
         value={banco}
-        labelField="banco"
+        labelField="banco.descricao"
       	valueField="id"
         onChange={item => {
           setBanco(item.id)

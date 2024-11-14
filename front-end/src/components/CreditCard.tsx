@@ -80,8 +80,8 @@ export default function CreditCard({ cardSide, nomeCartao, numeroCartao, validad
 
 const styles = StyleSheet.create({
     card: {
-        width: "100%",
-        height: 200,
+        width: 325,
+        height: 180,
         borderRadius: 12,
         padding: 24,
         justifyContent: "space-between"

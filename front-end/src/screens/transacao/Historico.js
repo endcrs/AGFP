@@ -31,7 +31,7 @@ export default function Historico() {
   // Retorna os dados que o usuário
   useEffect(() => {
     puxarHistorico();
-  }, []);
+  });
 
   async function puxarHistorico() {
     await api.get(`transactions/${authData.id}`)
