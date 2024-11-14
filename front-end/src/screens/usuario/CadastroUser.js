@@ -145,15 +145,14 @@ export default function CadastroUser() {
         }}
         placeholder="Data Nascimento"
         keyboardType="numeric"
-        color={color}
-        editable={isEditable}
+        placeholderTextColor={'#727272'}
       />
 
       <MaskedInput
         type="cel-phone"
         value={numCelular}
         onChangeText={setNumCelular}
-        placeholder="xx xxxx-xxxx"
+        placeholder="11 94002-8922"
         keyboardType="numeric"
         options={{
           maskType: 'BRL',

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Button } from '../../components/Button';
 import { useAuth } from '../../contexts/Auth';
@@ -11,7 +11,7 @@ import { formatCPF } from '../../utils/formatCPF';
 import { convertDateToAPIFormat, convertDateToFormFormat, formatDate } from '../../utils/formatData';
 import { formatPhoneNumber } from '../../utils/formatPhone';
 
-
+import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 
 
 export default function Perfil() {
@@ -45,8 +45,8 @@ export default function Perfil() {
   
   //formada data vinda da API para ser adicionada ao form
   const formataDataNascForm = (text) => {
-	const formatToform = convertDateToFormFormat(text);
-	adicionarPontuacaoDateNasc(formatToform);
+	  const formatToform = convertDateToFormFormat(text);
+	  adicionarPontuacaoDateNasc(formatToform);
   }
 
   //puxando os dados do usuário
@@ -98,35 +98,35 @@ export default function Perfil() {
     
     //quando o botão foi igual a atualizar, será ser realizado a atualização no banco e depois alterado novamente para bloquear as paginas
     if(btnEditar == 'Atualizar'){
-		//tirando as pontuações dos campos
-		const numCelularSemPontuacao = numCelular.replace(/\D/g, '');
-		const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
-		
-      // Atualizando o usuário
-	  await api.put('/users',
-		{
-			id: authData.id,
-			nome: nome,
-      sobrenome: sobrenome,
-			dataNascimento: dataNascParaAPI,
-			celular: numCelularSemPontuacao,
-		}
+      //tirando as pontuações dos campos
+      const numCelularSemPontuacao = numCelular.replace(/\D/g, '');
+      const dataNascParaAPI = convertDateToAPIFormat(dataNasc);
+      
+        // Atualizando o usuário
+      await api.put('/users',
+      {
+        id: authData.id,
+        nome: nome,
+        sobrenome: sobrenome,
+        dataNascimento: dataNascParaAPI,
+        celular: numCelularSemPontuacao,
+      }
 
-	  ).then(function (response) {
-		//Informa que a atualização foi realizada com sucesso e altera o botão para o status principal
-			Alert.alert('Atualização realizada com sucesso!');
-			puxarUsuario();
-			setBtnEditar('Editar');
-			setColor('#727272');
-			setIsEditable(false);
-		}).catch(function (error){
-			//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
-			Alert.alert(
-				'Atualização não realizada!', 'Não foi possivel atualizar o usuário, tente novamente');
-		});
-		
-    }
+      ).then(function (response) {
+      //Informa que a atualização foi realizada com sucesso e altera o botão para o status principal
+        Alert.alert('Atualização realizada com sucesso!');
+        puxarUsuario();
+        setBtnEditar('Editar');
+        setColor('#727272');
+        setIsEditable(false);
+      }).catch(function (error){
+        //caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
+        Alert.alert(
+          'Atualização não realizada!', 'Não foi possivel atualizar o usuário, tente novamente');
+      });
     
+    }
+      
   }
 
   //cancelando a atualização
@@ -140,71 +140,76 @@ export default function Perfil() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Meu Perfil</Text>
-
-      <InputText
-        onChangeText={setNome}
-        value={nome}
-        placeholder="Nome"
-        color={color}
-        editable={isEditable}
-      />
-
-      <InputText
-        onChangeText={setSobrenome}
-        value={sobrenome}
-        placeholder="Sobrenome"
-        color={color}
-        editable={isEditable}
-      />
-
-      <MaskedInput
-        type={'cpf'}
-        onChangeText={text => setCPF(text)}
-        value={cpf}
-        placeholder="CPF"
-        color={'#727272'}
-        editable={false}
-      />
       
-      <MaskedInput
-        type="datetime"
-        value={dataNasc}
-        onChangeText={setDataNasc}
-        options={{
-          format: 'DD/MM/YYYY'
-        }}
-        placeholder="Data Nascimento"
-        keyboardType="numeric"
-        color={color}
-        editable={isEditable}
-      />
+      <TouchableOpacity style={{ width:'30', marginLeft:'auto', marginRight:'16', marginBottom:'100'}} onPress={() => signOut() }>
+        <Entypo  name='log-out' color={'#008420ff'} size={32}/>
+      </TouchableOpacity>
 
-      <MaskedInput
-        type="cel-phone"
-        value={numCelular}
-        onChangeText={setNumCelular}
-        placeholder="Celular"
-        keyboardType="numeric"
-        options={{
-          maskType: 'BRL',
-          withDDD: true,
-          dddMask: '(99) '
-        }}
-        color={color}
-        editable={isEditable}
-      />
+      <View style={styles.containerForm}>
+        <Text style={styles.title}>Meu Perfil</Text>
 
-      <View style={styles.containerBtn}>
-        <Button style={{width:120}} title={btnEditar} onPress={() => editarUsuario() } />
+        <InputText
+          onChangeText={setNome}
+          value={nome}
+          placeholder="Nome"
+          color={color}
+          editable={isEditable}
+        />
 
-        {btnEditar == 'Atualizar' ? (
-            <Button style={{backgroundColor:'red', width:120}}  title='Cancelar' onPress={() => cancelarAtualizarcao() } />
-          ) : ( null )
-        }
+        <InputText
+          onChangeText={setSobrenome}
+          value={sobrenome}
+          placeholder="Sobrenome"
+          color={color}
+          editable={isEditable}
+        />
+
+        <MaskedInput
+          type={'cpf'}
+          onChangeText={text => setCPF(text)}
+          value={cpf}
+          placeholder="CPF"
+          color={'#727272'}
+          editable={false}
+        />
+        
+        <MaskedInput
+          type="datetime"
+          value={dataNasc}
+          onChangeText={setDataNasc}
+          options={{
+            format: 'DD/MM/YYYY'
+          }}
+          placeholder="Data Nascimento"
+          keyboardType="numeric"
+          color={color}
+          editable={isEditable}
+        />
+
+        <MaskedInput
+          type="cel-phone"
+          value={numCelular}
+          onChangeText={setNumCelular}
+          placeholder="Celular"
+          keyboardType="numeric"
+          options={{
+            maskType: 'BRL',
+            withDDD: true,
+            dddMask: '(99) '
+          }}
+          color={color}
+          editable={isEditable}
+        />
+
+        <View style={styles.containerBtn}>
+          <Button style={{width:120}} title={btnEditar} onPress={() => editarUsuario() } />
+
+          {btnEditar == 'Atualizar' ? (
+              <Button style={{backgroundColor:'red', width:120}}  title='Cancelar' onPress={() => cancelarAtualizarcao() } />
+            ) : ( null )
+          }
+        </View>
       </View>
-      
-      <Button style={{backgroundColor:'red', marginTop: 100}} title='Sair do App' onPress={() => signOut() } />
     </View>
   );
 }
@@ -213,6 +218,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+  },
+  containerForm: {
+    width:'100%',
     alignItems: 'center',
     justifyContent: 'center',
   },

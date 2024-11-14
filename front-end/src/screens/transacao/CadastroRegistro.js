@@ -56,9 +56,9 @@ export default function CadastroResgistro() {
 	{
 		if (titulo != "" && valor != "" && categoria != "" && banco != "")
 		{
-			const valorSemFormatacao =  limite.replace(/,00$/, "").replace(/\D/g, '');;
-
-			//realizando cadastro na API
+			const valorSemFormatacao =  valor.replace(/,00$/, "").replace(/\D/g, '');;
+			console.log(tipoTransacao);
+			// //realizando cadastro na API
 			await api.post("/accounts/transactions",
 				{
 					titulo: titulo,
@@ -132,7 +132,7 @@ export default function CadastroResgistro() {
 				data={dataBanco}
 				placeholder="Selecione o banco"
 				placeholderTextColor="#727272"
-				labelField="banco"
+				labelField="banco.descricao"
 				valueField="id"
 				onChange={item => {
 					setBanco(item.id)

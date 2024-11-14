@@ -3,6 +3,8 @@ import CreditCard, { CARD_SIDE } from './CreditCard';
 import { formatValue } from "../utils/formatValue";
 import { useSharedValue } from "react-native-reanimated";
 
+import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
+
 export default function CardRegistro({titulo, valor, categoria, data, tipoTransacao}){
     return(
         <View style={styles.cardRegistro}>
@@ -31,7 +33,6 @@ export function CardCartao({nomeCartao, numeroCartao, validade, cvv}){
   }
 
   function handleFlipCard(){
-    console.log(cardSide.value)
     if(cardSide.value === CARD_SIDE.front){
       showBackCard()
     }else{
@@ -40,19 +41,19 @@ export function CardCartao({nomeCartao, numeroCartao, validade, cvv}){
   }
 
   return(
-    <View>
-      <CreditCard 
-        cardSide={cardSide}
-        nomeCartao={nomeCartao}
-        numeroCartao={numeroCartao}
-        validade={validade}
-        cvv={cvv}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleFlipCard}>
-        <View style={styles.buttonView}>
-          <Text style={{color: "#FFF", fontSize: 16,}}>Inverter</Text>
-        </View>
-      </TouchableOpacity>
+    <View style={styles.cardWrapper}>
+      <View>
+        <CreditCard 
+          cardSide={cardSide}
+          nomeCartao={nomeCartao}
+          numeroCartao={numeroCartao}
+          validade={validade}
+          />
+        <TouchableOpacity style={styles.button} onPress={handleFlipCard}>
+          <Ionicons name='refresh-outline' color={'#black'} size={26} /> 
+        </TouchableOpacity>
+
+      </View>
     </View>
   )
 }
@@ -76,13 +77,14 @@ const styles = StyleSheet.create({
     height: 'auto',
     borderRadius: 10,
     marginTop: 10,
+    alignItems:'center',
+    justifyContent:'space-evenly',
     backgroundColor: '#474747',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
     flexDirection: 'row',
   },
   itemRegistro:{
-    width: 90,
+    maxWidth: 90,
+    marginLeft: 5,
     height:'auto',
     fontSize: 14,
     fontWeight: 'bold',
@@ -90,10 +92,23 @@ const styles = StyleSheet.create({
     textAlign:'center',
     flexWrap: 'wrap',
   },
+  cardWrapper: {
+    margin:'10',
+    alignItems: 'center',
+  },
+  cardItem:{
+    backgroundColor:'black',
+    width:'195',
+    marginLeft:'1',
+    alignItems: 'center',
+  },
+  
   button: {
+    width:'26',
+    borderRadius:'50%',
     alignItems: "center",
-    marginBottom: 24,
-    marginTop: -10
+    marginTop: -10,
+    backgroundColor:'#02a128'
   },
   buttonView: {
     backgroundColor: "#727272",

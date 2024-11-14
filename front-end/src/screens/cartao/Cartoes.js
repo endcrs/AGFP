@@ -27,7 +27,7 @@ export default function Cartoes() {
   // Retorna os dados que o usuário
   useEffect(() => {
     puxarCartoes();
-  }, []);
+  });
   
 
   async function puxarCartoes() {

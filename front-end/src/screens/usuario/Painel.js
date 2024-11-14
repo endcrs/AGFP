@@ -181,11 +181,10 @@ export default function Painel() {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <CardRegistro
-              tipoTransacao={item.tipoTranscao.codigo}
+              //tipoTransacao={item.tipoTranscao.codigo}
               titulo={item.titulo}
               valor={item.valor}
               categoria={item.categoria.descricao}
-              data={convertDateToFormFormat(item.dataTransacao)}
             /> 
           )}
         />

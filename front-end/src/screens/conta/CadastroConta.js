@@ -30,18 +30,18 @@ export default function CadastroConta(){
 
   //Cadastro conta
   async function CadastrarConta() {
+   
 
-    if(saldo != "" && banco !== ""){
-      //ajustando o valor para ser enviado a API
-      const saldoToApi = saldo.includes('.') || saldo.includes(',') 
-      ? replace(/[^\d,]/g, "").replace(",", ".")
-      : saldo;
+
+    if(saldo != "" && banco != ""){
+    
+      const saldoToApi = saldo.replace(/,00$/, "").replace(/\D/g, '');
 
       await api.post("/accounts", 
         {
           idUsuario: authData.id,
           saldo: saldoToApi,
-          banco: banco,
+          banco: banco
         }
       ).then(function (response){
         // Caso de sucesso ao cadastro
@@ -53,6 +53,8 @@ export default function CadastroConta(){
         error.response.headers.mensagem);
       });
 
+    }else{
+      Alert.alert('Preencha todos os campos!', 'Tenha atenção ao preencher, ele não poderá ser alterado!');
     }
   }
 
