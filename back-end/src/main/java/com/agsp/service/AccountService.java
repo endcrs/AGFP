@@ -131,9 +131,9 @@ public class AccountService {
 		return vos;
 	}
 	
-	public SaldoAtualVO monthlyExpenses(Long id) {
+	public SaldoAtualVO monthlyExpenses(Long userId) {
 		
-		UserEntity usuario =  getUserEntity(id);
+		UserEntity usuario =  getUserEntity(userId);
 		
 		ZonedDateTime dataFim = getToday();
 		ZonedDateTime dataInicio = getToday().withDayOfMonth(1);
@@ -148,9 +148,21 @@ public class AccountService {
 				.saldoAtual(saldoAtual != null ? saldoAtual : new BigDecimal(0.0))
 				.despesa(despesa != null ?  despesa : new BigDecimal(0.0))
 				.receita(receita != null ? receita : new BigDecimal(0.0))
+				.lucro(getLucrovalue(receita, despesa))
 				.build();
 	}
 	
+	private BigDecimal getLucrovalue(BigDecimal receita, BigDecimal despesa) {
+		
+		BigDecimal lucro = new BigDecimal(0.0);
+		if(receita != null && despesa != null) {
+			lucro = receita.subtract(despesa);
+		}
+		
+		return lucro;
+	}
+
+
 	private ZonedDateTime getToday() {
 		return ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 	}

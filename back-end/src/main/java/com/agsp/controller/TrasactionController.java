@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agsp.service.TransacaoService;
 import com.agsp.vo.TransaListVO;
 import com.agsp.vo.TransacaoVO;
-import com.agsp.vo.TransactionCurrentAccountVO;
+import com.agsp.vo.TransactionCurrentAccountResponseVO;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class TrasactionController {
 	}
 	
 	@GetMapping(value = "/{usuarioId}")
-	public List<TransactionCurrentAccountVO> getTransactions (@PathVariable(value = "usuarioId") Long usuarioId) {
+	public List<TransactionCurrentAccountResponseVO> getTransactions (@PathVariable(value = "usuarioId") Long usuarioId) {
 		return transacaoService.getAllTransactions(usuarioId);
 	}
 	

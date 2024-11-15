@@ -48,9 +48,9 @@ public class AccountTransactionService {
 		
 		TransationEntity save = TransacaoEntityFactory.convertTransactionToEntity(transaction, null, account); 
 		
-		if(!hasTransationCurrentAccount(transaction)) {
-			save.setTipo(TipoTransacaoEnum.RECEITA);
-		}
+//		if(!hasTransationCurrentAccount(transaction)) {
+//			save.setTipo(TipoTransacaoEnum.RECEITA);
+//		}
 		
 		transactionRepository.save(save);
 		
@@ -118,9 +118,9 @@ public class AccountTransactionService {
 				.orElseThrow(() -> new NaoEncontradoException("Transação não encontrada"));
 	}
 	
-	private boolean hasTransationCurrentAccount(TransactionCurrentAccountVO transaction) {
-		return transactionRepository.hasTransationCurrentAccount(transaction.getIdConta()).size() > 0;
-	}
+//	private boolean hasTransationCurrentAccount(TransactionCurrentAccountVO transaction) {
+//		return transactionRepository.hasTransationCurrentAccount(transaction.getIdConta()).size() > 0;
+//	}
 
 	private void validateTransationType(TransactionCurrentAccountVO transaction) {
 		if(Objects.isNull(transaction.getTipo())) {
@@ -133,10 +133,10 @@ public class AccountTransactionService {
 			throw new MsgException("Não foi possivel efectuar a compra valor da compra maior que saldo disponivel");
 	}
 	
-	public List<TransactionCurrentAccountResponseVO> getTransactions(Long accountId) {
+	public List<TransactionCurrentAccountResponseVO> getTransactions(Long userId) {
 		
 		List<TransationEntity> transactions = transactionRepository
-				.findByCurrentAccountIdAndTipoAndStatus(accountId, TipoTransacaoEnum.DESPESA, StatusEnum.ATIVO);
+				.findByCurrentAccountIdAndTipoAndStatus(userId);
 		
 		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
@@ -164,9 +164,9 @@ public class AccountTransactionService {
 		return vos;
 	}
 
-	public CategoriaListVO listPercentageSpentByCategory(Long accountId) {
+	public CategoriaListVO listPercentageSpentByCategory(Long userId) {
 		
-		List<TransationEntity> transacoes = transactionRepository.getAllTransactionsCurrentAccount(accountId);
+		List<TransationEntity> transacoes = transactionRepository.getAllTransactionsCurrentAccount(userId, TipoTransacaoEnum.DESPESA);
 			
 			Double alimentacao = 0.0;
 			Double belezaEstetica = 0.0;

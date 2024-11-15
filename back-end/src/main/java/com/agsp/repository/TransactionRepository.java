@@ -19,8 +19,12 @@ public interface TransactionRepository extends JpaRepository<TransationEntity, L
 	+ "where c.id = :accountId ")
 	List<Long> hasTransationCurrentAccount(Long accountId);
 
-	List<TransationEntity> findByCurrentAccountIdAndTipoAndStatus(Long accountId, TipoTransacaoEnum despesa, StatusEnum ativo);
-
+	@Query(value = "select t from TransationEntity t "
+			+ "join t.currentAccount c "
+			+ "join c.usuario user "
+			+ "where user.id = :userId and t.status ='ATIVO' ")
+	List<TransationEntity> findByCurrentAccountIdAndTipoAndStatus(@Param("userId") Long userId);
+	
 	@Query(value = "select t from TransationEntity t "
 			+ "join t.currentAccount c "
 			+ "join c.usuario user "
@@ -36,8 +40,9 @@ public interface TransactionRepository extends JpaRepository<TransationEntity, L
 	
 	@Query(value = "select t from TransationEntity t "
 			+ "join t.currentAccount c "
-			+ "where c.id = :accountId ")
-	List<TransationEntity> getAllTransactionsCurrentAccount(Long accountId);
+			+ "join c.usuario u "
+			+ "where u.id = :userId and t.tipo= :despesa and t.transacao ='CONTA' ")
+	List<TransationEntity> getAllTransactionsCurrentAccount(Long userId, TipoTransacaoEnum despesa);
 	
 //	@Query(value = "select t from TransacaoEntity t "
 //			+ "join t.cartao c "

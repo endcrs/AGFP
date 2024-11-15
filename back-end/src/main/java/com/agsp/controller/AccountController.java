@@ -62,23 +62,23 @@ public class AccountController {
 		return accountTransactionService.updateTransaction(transaction);
 	}
 	
-	@GetMapping(value = "/transactions/{accountId}")
-	public List<TransactionCurrentAccountResponseVO> getTransactions (@PathVariable(value = "accountId") Long accountId) {
-		return accountTransactionService.getTransactions(accountId);
+	@GetMapping(value = "/transactions/{userId}")
+	public List<TransactionCurrentAccountResponseVO> getTransactions (@PathVariable(value = "userId") Long userId) {
+		return accountTransactionService.getTransactions(userId);
 	}
 	
-	@GetMapping(value = "/transactions/monthly/{accountId}")
-	public List<TransactionCurrentAccountResponseVO> getMensalTransactions (@PathVariable(value = "accountId") Long accountId) {
-		return accountTransactionService.getMensalTransactions(accountId);
+	@GetMapping(value = "/transactions/monthly/{userId}")
+	public List<TransactionCurrentAccountResponseVO> getMensalTransactions (@PathVariable(value = "userId") Long userId) {
+		return accountTransactionService.getMensalTransactions(userId);
 	}
 	
-	@GetMapping(value = "/transactions/percentage-spent-by-category/{accountId}")
-	public CategoriaListVO listPercentageSpentByCategory (@PathVariable(value = "accountId") Long accountId) {
-		return accountTransactionService.listPercentageSpentByCategory(accountId);
+	@GetMapping(value = "/transactions/percentage-spent-by-category/{userId}")
+	public CategoriaListVO listPercentageSpentByCategory (@PathVariable(value = "userId") Long userId) {
+		return accountTransactionService.listPercentageSpentByCategory(userId);
 	}
 	
-	@GetMapping(value = "/monthly-expenses/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public SaldoAtualVO getDespesaMensal (@PathVariable Long id) {
-		return accountService.monthlyExpenses(id);
+	@GetMapping(value = "/monthly-expenses/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public SaldoAtualVO getDespesaMensal (@PathVariable Long userId) {
+		return accountService.monthlyExpenses(userId);
 	}
 }
