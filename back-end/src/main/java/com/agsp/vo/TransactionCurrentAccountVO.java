@@ -9,6 +9,7 @@ import com.agsp.enumerator.TipoTransacaoEnum;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
@@ -29,6 +30,7 @@ public class TransactionCurrentAccountVO implements Serializable {
 	private StatusEnum status;
 	
 	@NotNull(message = "O preenchimento do título é obrigatório")
+	@Size(max = 20, min = 5, message = "O campo título deve ter no maximo 20 caracteres")
 	private String titulo;
 	
 	@NotNull(message = "O preenchimento do campo valor é obrigatório")
