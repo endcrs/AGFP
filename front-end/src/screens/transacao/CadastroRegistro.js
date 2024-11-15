@@ -99,7 +99,7 @@ export default function CadastroResgistro() {
 				onChangeText={setTitulo}
 				value={titulo}
 				placeholder="Digite um titulo para da transação"
-				maxLength={15}
+				maxLength={20}
 				placeholderTextColor="#727272"
 			/>
 
