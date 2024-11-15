@@ -17,6 +17,6 @@ public interface CurrentAccountRepository extends JpaRepository<CurrentAccountEn
 	
 	@Query(value = "select sum(c.saldo) from CurrentAccountEntity c "
 			+ "join c.usuario u "
-			+ "where u.id = :usuarioId ")
+			+ "where u.id = :usuarioId")
 	BigDecimal getTotalSaldoMensal(@Param(value = "usuarioId") Long usuarioId);
 }
