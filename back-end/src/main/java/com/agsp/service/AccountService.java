@@ -123,7 +123,7 @@ public class AccountService {
 		
 		List<CurrentAccountEntity> accounts = currentAccountRepository.findByUsuarioId(usuarioId);
 		
-		accounts.removeIf(t -> t.getSaldo().longValue() <= 0);
+//		accounts.removeIf(t -> t.getSaldo().longValue() <= 0);
 		
 		List<AccountResponseVO> vos = new ArrayList<>();
 		
