@@ -6,7 +6,6 @@ import { useAuth } from "../../contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
 import api from '../../services/api';
 import { CardConta } from '../../components/Card';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -52,9 +51,10 @@ export default function Contas() {
           >
            {contas.map((conta, index) => (
             <CardConta   
-            key={index}
+              key={index}
               banco={conta.banco.descricao}
               saldo={conta.saldo}
+              data={conta.dataCriacao}
              />
            ))
 

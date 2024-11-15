@@ -11,6 +11,7 @@ import api from '../../services/api';
 
 import { convertDateToFormFormat } from '../../utils/formatData';
 import { formatValue } from '../../utils/formatValue';
+import { disableTransactionDialog } from '../../utils/disableTransaction';
 
 
 export default function Painel() {
@@ -36,14 +37,14 @@ export default function Painel() {
         puxarDadosFinanceiro();
         setRefreshing(false);
       }, 1000);
-  }, []);
+  });
 
 // Retorna os dados que o usuário
   useEffect(() => {
       puxarTransacoesMensais();
       puxarCategorias();
       puxarDadosFinanceiro();
-  }, []);
+  });
 
   async function puxarTransacoesMensais(){
       await api.get(`/accounts/transactions/monthly/${authData.id}`)
@@ -54,7 +55,7 @@ export default function Painel() {
   }
 
   async function puxarCategorias(){
-      await api.get(`/accounts/transactions/percentage-spent-by-category/${authData.cpf}`)
+      await api.get(`/accounts/transactions/percentage-spent-by-category/${authData.id}`)
         .then((response) => {
           setCategoria(response.data)
         }).catch((err)=>console.log(err));
@@ -64,8 +65,8 @@ export default function Painel() {
       await api.get(`/accounts/monthly-expenses/${authData.id}`)
         .then((response) => {
           setSaldo(response.data.saldoAtual);
-          setReceita(response.data.despesa);
-          setDespesa(response.data.receita);
+          setReceita(response.data.receita);
+          setDespesa(response.data.despesa);
           setLucro(response.data.lucro);
         }).catch((err)=>console.log(err));
     }
@@ -141,7 +142,10 @@ export default function Painel() {
 
               <View style={[styles.cardValor, {backgroundColor:'#00d649'}]}>
                 <Text style={styles.itemValor}>Lucro</Text>
-                <Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(lucro)}</Text>
+                {lucro < 0 ?
+                  (<Text style={[styles.itemValor, {fontSize:27, color:'red'}]}>- {formatValue(lucro)}</Text>) :
+                  (<Text style={[styles.itemValor, {fontSize:27}]}>{formatValue(lucro)}</Text>)
+                }
               </View>
           </ScrollView>
         </View>
@@ -181,10 +185,12 @@ export default function Painel() {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <CardRegistro
-              //tipoTransacao={item.tipoTranscao.codigo}
+              tipoTransacao={item.tipo.codigo}
               titulo={item.titulo}
               valor={item.valor}
               categoria={item.categoria.descricao}
+              data={item.dataTransacao}
+              onPress={() => disableTransactionDialog(item.id)}
             /> 
           )}
         />

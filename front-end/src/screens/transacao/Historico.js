@@ -6,9 +6,11 @@ import { ButtonPlus } from '../../components/Button';
 import CardRegistro from '../../components/Card';
 import { useAuth } from '../../contexts/Auth';
 
+
 import api from '../../services/api';
 
 import { convertDateToFormFormat } from '../../utils/formatData';
+import { disableTransactionDialog } from '../../utils/disableTransaction';
 
 
 export default function Historico() {    
@@ -63,10 +65,12 @@ export default function Historico() {
             {transacoes.map((transacao, index) => (
                 <CardRegistro 
                     key={index}
-                    //tipoTransacao={transacao.tipoTranscao.codigo}
+                    tipoTransacao={transacao.tipo.codigo}
                     titulo={transacao.titulo}
                     valor={transacao.valor}
-                    categoria={transacao.categoria}
+                    categoria={transacao.categoria.descricao}
+                    data={transacao.dataTransacao}
+                    onPress={() => disableTransactionDialog(transacao.id)}
                 /> 
             ))}
         
