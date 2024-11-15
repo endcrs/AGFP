@@ -11,7 +11,8 @@ import com.agsp.exception.MsgException;
 import com.agsp.repository.TransactionRepository;
 import com.agsp.vo.TransaListVO;
 import com.agsp.vo.TransacaoVO;
-import com.agsp.vo.TransactionCurrentAccountVO;
+import com.agsp.vo.TransactionCurrentAccountResponseVO;
+import com.agsp.vo.factory.TransactionCurrentAccountVOFcatory;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -171,14 +172,13 @@ public class TransacaoService {
 		transactionRepository.save(transaction);
 	}
 
-	public List<TransactionCurrentAccountVO> getAllTransactions(Long usuarioId) {
+	public List<TransactionCurrentAccountResponseVO> getAllTransactions(Long usuarioId) {
 			
 		List<TransationEntity> transactions = transactionRepository.findAllTransactionByUserId(usuarioId);
 
-		List<TransactionCurrentAccountVO> vos = new ArrayList<>();
+		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
-			vos.add(TransactionCurrentAccountVO.builder().id(t.getId()).categoria(t.getCategoria())
-					.status(t.getStatus()).valor(t.getValorCompra()).build());
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
 		});
 
 		return vos;

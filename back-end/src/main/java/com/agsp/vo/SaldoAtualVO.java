@@ -9,7 +9,8 @@ public record SaldoAtualVO(
 		
 		BigDecimal saldoAtual,
 		BigDecimal despesa,
-		BigDecimal receita
+		BigDecimal receita,
+		BigDecimal lucro
 		
 		) {
 
