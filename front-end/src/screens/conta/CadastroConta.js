@@ -35,7 +35,7 @@ export default function CadastroConta(){
 
     if(saldo != "" && banco != ""){
     
-      const saldoToApi = saldo.replace(/,00$/, "").replace(/\D/g, '');
+      const saldoToApi = formatValueToAPI(saldo);
 
       await api.post("/accounts", 
         {

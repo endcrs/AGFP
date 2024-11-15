@@ -9,6 +9,7 @@ import { useAuth } from '../../contexts/Auth';
 import api from '../../services/api';
 
 import { formatCardNumber, formatValidate } from '../../utils/formatCreditCard';
+import { formatValueToAPI } from '../../utils/formatValue';
 
 
 export default function CadastroCartao() {
@@ -44,23 +45,12 @@ export default function CadastroCartao() {
     .catch((err) => console.log(err));
   }, []);
 
-  // // Atualiza os bancos sempre que o tipo de conta mudar
-  // async function getTipoConta(item)
-  // {
-  //   await api.get('/bancos?tipo=' + item.codigo)
-  //     .then((response) =>
-  //     {
-  //       setDataBanco(response.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
-
   async function cadastroCartao()
   {
     if (numeroCartao != ""  && banco != "" && bandeira != "" && limite != "" && validade != "" && nomeCartao !="")
     {
       const cartaoSemEspaco = numeroCartao.replace(/\D/g, '');
-      const limiteSemFormatacao = limite.replace(/,00$/, "").replace(/\D/g, '');
+      const limiteSemFormatacao = formatValueToAPI(limite);
       //realizando cadastro na API
       await api.post("/cards",
       {

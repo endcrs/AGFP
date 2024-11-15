@@ -1,3 +1,7 @@
+
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
 const formatDate = (text) => {
     // Remove tudo que não for dígito
     let cleaned = ('' + text).replace(/\D/g, '');
@@ -19,7 +23,7 @@ const formatDate = (text) => {
 
     return formatted;
 };
-
+    
 const convertDateToAPIFormat = (date) => {
 
     //separando dia mes e ano para enviar a API
@@ -33,13 +37,10 @@ const convertDateToAPIFormat = (date) => {
 
 const convertDateToFormFormat = (date) => {
 
-    //separando dia mes e ano para enviar a API
-    const [year, month, day] = date.split('-');
-    //confirmando se exite o mes dia e ano
-    if (year && month && day) {
-        return `${day}/${month}/${year}`;
-    }
-    return null;
+    const newDate = format(new Date(date), "dd/MM/yyyy", { locale: ptBR });
+
+    return newDate;
+
 };
 
 export {formatDate, 

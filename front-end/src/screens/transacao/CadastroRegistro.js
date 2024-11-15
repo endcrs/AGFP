@@ -10,6 +10,7 @@ import { useAuth } from "../../contexts/Auth";
 import api from "../../services/api";
 
 import { convertDateToAPIFormat, formatDate } from "../../utils/formatData";
+import { formatValueToAPI } from "../../utils/formatValue";
 
 
 export default function CadastroResgistro() {
@@ -46,19 +47,13 @@ export default function CadastroResgistro() {
 			.catch((err)=>console.log(err));
 	}, []);
 
-	//adicona pontuações na data de nascimento
-    // const adicionarPontuacaoDate = (text) => {
-    //     const formattedDate = formatDate(text);
-    //     setData(formattedDate);
-    // };
-
 	async function cadastroTransacao()
 	{
 		if (titulo != "" && valor != "" && categoria != "" && banco != "")
 		{
-			const valorSemFormatacao =  valor.replace(/,00$/, "").replace(/\D/g, '');;
-			console.log(tipoTransacao);
+			const valorSemFormatacao =  formatValueToAPI(valor);
 			// //realizando cadastro na API
+			console.log(valorSemFormatacao);
 			await api.post("/accounts/transactions",
 				{
 					titulo: titulo,
@@ -74,12 +69,22 @@ export default function CadastroResgistro() {
 				Alert.alert('Cadastro realizado com sucesso!', 'Sua Transação foi inserido com sucesso!');
 				navigation.goBack();
 			}).catch(function (error){
-				//caso o banco retorne um erro, irá aparesentar a mensagem para ajustar no cadastro
-				Alert.alert(
-					'Cadastro não realizado!',
-					'Tente novamente mais tarde!');
 
-					console.log(error.toJSON());
+				if(error.response.status == 400){
+					//caso apresente o erro 400 irá informar a mensagem disponivel no headers do erro
+					Alert.alert(
+						'Cadastro não realizado!',
+						'Certifique-se de que o saldo seja suficiente.');
+					
+				}else{
+					
+					Alert.alert(
+						'Cadastro não realizado!',
+						'Tente novamente mais tarde!');
+				}
+				
+
+					console.log(error.response.headers);
 			});
 		}else{
 			Alert.alert('Preencha todos os campos!', 'Tenha atenção ao preencher, ele não poderá ser alterado!');
@@ -94,7 +99,7 @@ export default function CadastroResgistro() {
 				onChangeText={setTitulo}
 				value={titulo}
 				placeholder="Digite um titulo para da transação"
-				maxLength={15}
+				maxLength={20}
 				placeholderTextColor="#727272"
 			/>
 
