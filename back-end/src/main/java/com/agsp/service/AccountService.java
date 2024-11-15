@@ -123,9 +123,12 @@ public class AccountService {
 		
 		List<CurrentAccountEntity> accounts = currentAccountRepository.findByUsuarioId(usuarioId);
 		
-		//melhorar isso depois 
+		accounts.removeIf(t -> t.getSaldo().longValue() <= 0);
+		
 		List<AccountResponseVO> vos = new ArrayList<>();
+		
 		accounts.forEach(a -> {
+			
 			vos.add(CurrentAccountVOFactory.toVO(a));
 		});
 		return vos;
