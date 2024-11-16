@@ -26,10 +26,10 @@ const disableTransactionDialog = (idT) => {
 async function disableTransaction(idT){
   await api.put(`/transactions/disable-transaction/${idT}`)
     .then(function (response) {
-      Alert.alert('Sucesso!', 'A transação foi elimidade com sucesso!');
+      Alert.alert('Sucesso!', 'A transação foi elimidada com sucesso!');
     })
     .catch(function (error) {
-      Alert.alert('Exclusão não realizada!', 'A transação foi elimidade com sucesso!');
+      Alert.alert('Exclusão não realizada!', 'Tente novamente mais tarde!');
 
       console.log(error.response.headers);
       

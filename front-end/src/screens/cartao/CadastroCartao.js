@@ -8,8 +8,8 @@ import { Button } from '../../components/Button';
 import { useAuth } from '../../contexts/Auth';
 import api from '../../services/api';
 
-import { formatCardNumber, formatValidate } from '../../utils/formatCreditCard';
 import { formatValueToAPI } from '../../utils/formatValue';
+import { IconBack } from '../../components/IconBack';
 
 
 export default function CadastroCartao() {
@@ -83,98 +83,104 @@ export default function CadastroCartao() {
 
   return(
     <View style={styles.container}>
-      <Text style={styles.title}>NOVO CARTÃO DE CRÉDITO</Text>
+
+      <IconBack/>
+
+      <View style={styles.formWrapper}>
+        <Text style={styles.title}>NOVO CARTÃO DE CRÉDITO</Text>
 
 
-      <InputText
-        placeholder="Digite um apelido para o cartão"
-        placeholderTextColor="#727272"
-        value={nomeCartao}
-        onChangeText={setNomeCartao}
-      />
+        <InputText
+          placeholder="Digite um apelido para o cartão"
+          placeholderTextColor="#727272"
+          maxLength={20}
+          value={nomeCartao}
+          onChangeText={setNomeCartao}
+        />
 
-      <MaskedInput
-        type="custom"
-        value={numeroCartao}
-        onChangeText={setNumeroCartao}
-        placeholder="Digite o número do cartão"
-        placeholderTextColor="#727272"
-        options={{
-          mask: '9999 9999 9999 9999'  // Formato de cartão de crédito
-        }}
-        keyboardType="numeric"  // Apenas números
-      />
+        <MaskedInput
+          type="custom"
+          value={numeroCartao}
+          onChangeText={setNumeroCartao}
+          placeholder="Digite o número do cartão"
+          placeholderTextColor="#727272"
+          options={{
+            mask: '9999 9999 9999 9999'  // Formato de cartão de crédito
+          }}
+          keyboardType="numeric"  // Apenas números
+        />
 
-      <InputSelect
-        data={dataBanco}
-        placeholder="Selecione o banco referente ao cartão"
-        placeholderTextColor="#727272"
-        value={banco}
-        labelField="banco.descricao"
-      	valueField="id"
-        onChange={item => {
-          setBanco(item.id)
-        }}
-      />
+        <InputSelect
+          data={dataBanco}
+          placeholder="Selecione o banco referente ao cartão"
+          placeholderTextColor="#727272"
+          value={banco}
+          labelField="banco.descricao"
+          valueField="id"
+          onChange={item => {
+            setBanco(item.id)
+          }}
+        />
 
-      <InputSelect
-        value={bandeira}
-        data={dataBandeira}
-        placeholder="Selecione a bandeira do cartão"
-        placeholderTextColor="#727272"
-        labelField="descricao"
-      	valueField="codigo"
-        onChange={item => {
-          setBandeira(item.codigo)
-        }}
-      />
+        <InputSelect
+          value={bandeira}
+          data={dataBandeira}
+          placeholder="Selecione a bandeira do cartão"
+          placeholderTextColor="#727272"
+          labelField="descricao"
+          valueField="codigo"
+          onChange={item => {
+            setBandeira(item.codigo)
+          }}
+        />
 
-      <MaskedInput
-				type={'money'}
-				value={limite}
-        keyboardType="numeric"
-				onChangeText={text => setlimite(text)}
-				style={styles.input}
-				placeholder="Digite o limite do cartão"
-        placeholderTextColor="#727272"
-				options={{
-					precision: 2,
-					separator: ',',
-					delimiter: '.',
-					unit: 'R$ ',
-					suffixUnit: ''
-				}}
-			/>
+        <MaskedInput
+          type={'money'}
+          value={limite}
+          keyboardType="numeric"
+          onChangeText={text => setlimite(text)}
+          style={styles.input}
+          placeholder="Digite o limite do cartão"
+          placeholderTextColor="#727272"
+          options={{
+            precision: 2,
+            separator: ',',
+            delimiter: '.',
+            unit: 'R$ ',
+            suffixUnit: ''
+          }}
+        />
 
-      <MaskedInput
-        type="custom"
-        value={vencimento}
-        onChangeText={text => setVencimento(text)}
-        placeholder="Digite o dia do vencimento da fatura do cartão"
-        placeholderTextColor="#727272"
-        options={{
-          mask: '99'  // Formato de cartão de crédito
-        }}
-        keyboardType="numeric"  // Apenas números
-      />
+        <MaskedInput
+          type="custom"
+          value={vencimento}
+          onChangeText={text => setVencimento(text)}
+          placeholder="Digite o dia do vencimento da fatura do cartão"
+          placeholderTextColor="#727272"
+          options={{
+            mask: '99'  // Formato de cartão de crédito
+          }}
+          keyboardType="numeric"  // Apenas números
+        />
 
-      <MaskedInput
-        type="custom"
-        value={validade}
-        onChangeText={text => setvalidade(text)}
-        placeholder="Digite a data de validade do cartão"
-        placeholderTextColor="#727272"
-        options={{
-          mask: '99/99'  // Formato de cartão de crédito
-        }}
-        keyboardType="numeric"  // Apenas números
-      />
+        <MaskedInput
+          type="custom"
+          value={validade}
+          onChangeText={text => setvalidade(text)}
+          placeholder="Digite a data de validade do cartão"
+          placeholderTextColor="#727272"
+          options={{
+            mask: '99/99'  // Formato de cartão de crédito
+          }}
+          keyboardType="numeric"  // Apenas números
+        />
 
-      <Button
-        style={{marginTop:20, width:150}}
-        title='Salvar'
-        onPress={ () => cadastroCartao()}
-      />
+        <Button
+          style={{marginTop:20, width:150}}
+          title='Salvar'
+          onPress={ () => cadastroCartao()}
+        />
+      </View>
     </View>
   )
 }
@@ -184,10 +190,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+  },
+  
+	formWrapper:{
+		flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    
-  },
+	},
   title: {
     marginBottom: 50,
     fontSize:22,
