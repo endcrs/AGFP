@@ -7,6 +7,7 @@ import api from "../../services/api";
 import { Button } from "../../components/Button";
 import { formatValueToAPI } from "../../utils/formatValue";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { IconBack } from "../../components/IconBack";
 
 export default function CadastroConta(){
   const navigation = useNavigation();
@@ -60,45 +61,49 @@ export default function CadastroConta(){
 
   return(
     <View style={styles.container}>
-      <Text style={styles.title}>NOVA CONTA BANCARIA</Text>
+    
+    <IconBack/>
+    
+    <View style={styles.formWrapper}>
+        <Text style={styles.title}>NOVA CONTA BANCARIA</Text>
 
-      
-      <InputSelect
-        data={dataBanco}
-        placeholder="Banco"
-        placeholderTextColor="#727272"
-        value={banco}
-        labelField="descricao"
-      	valueField="codigo"
-        onChange={item => {
-          setBanco(item.codigo)
-        }}
-      />
+        
+        <InputSelect
+          data={dataBanco}
+          placeholder="Banco"
+          placeholderTextColor="#727272"
+          value={banco}
+          labelField="descricao"
+          valueField="codigo"
+          onChange={item => {
+            setBanco(item.codigo)
+          }}
+        />
 
-      <MaskedInput
-				type={'money'}
-				value={saldo}
-        keyboardType="numeric"
-				onChangeText={saldo => setSaldo(saldo)}
-				style={styles.input}
-				placeholder="Digite o saldo atual da conta"
-        placeholderTextColor="#727272"
-				options={{
-					precision: 2,
-					separator: ',',
-					delimiter: '.',
-					unit: 'R$ ',
-					suffixUnit: ''
-				}}
-			/>
+        <MaskedInput
+          type={'money'}
+          value={saldo}
+          keyboardType="numeric"
+          onChangeText={saldo => setSaldo(saldo)}
+          style={styles.input}
+          placeholder="Digite o saldo atual da conta"
+          placeholderTextColor="#727272"
+          options={{
+            precision: 2,
+            separator: ',',
+            delimiter: '.',
+            unit: 'R$ ',
+            suffixUnit: ''
+          }}
+        />
 
-      
-      <Button
-      style={{marginTop:20, width:150}}
-      title={titleButton}
-      onPress={ () => CadastrarConta()}
-      />
-  
+        
+        <Button
+        style={{marginTop:20, width:150}}
+        title={titleButton}
+        onPress={ () => CadastrarConta()}
+        />
+      </View>
     </View>
   )
 }
@@ -107,10 +112,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    justifyContent: 'center',
-    alignItems: 'center',
     
   },
+	formWrapper:{
+		flex: 1,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+	},
   title: {
     marginBottom: 50,
     fontSize:22,

@@ -28,8 +28,6 @@ export default function CardRegistro({titulo, valor, categoria, data, tipoTransa
             <TouchableOpacity style={[ styles.deleteTransatiction]} onPress={onPress}>
               <Feather name='delete' color={'red'} size={24} />
             </TouchableOpacity>
-            
-            {/* <Feather name='delete' color={'red'} size={20} /> */}
 
         </View>
     )
@@ -94,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     alignItems:'center',
-    justifyContent:'space-evenly',
+    justifyContent:'space-around',
     backgroundColor: '#474747',
     flexDirection: 'row',
   },
@@ -109,7 +107,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   itemPlaceholder:{
-    width: 15,
+    width: 32,
     height: 10,
   },  
   deleteTransatiction:{

@@ -41,17 +41,17 @@ export default function Painel() {
 
 // Retorna os dados que o usuário
   useEffect(() => {
-      puxarTransacoesMensais();
-      puxarCategorias();
-      puxarDadosFinanceiro();
+    puxarTransacoesMensais();
+    puxarCategorias();
+    puxarDadosFinanceiro();
   });
 
   async function puxarTransacoesMensais(){
-      await api.get(`/accounts/transactions/monthly/${authData.id}`)
-            .then((response) => {
-              const data = response.data.sort((a, b) => b.id - a.id)
-              setTransacoes(data)
-            }).catch((err)=>console.log(err));
+        await api.get(`/accounts/transactions/monthly/${authData.id}`)
+              .then((response) => {
+                const data = response.data.sort((a, b) => b.id - a.id)
+                setTransacoes(data)
+              }).catch((err)=>console.log(err));
   }
 
   async function puxarCategorias(){
@@ -154,7 +154,7 @@ export default function Painel() {
         <View style={styles.session}>
           <ScrollView horizontal={true}>
             
-              {Object.entries(categoria).map(([categoria, {percentagem}]) => (
+              {Object.entries(categoria).map(([categoria,  {percentagem}]) => (
                 <View kay={categoria} style={styles.CardCategoria}> 
                   <CircularProgress 
                     activeStrokeColor={obterCorPorCategoria(categoria)}
