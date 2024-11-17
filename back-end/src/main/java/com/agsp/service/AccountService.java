@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.agsp.entity.CurrentAccountEntity;
 import com.agsp.entity.UserEntity;
 import com.agsp.entity.factory.CurrentAccountEntityFactory;
+import com.agsp.enumerator.StatusEnum;
 import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.exception.MsgException;
 import com.agsp.exception.NaoEncontradoException;
@@ -143,9 +144,9 @@ public class AccountService {
 		
 		BigDecimal saldoAtual = currentAccountRepository.getTotalSaldoMensal(usuario.getId());
 		BigDecimal despesa = transactionRespository.getTotalMonthlyExpensesOrRevenues
-				(usuario.getId(), dataInicio, dataFim, TipoTransacaoEnum.DESPESA);
+				(usuario.getId(), dataInicio, dataFim, TipoTransacaoEnum.DESPESA, StatusEnum.ATIVO);
 		BigDecimal receita = transactionRespository.getTotalMonthlyExpensesOrRevenues
-				(usuario.getId(), dataInicio, dataFim, TipoTransacaoEnum.RECEITA);
+				(usuario.getId(), dataInicio, dataFim, TipoTransacaoEnum.RECEITA, StatusEnum.ATIVO);
 		
 		return SaldoAtualVO.builder()
 				.saldoAtual(saldoAtual != null ? saldoAtual : new BigDecimal(0.0))

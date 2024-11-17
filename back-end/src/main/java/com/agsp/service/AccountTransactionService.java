@@ -136,7 +136,7 @@ public class AccountTransactionService {
 	public List<TransactionCurrentAccountResponseVO> getTransactions(Long userId) {
 		
 		List<TransationEntity> transactions = transactionRepository
-				.findByCurrentAccountIdAndTipoAndStatus(userId);
+				.findByCurrentAccountIdAndTipoAndStatus(userId, StatusEnum.ATIVO);
 		
 		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
@@ -166,7 +166,7 @@ public class AccountTransactionService {
 
 	public CategoriaListVO listPercentageSpentByCategory(Long userId) {
 		
-		List<TransationEntity> transacoes = transactionRepository.getAllTransactionsCurrentAccount(userId, TipoTransacaoEnum.DESPESA);
+		List<TransationEntity> transacoes = transactionRepository.getAllTransactionsCurrentAccount(userId, TipoTransacaoEnum.DESPESA, StatusEnum.ATIVO);
 			
 			Double alimentacao = 0.0;
 			Double belezaEstetica = 0.0;
