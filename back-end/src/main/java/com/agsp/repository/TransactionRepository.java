@@ -22,8 +22,8 @@ public interface TransactionRepository extends JpaRepository<TransationEntity, L
 	@Query(value = "select t from TransationEntity t "
 			+ "join t.currentAccount c "
 			+ "join c.usuario user "
-			+ "where user.id = :userId and t.status ='ATIVO' ")
-	List<TransationEntity> findByCurrentAccountIdAndTipoAndStatus(@Param("userId") Long userId);
+			+ "where user.id = :userId and t.status =:ativo ")
+	List<TransationEntity> findByCurrentAccountIdAndTipoAndStatus(@Param("userId") Long userId, StatusEnum ativo);
 	
 	@Query(value = "select t from TransationEntity t "
 			+ "join t.currentAccount c "
@@ -41,8 +41,8 @@ public interface TransactionRepository extends JpaRepository<TransationEntity, L
 	@Query(value = "select t from TransationEntity t "
 			+ "join t.currentAccount c "
 			+ "join c.usuario u "
-			+ "where u.id = :userId and t.tipo= :despesa and t.transacao ='CONTA' ")
-	List<TransationEntity> getAllTransactionsCurrentAccount(Long userId, TipoTransacaoEnum despesa);
+			+ "where u.id = :userId and t.tipo= :despesa and t.transacao ='CONTA' and t.status =:ativo ")
+	List<TransationEntity> getAllTransactionsCurrentAccount(Long userId, TipoTransacaoEnum despesa, StatusEnum ativo);
 	
 //	@Query(value = "select t from TransacaoEntity t "
 //			+ "join t.cartao c "
@@ -73,11 +73,12 @@ public interface TransactionRepository extends JpaRepository<TransationEntity, L
 			+ "join t.currentAccount c "
 			+ "join c.usuario u "
 			+ "where u.id = :usuarioId and t.dataTransacao between :startDate "
-			+ "and :endDate and t.tipo = :tipoTransacao and t.transacao ='CONTA' ")
+			+ "and :endDate and t.tipo = :tipoTransacao and t.transacao ='CONTA' and t.status=:ativo ")
 	BigDecimal getTotalMonthlyExpensesOrRevenues(
 			@Param(value = "usuarioId") Long usuarioId, 
 			@Param(value = "startDate")ZonedDateTime startDate, 
 			@Param(value = "endDate")ZonedDateTime endDate,
-			@Param(value = "tipoTransacao") TipoTransacaoEnum tipoTransacao);
+			@Param(value = "tipoTransacao") TipoTransacaoEnum tipoTransacao, 
+			@Param(value = "ativo") StatusEnum ativo);
 
 }
