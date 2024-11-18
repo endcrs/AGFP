@@ -81,7 +81,7 @@ public class CreditCardEntity implements Serializable {
 	@Column(name = "DATA_HORA")
 	private ZonedDateTime dataCadastro;
 	
-	@Column(name = "NOME", nullable = false, length = 25)
+	@Column(name = "NOME", nullable = false, length = 22)
 	private String nome;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "creditCard")

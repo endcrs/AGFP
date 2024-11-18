@@ -1,5 +1,6 @@
 package com.agsp.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,14 @@ import org.springframework.stereotype.Service;
 import com.agsp.entity.TransationEntity;
 import com.agsp.enumerator.StatusEnum;
 import com.agsp.exception.MsgException;
+import com.agsp.repository.CurrentAccountRepository;
 import com.agsp.repository.TransactionRepository;
 import com.agsp.vo.TransaListVO;
 import com.agsp.vo.TransacaoVO;
 import com.agsp.vo.TransactionCurrentAccountResponseVO;
 import com.agsp.vo.factory.TransactionCurrentAccountVOFcatory;
 
+import jakarta.security.auth.message.MessagePolicy.Target;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class TransacaoService {
 	
 	private final TransactionRepository transactionRepository;
+	private final CurrentAccountRepository currentAccountRepository;
 //	private final CartaoCreditoService cartaoService;
 
 	public TransacaoVO salvar(TransacaoVO vo) {
@@ -170,6 +174,13 @@ public class TransacaoService {
 		transaction.setAtivo(Boolean.FALSE);
 		transaction.setStatus(StatusEnum.NAO_ATIVO);
 		transactionRepository.save(transaction);
+		
+		if(transaction.getTransacao().equals("CONTA")) {
+			BigDecimal saldoAtual = transaction.getCurrentAccount().getSaldo();
+			transaction.getCurrentAccount().setSaldo(saldoAtual.subtract(transaction.getValorCompra()));
+			currentAccountRepository.save(transaction.getCurrentAccount());
+		}
+		
 	}
 
 	public List<TransactionCurrentAccountResponseVO> getAllTransactions(Long usuarioId) {

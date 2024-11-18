@@ -30,7 +30,7 @@ public class TransactionCurrentAccountVO implements Serializable {
 	private StatusEnum status;
 	
 	@NotNull(message = "O preenchimento do título é obrigatório")
-	@Size(max = 20, min = 5, message = "O campo título deve ter no maximo 20 caracteres")
+	@Size(max = 22, message = "O campo título deve ter no maximo 22 caracteres")
 	private String titulo;
 	
 	@NotNull(message = "O preenchimento do campo valor é obrigatório")
