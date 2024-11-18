@@ -78,7 +78,7 @@ public class TransationEntity implements Serializable {
 	@Column(name = "TRANSACAO", nullable = false)
 	private String transacao;
 	
-	@Column(name = "TITULO", nullable = false, length = 15)
+	@Column(name = "TITULO", nullable = false, length = 22)
 	private String titulo;
 	
 	@PrePersist
