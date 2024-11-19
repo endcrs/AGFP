@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.agsp.entity.TransationEntity;
 import com.agsp.enumerator.StatusEnum;
+import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.exception.MsgException;
 import com.agsp.repository.CurrentAccountRepository;
 import com.agsp.repository.TransactionRepository;
@@ -16,7 +17,6 @@ import com.agsp.vo.TransacaoVO;
 import com.agsp.vo.TransactionCurrentAccountResponseVO;
 import com.agsp.vo.factory.TransactionCurrentAccountVOFcatory;
 
-import jakarta.security.auth.message.MessagePolicy.Target;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TransacaoService {
 	
+	private static final String CONTA = "CONTA";
+	private static final String CARTAO = "CARTAO";
 	private final TransactionRepository transactionRepository;
 	private final CurrentAccountRepository currentAccountRepository;
 //	private final CartaoCreditoService cartaoService;
@@ -175,10 +177,16 @@ public class TransacaoService {
 		transaction.setStatus(StatusEnum.NAO_ATIVO);
 		transactionRepository.save(transaction);
 		
-		if(transaction.getTransacao().equals("CONTA")) {
+		if (transaction.getTransacao().equals(CONTA)) {
 			BigDecimal saldoAtual = transaction.getCurrentAccount().getSaldo();
-			transaction.getCurrentAccount().setSaldo(saldoAtual.subtract(transaction.getValorCompra()));
+			if (TipoTransacaoEnum.isReceita((transaction.getTipo()))) {
+				transaction.getCurrentAccount().setSaldo(saldoAtual.subtract(transaction.getValorCompra()));
+			} else if (TipoTransacaoEnum.isDespesa((transaction.getTipo()))) {
+				transaction.getCurrentAccount().setSaldo(saldoAtual.add(transaction.getValorCompra()));
+			}
 			currentAccountRepository.save(transaction.getCurrentAccount());
+		} else if (transaction.getTransacao().equals(CARTAO)) {
+
 		}
 		
 	}
