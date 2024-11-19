@@ -34,9 +34,9 @@ public interface TransactionRepository extends JpaRepository<TransationEntity, L
 	@Query(value = "select t from TransationEntity t "
 			+ "join t.currentAccount c "
 			+ "join c.usuario user "
-			+ "where c.id = :accountId and t.dataTransacao between :startDate and :endDate and t.tipo =:despesa and t.status =:ativo")
+			+ "where user.id = :userId and t.dataTransacao between :startDate and :endDate and t.tipo =:despesa and t.status =:ativo")
 	List<TransationEntity> findMensalTransactionByCurrentAccountIdAndTipoAndStatus(
-			Long accountId, TipoTransacaoEnum despesa, StatusEnum ativo, ZonedDateTime startDate, ZonedDateTime endDate);
+			Long userId, TipoTransacaoEnum despesa, StatusEnum ativo, ZonedDateTime startDate, ZonedDateTime endDate);
 	
 	@Query(value = "select t from TransationEntity t "
 			+ "join t.currentAccount c "
