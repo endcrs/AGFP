@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agsp.service.CreditCardService;
 import com.agsp.service.CreditCardTransactionService;
 import com.agsp.vo.CardVO;
+import com.agsp.vo.CategoriaListVO;
 import com.agsp.vo.CreditCardUpdateVO;
 import com.agsp.vo.CreditCardVO;
+import com.agsp.vo.TransactionCreditCardResponseVO;
 import com.agsp.vo.TransactionCreditCardVO;
 import com.agsp.vo.TransactionCurrentAccountVO;
 
@@ -68,5 +70,20 @@ public class CreditCardController {
 //	public TransactionCurrentAccountVO updateTransaction (@RequestBody @Valid TransactionCurrentAccountVO transaction) {
 //		return creditCardTransactionService.updateTransaction(transaction);
 //	}
+	
+	@GetMapping(value = "/transactions/{userId}")
+	public List<TransactionCreditCardResponseVO> getTransactions (@PathVariable(value = "userId") Long userId) {
+		return creditCardTransactionService.getTransactions(userId);
+	}
+	
+	@GetMapping(value = "/transactions/monthly/{userId}")
+	public List<TransactionCreditCardResponseVO> getMensalTransactions (@PathVariable(value = "userId") Long userId) {
+		return creditCardTransactionService.getMensalTransactions(userId);
+	}
+	
+	@GetMapping(value = "/transactions/percentage-spent-by-category/{userId}")
+	public CategoriaListVO listPercentageSpentByCategory (@PathVariable(value = "userId") Long userId) {
+		return creditCardTransactionService.listPercentageSpentByCategory(userId);
+	}
 
 }
