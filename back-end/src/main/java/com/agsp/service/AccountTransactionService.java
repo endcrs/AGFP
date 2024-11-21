@@ -146,7 +146,7 @@ public class AccountTransactionService {
 		return vos;
 	}
 
-	public List<TransactionCurrentAccountResponseVO> getMensalTransactions(Long accountId) {
+	public List<TransactionCurrentAccountResponseVO> getMensalTransactions(Long userId) {
 		
 		ZonedDateTime dataFim = ZonedDateTime.now(ZoneId.of(AMERICA_SAO_PAULO));
 		
@@ -154,7 +154,7 @@ public class AccountTransactionService {
 		
 		List<TransationEntity> transactions = transactionRepository
 				.findMensalTransactionByCurrentAccountIdAndTipoAndStatus
-				(accountId, TipoTransacaoEnum.DESPESA, StatusEnum.ATIVO, dataInicio, dataFim);
+				(userId, TipoTransacaoEnum.DESPESA, StatusEnum.ATIVO, dataInicio, dataFim);
 		
 		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {

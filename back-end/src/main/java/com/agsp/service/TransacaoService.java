@@ -178,17 +178,21 @@ public class TransacaoService {
 		transactionRepository.save(transaction);
 		
 		if (transaction.getTransacao().equals(CONTA)) {
-			BigDecimal saldoAtual = transaction.getCurrentAccount().getSaldo();
-			if (TipoTransacaoEnum.isReceita((transaction.getTipo()))) {
-				transaction.getCurrentAccount().setSaldo(saldoAtual.subtract(transaction.getValorCompra()));
-			} else if (TipoTransacaoEnum.isDespesa((transaction.getTipo()))) {
-				transaction.getCurrentAccount().setSaldo(saldoAtual.add(transaction.getValorCompra()));
-			}
-			currentAccountRepository.save(transaction.getCurrentAccount());
+			updateCurrentAccountBalance(transaction);
 		} else if (transaction.getTransacao().equals(CARTAO)) {
-
+			//updateCreditCardLimit();
 		}
 		
+	}
+
+	private void updateCurrentAccountBalance(TransationEntity transaction) {
+		BigDecimal saldoAtual = transaction.getCurrentAccount().getSaldo();
+		if (TipoTransacaoEnum.isReceita((transaction.getTipo()))) {
+			transaction.getCurrentAccount().setSaldo(saldoAtual.subtract(transaction.getValorCompra()));
+		} else  {
+			transaction.getCurrentAccount().setSaldo(saldoAtual.add(transaction.getValorCompra()));
+		}
+		currentAccountRepository.save(transaction.getCurrentAccount());
 	}
 
 	public List<TransactionCurrentAccountResponseVO> getAllTransactions(Long usuarioId) {
@@ -196,7 +200,7 @@ public class TransacaoService {
 		List<TransationEntity> transactions = transactionRepository.findAllTransactionByUserId(usuarioId);
 
 		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
-		transactions.forEach(t -> {
+		transactions.stream().forEach(t -> {
 			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
 		});
 
