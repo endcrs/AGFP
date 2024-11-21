@@ -18,24 +18,46 @@ export default function CadastroResgistro() {
 	const navigation = useNavigation();
 	
 	const [titulo, setTitulo] = useState('');
+	const [parcelas, setParcelas] = useState('');
 	const [valor, setValor] = useState('');
-  const [banco, setBanco] = useState('');
+  	const [banco, setBanco] = useState('');
+  	const [cartao, setCartao] = useState('');
 	const [categoria, setCategoria] = useState('');
 	const [tipoTransacao, setTipoTransacao] = useState('');
+	const [tipoCompra, setTipoCompra] = useState('');
 
 	const [isRecipe, setIsRecipe] = useState('RECEITA');
+	const [isAccount, setIsAccount] = useState('CONTA');
 
 	// Listas
 	const [dataTipoTransacao, setDataTipoTransacao] = useState([]);
 	const [dataCategoria, setDataCategoria] = useState([]);
+	const [dataCartao, setDataCartao] = useState([]);
 	const [dataBanco, setDataBanco] = useState([]);
+	const dataTipoCompra = [
+		{
+			id: 0,
+			codigo: 'CONTA CORRENTE',
+			descricao: 'Conta Corrente'
+		},
+		{
+			id: 1,
+			codigo: 'CARTAO DE CREDITO',
+			descricao: 'Cartão de Crédito'
+		}
+	]
 
 
 	//puxando os categorias e cartões
 	useEffect(() => {
-		// Listar cartões do usuários
+		// Listar contas do usuários
 		api.get(`/accounts/by-user/${authData.id}`)
 			.then((response)=> setDataBanco(response.data))
+			.catch((err)=>console.log(err));
+
+		// Listar cartões do usuários
+		api.get(`/cards/by-user/${authData.id}`)
+			.then((response)=> setDataCartao(response.data))
 			.catch((err)=>console.log(err));
 
 		// Listar cartões da categoria
@@ -56,12 +78,18 @@ export default function CadastroResgistro() {
 		if(isRecipe == 'DESPESA' && categoria == ""){
 			return Alert.alert('Cadastro não realizado!', 'Selecione a categoria da transação do tipo despesa!');
 		}else{
-			if (titulo != "" && valor != "" && banco != ""){
-				
-				await postApiRegistro(categoria);
-
-			}else{
-				Alert.alert('Preencha todos os campos!', 'Tenha atenção ao preencher, ele não poderá ser alterado!');
+			if (isAccount == 'CARTAO DE CREDITO') {
+				if (titulo != "" && valor != "" && cartao != "" && parcelas != ""){
+					await postApiRegistroCartao(categoria);
+				}else{
+					Alert.alert('Preencha todos os campos!', 'Tenha atenção ao preencher, ele não poderá ser alterado!');
+				}
+			} else if (isAccount == 'CONTA CORRENTE'){
+				if (titulo != "" && valor != "" && banco != ""){
+					await postApiRegistro(categoria);
+				}else{
+					Alert.alert('Preencha todos os campos!', 'Tenha atenção ao preencher, ele não poderá ser alterado!');
+				}
 			}
 		}
 
@@ -110,6 +138,47 @@ export default function CadastroResgistro() {
 		});
 	}
 
+	const postApiRegistroCartao = async (categoria) => {
+		
+		//formatando valor para enviar a API
+		const valorSemFormatacao =  formatValueToAPI(valor);
+		// caso o cadastro seja de uma receita ele irá enviar apenas uma categoria generica, pois no banco o campo é alterado para nula automaticamente
+		const categoriaAPI = categoria != '' ? categoria : 'ALIMENTACAO';
+		
+		// //realizando cadastro na API
+		await api.post("/cards/transactions",
+			{
+				idCartao: cartao, // Pegar id do cartão listado/selecionado
+				titulo: titulo,
+				valor: valorSemFormatacao,
+				status: "ATIVO",
+				categoria: categoriaAPI,
+				tipo: tipoTransacao,
+				numeroParcelas: parcelas,
+			}
+		).then(function (response) {
+			//Informa que o cadastro foi um sucesso e direciona para a pagina de login
+			Alert.alert('Cadastro realizado com sucesso!', 'Sua Transação foi inserido com sucesso!');
+			navigation.goBack();
+		}).catch(function (error){
+
+			if(error.response.status == 400){
+				//caso apresente o erro 400 irá informar a mensagem disponivel no headers do erro
+				Alert.alert(
+					'Cadastro não realizado!',
+					'Certifique-se de que o saldo seja suficiente.');
+				
+			}else{
+				
+				Alert.alert(
+					'Cadastro não realizado!',
+					'Tente novamente mais tarde!');
+			}
+
+				console.log(error.response);
+		});
+	}
+
   return(
 		<View style={styles.container}>
 
@@ -117,6 +186,19 @@ export default function CadastroResgistro() {
 
 			<View style={styles.formWrapper}>
 				<Text style={styles.title}>NOVO REGISTRO</Text>
+
+				<InputSelect
+					value={tipoCompra}
+					data={dataTipoCompra}
+					placeholder="Tipo de compra"
+					placeholderTextColor="#727272"
+					labelField="descricao"
+					valueField="codigo"
+					onChange={item => {
+						setTipoCompra(item.codigo);
+						setIsAccount(item.codigo);
+					}}
+				/>
 
 				<InputText
 					onChangeText={setTitulo}
@@ -143,6 +225,22 @@ export default function CadastroResgistro() {
 					}}
 				/>
 
+				{isAccount == 'CARTAO DE CREDITO' ? (
+					<MaskedInput
+						type="custom"
+						value={parcelas}
+						onChangeText={text => setParcelas(text)}
+						placeholder="Quantidade de Parcelas"
+						placeholderTextColor="#727272"
+						options={{
+							mask: '12'  // Formato de cartão de crédito
+						}}
+						keyboardType="numeric"  // Apenas números
+					/>
+				) :
+					('')
+				}
+
 				<InputSelect
 					value={tipoTransacao}
 					data={dataTipoTransacao}
@@ -156,20 +254,34 @@ export default function CadastroResgistro() {
 					}}
 				/>
 
-				<InputSelect
-					value={banco}
-					data={dataBanco}
-					placeholder="Selecione o banco"
-					placeholderTextColor="#727272"
-					labelField="banco.descricao"
-					valueField="id"
-					onChange={item => {
-						setBanco(item.id)
-					}}
-				/>	
+				{isAccount == 'CARTAO DE CREDITO' ? (
+					<InputSelect
+						value={cartao}
+						data={dataCartao}
+						placeholder="Selecione o cartão de crédito"
+						placeholderTextColor="#727272"
+						labelField="nome"
+						valueField="id"
+						onChange={item => {
+							setCartao(item.id)
+						}}
+					/>
+					) : (
+					<InputSelect
+						value={banco}
+						data={dataBanco}
+						placeholder="Selecione o banco"
+						placeholderTextColor="#727272"
+						labelField="banco.descricao"
+						valueField="id"
+						onChange={item => {
+							setBanco(item.id)
+						}}
+					/>
+					)
+				}
 
 				{isRecipe == 'RECEITA' ? ('') :
-
 					(
 						<InputSelect
 							value={categoria}
