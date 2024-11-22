@@ -163,6 +163,19 @@ public class AccountTransactionService {
 		
 		return vos;
 	}
+	
+	public List<TransactionCurrentAccountResponseVO> getTransactionsOfAccount(Long accountId) {
+		
+		List<TransationEntity> transactions = transactionRepository
+				.findByCurrentAccountId(accountId, StatusEnum.ATIVO);
+		
+		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
+		transactions.forEach(t -> {
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
+		});
+		
+		return vos;
+	}
 
 	public CategoriaListVO listPercentageSpentByCategory(Long userId) {
 		

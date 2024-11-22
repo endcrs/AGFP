@@ -85,5 +85,10 @@ public class CreditCardController {
 	public CategoriaListVO listPercentageSpentByCategory (@PathVariable(value = "userId") Long userId) {
 		return creditCardTransactionService.listPercentageSpentByCategory(userId);
 	}
+	
+	@GetMapping(value = "/transactions/credit-card/{cardId}")
+	public List<TransactionCreditCardResponseVO> getTransactionsByCreditCard (@PathVariable(value = "cardId") Long cardId) {
+		return creditCardTransactionService.getTransactionsByCreditCard(cardId);
+	}
 
 }

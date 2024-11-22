@@ -23,6 +23,7 @@ public class TransactionCurrentAccountVOFcatory {
 							.descricao(t.getCategoria().getDescricao())
 							.build())
 					.dataTransacao(t.getDataTransacao())
+					.transacao(t.getTransacao())
 					.build();
 		}return 
 				null;
