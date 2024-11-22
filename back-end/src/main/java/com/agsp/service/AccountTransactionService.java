@@ -147,7 +147,7 @@ public class AccountTransactionService {
 			
 			Optional<CreditCardTansationEntity> tCard = creditCardTransactionRepository.findById(userId);
 			
-			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t,  tCard.isPresent() ? tCard.get().getCreditCard().getNome() : ""));
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t,  tCard.isPresent() ? tCard.get().getCreditCard() : null));
 		});
 		
 		return vos;
