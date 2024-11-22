@@ -82,7 +82,7 @@ public class AccountController {
 		return accountService.monthlyExpenses(userId);
 	}
 	
-	@GetMapping(value = "/transactions/{accountId}")
+	@GetMapping(value = "/transactions/current-acccount/{accountId}")
 	public List<TransactionCurrentAccountResponseVO> getTransactionsOfAccount (@PathVariable(value = "accountId") Long accountId) {
 		return accountTransactionService.getTransactionsOfAccount(accountId);
 	}
