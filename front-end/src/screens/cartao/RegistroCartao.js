@@ -1,13 +1,37 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { CardCartao } from '../../components/Card';
 import { formatCardNumber } from '../../utils/formatCreditCard';
 
 export default function RegistroCartao({ route }) {
-    console.log(route.params)
-    
+
+    const [transacoes, setTransacoes] = useState([]);
+    // const [refreshing, setRefreshing] = useState(false);
+
+    // //reloading
+    //   const onRefresh = useCallback(() => {
+    //     setRefreshing(true);
+    //     // atualização dos dados
+    //     setTimeout(() => {
+    //       puxarContasPorUsuario();
+    //       setRefreshing(false);
+    //     }, 1000);
+    // });
+
+    // useEffect(() => {
+    //   puxarContasPorUsuario();
+    // });
+
+    // //Buscando registros da compra
+    // async function puxarContasPorUsuario() {
+    //   await api.get(`/cards/transictions/credit-card/${route.params.cartao.id}`)
+    //   console.log(response.data)
+    //   .then((response) => setTransacoes(response.data))
+    //   .catch((err) => console.log(err));
+    // }
+
     return (
         <View style={styles.container}>
             <View style={styles.sessionCard}>
@@ -23,7 +47,7 @@ export default function RegistroCartao({ route }) {
                     <Text style={{color:'#fff', fontSize:18, fontWeight:'700'}}>Registros</Text>
                 </View>
 
-                {/* <FlatList
+                <FlatList
                     data={transacoes}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
@@ -36,7 +60,7 @@ export default function RegistroCartao({ route }) {
                         onPress={() => disableTransactionDialog(item.id)}
                         /> 
                     )}
-                /> */}
+                />
               </View>
         </View>
     )
