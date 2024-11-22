@@ -48,18 +48,18 @@ export default function RegistroCartao({ route }) {
                 </View>
 
                 <FlatList
-                    data={transacoes}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <CardRegistro
-                        tipoTransacao={item.tipo.codigo}
-                        titulo={item.titulo}
-                        valor={item.valor}
-                        categoria={item.categoria.descricao}
-                        data={item.dataTransacao}
-                        onPress={() => disableTransactionDialog(item.id)}
-                        /> 
-                    )}
+                  data={transacoes}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => (
+                    <CardRegistro
+                      tipoTransacao={item.tipo.codigo}
+                      titulo={item.titulo}
+                      valor={item.valor}
+                      categoria={item.categoria.descricao}
+                      data={item.dataTransacao}
+                      onPress={() => disableTransactionDialog(item.id)}
+                    /> 
+                  )}
                 />
               </View>
         </View>

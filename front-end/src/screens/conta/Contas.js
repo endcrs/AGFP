@@ -26,7 +26,7 @@ export default function Contas() {
 
   useEffect(() => {
     puxarContasPorUsuario();
-  });
+  }, []);
 
   //Buscando contas do usuário logado
   async function puxarContasPorUsuario() {
