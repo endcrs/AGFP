@@ -154,7 +154,7 @@ export default function CadastroResgistro() {
 				status: "ATIVO",
 				categoria: categoriaAPI,
 				tipo: tipoTransacao,
-				numeroParcelas: parcelas,
+				numeroParcelas: 1,
 			}
 		).then(function (response) {
 			//Informa que o cadastro foi um sucesso e direciona para a pagina de login
@@ -225,22 +225,6 @@ export default function CadastroResgistro() {
 					}}
 				/>
 
-				{isAccount == 'CARTAO DE CREDITO' ? (
-					<MaskedInput
-						type="custom"
-						value={parcelas}
-						onChangeText={text => setParcelas(text)}
-						placeholder="Quantidade de Parcelas"
-						placeholderTextColor="#727272"
-						options={{
-							mask: '12'  // Formato de cartão de crédito
-						}}
-						keyboardType="numeric"  // Apenas números
-					/>
-				) :
-					('')
-				}
-
 				<InputSelect
 					value={tipoTransacao}
 					data={dataTipoTransacao}
@@ -295,7 +279,6 @@ export default function CadastroResgistro() {
 							}}
 						/>
 					)
-
 				}
 
 				<Button
