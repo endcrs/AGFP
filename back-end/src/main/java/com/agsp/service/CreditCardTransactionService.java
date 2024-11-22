@@ -197,6 +197,19 @@ public class CreditCardTransactionService {
 		return vos;
 		
 	}
+	
+	public List<TransactionCreditCardResponseVO> getTransactionsByCreditCard(Long cardId) {
+		
+		List<CreditCardTansationEntity> transactions = creditCardTransactionRepository
+				.findByCreditCardTransactionById(cardId, StatusEnum.ATIVO);
+		
+		List<TransactionCreditCardResponseVO> vos = new ArrayList<>();
+		transactions.forEach(t -> {
+			vos.add(TransactionCreditCardVOFcatory.convertToVO(t));
+		});
+		
+		return vos;
+	}
 
 	public CategoriaListVO listPercentageSpentByCategory(Long userId) {
 		

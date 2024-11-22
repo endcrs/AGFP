@@ -23,4 +23,5 @@ public class TransactionCreditCardResponseVO implements Serializable {
 	private ZonedDateTime dataTransacao;
 	private DominioVO categoria;
 	private CardVO cartao;
+	private String transacao;
 }
