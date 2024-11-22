@@ -37,5 +37,11 @@ public interface CreditCardTransactionRepository extends JpaRepository<CreditCar
 			+ "join c.usuario u "
 			+ "where u.id = :userId and t.tipo= :despesa and t.transacao ='CARTAO' and t.status =:ativo ")
 	List<TransationEntity> getAllTransactionsCreditCard(Long userId, TipoTransacaoEnum despesa, StatusEnum ativo);
+	
+	@Query(value = "select tCard from CreditCardTansationEntity tCard "
+			+ "join tCard.creditCard card "
+			+ "join tCard.transation t "
+			+ "where card.id = :creditCardId and t.transacao ='CARTAO' and t.status =:ativo ")
+	List<CreditCardTansationEntity> findByCreditCardTransactionById(Long creditCardId, StatusEnum ativo);
 
 }

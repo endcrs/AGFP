@@ -23,4 +23,5 @@ public class TransactionCurrentAccountResponseVO implements Serializable {
 	private ZonedDateTime dataTransacao;
 	private DominioVO categoria;
 	private AccountVO conta;
+	private String transacao;
 }

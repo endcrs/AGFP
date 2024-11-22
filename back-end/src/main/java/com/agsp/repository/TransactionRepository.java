@@ -27,6 +27,11 @@ public interface TransactionRepository extends JpaRepository<TransationEntity, L
 	
 	@Query(value = "select t from TransationEntity t "
 			+ "join t.currentAccount c "
+			+ "where c.id = :accountId and t.status =:ativo ")
+	List<TransationEntity> findByCurrentAccountId(@Param("accountId") Long userId, StatusEnum ativo);
+	
+	@Query(value = "select t from TransationEntity t "
+			+ "join t.currentAccount c "
 			+ "join c.usuario user "
 			+ "where user.id = :userId ")
 	List<TransationEntity> findAllTransactionByUserId(@Param(value = "userId") Long userId);

@@ -81,4 +81,9 @@ public class AccountController {
 	public SaldoAtualVO getDespesaMensal (@PathVariable Long userId) {
 		return accountService.monthlyExpenses(userId);
 	}
+	
+	@GetMapping(value = "/transactions/{accountId}")
+	public List<TransactionCurrentAccountResponseVO> getTransactionsOfAccount (@PathVariable(value = "accountId") Long accountId) {
+		return accountTransactionService.getTransactionsOfAccount(accountId);
+	}
 }

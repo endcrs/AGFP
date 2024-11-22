@@ -27,6 +27,7 @@ public class TransactionCreditCardVOFcatory {
 							.id(creditCardT.getCreditCard().getId() )
 							.nome(creditCardT.getCreditCard().getNome())
 							.build())
+					.transacao(creditCardT.getTransation().getTransacao())
 					.build();
 		}return 
 				null;
