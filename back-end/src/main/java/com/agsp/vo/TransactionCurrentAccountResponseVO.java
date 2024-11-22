@@ -24,4 +24,5 @@ public class TransactionCurrentAccountResponseVO implements Serializable {
 	private DominioVO categoria;
 	private AccountVO conta;
 	private String transacao;
+	private String nomeCartao;
 }

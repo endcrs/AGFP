@@ -8,9 +8,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.agsp.entity.CreditCardTansationEntity;
 import com.agsp.entity.CurrentAccountEntity;
 import com.agsp.entity.TransationEntity;
 import com.agsp.entity.factory.TransacaoEntityFactory;
@@ -19,6 +21,7 @@ import com.agsp.enumerator.StatusEnum;
 import com.agsp.enumerator.TipoTransacaoEnum;
 import com.agsp.exception.MsgException;
 import com.agsp.exception.NaoEncontradoException;
+import com.agsp.repository.CreditCardTransactionRepository;
 import com.agsp.repository.CurrentAccountRepository;
 import com.agsp.repository.TransactionRepository;
 import com.agsp.vo.CategoriaListVO;
@@ -36,6 +39,7 @@ public class AccountTransactionService {
 	
 	private final TransactionRepository transactionRepository;
 	private final CurrentAccountRepository currentAccountRepository;
+	private final CreditCardTransactionRepository creditCardTransactionRepository;
 	
 	@Transactional
 	public TransactionCurrentAccountVO createTransaction(TransactionCurrentAccountVO transaction) {
@@ -140,7 +144,10 @@ public class AccountTransactionService {
 		
 		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
-			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
+			
+			Optional<CreditCardTansationEntity> tCard = creditCardTransactionRepository.findById(userId);
+			
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t,  tCard.isPresent() ? tCard.get().getCreditCard().getNome() : ""));
 		});
 		
 		return vos;
@@ -158,7 +165,7 @@ public class AccountTransactionService {
 		
 		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
-			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t, null));
 		});
 		
 		return vos;
@@ -171,7 +178,7 @@ public class AccountTransactionService {
 		
 		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.forEach(t -> {
-			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t, null));
 		});
 		
 		return vos;

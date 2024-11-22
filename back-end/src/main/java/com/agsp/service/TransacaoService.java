@@ -201,7 +201,7 @@ public class TransacaoService {
 
 		List<TransactionCurrentAccountResponseVO> vos = new ArrayList<>();
 		transactions.stream().forEach(t -> {
-			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t));
+			vos.add(TransactionCurrentAccountVOFcatory.convertToVO(t, null));
 		});
 
 		return vos;
