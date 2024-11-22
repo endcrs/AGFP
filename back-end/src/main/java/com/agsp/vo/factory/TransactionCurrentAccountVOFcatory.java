@@ -6,7 +6,7 @@ import com.agsp.vo.TransactionCurrentAccountResponseVO;
 
 public class TransactionCurrentAccountVOFcatory {
 
-	public static TransactionCurrentAccountResponseVO convertToVO(TransationEntity t) {
+	public static TransactionCurrentAccountResponseVO convertToVO(TransationEntity t, String nomeCartao) {
 		
 		if(t != null) {
 			return TransactionCurrentAccountResponseVO.builder()
@@ -24,6 +24,7 @@ public class TransactionCurrentAccountVOFcatory {
 							.build())
 					.dataTransacao(t.getDataTransacao())
 					.transacao(t.getTransacao())
+					.nomeCartao(nomeCartao)
 					.build();
 		}return 
 				null;
