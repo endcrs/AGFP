@@ -1,6 +1,7 @@
 package com.agsp.vo.factory;
 
 import com.agsp.entity.TransationEntity;
+import com.agsp.vo.AccountVO;
 import com.agsp.vo.DominioVO;
 import com.agsp.vo.TransactionCurrentAccountResponseVO;
 
@@ -25,6 +26,10 @@ public class TransactionCurrentAccountVOFcatory {
 					.dataTransacao(t.getDataTransacao())
 					.transacao(t.getTransacao())
 					.nomeCartao(nomeCartao)
+					.conta(AccountVO.builder()
+							.id(t.getCurrentAccount().getId())
+							.banco(t.getCurrentAccount().getBanco())
+							.build())
 					.build();
 		}return 
 				null;
