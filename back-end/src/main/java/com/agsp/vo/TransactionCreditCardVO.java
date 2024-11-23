@@ -37,7 +37,7 @@ public class TransactionCreditCardVO implements Serializable {
 	@Positive(message = "Valor deve ser um valor positivo")
 	private BigDecimal valor;
 	
-	@NotNull(message = "O preenchimento do campo a n~umero parcelas é obrigatório")
-	private Integer numeroParcelas;
+//	@NotNull(message = "O preenchimento do campo a n~umero parcelas é obrigatório")
+//	private Integer numeroParcelas;
 	
 }
