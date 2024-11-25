@@ -43,8 +43,8 @@ public class CreditCardTansationEntity implements Serializable {
 	@JoinColumn(name = "TRANSACAO_ID", referencedColumnName = "IDENT")
 	private TransationEntity transation;
 	
-	@Column(name = "NUMERO_PARCELAS", nullable = false)
-	private Integer numeroParcelas;	
+//	@Column(name = "NUMERO_PARCELAS", nullable = false)
+//	private Integer numeroParcelas;	
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CARTAO_CREDITO_ID", referencedColumnName = "IDENT")

@@ -25,7 +25,7 @@ public class TransactionCurrentAccountVOFcatory {
 							.build())
 					.dataTransacao(t.getDataTransacao())
 					.transacao(t.getTransacao())
-					.cartaoId(t.getTransacao().equals("CARTAO") ? creditcard.getId() : null)
+					.cartaoId(creditcard != null ? creditcard.getId() : null )
 					.contaId(t.getCurrentAccount().getId())
 					.build();
 		}return 
