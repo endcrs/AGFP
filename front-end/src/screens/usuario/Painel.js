@@ -13,7 +13,6 @@ import { convertDateToFormFormat } from '../../utils/formatData';
 import { formatValue } from '../../utils/formatValue';
 import { disableTransactionDialog } from '../../utils/disableTransaction';
 
-
 export default function Painel() {
   const {authData} = useAuth();
   const navigation = useNavigation();

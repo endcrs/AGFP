@@ -11,8 +11,6 @@ import api from "../../services/api";
 
 import { formatValueToAPI } from "../../utils/formatValue";
 
-
-
 export default function CadastroResgistro() {
 	const {authData} = useAuth();
 	const navigation = useNavigation();
@@ -47,7 +45,6 @@ export default function CadastroResgistro() {
 		}
 	]
 
-
 	//puxando os categorias e cartões
 	useEffect(() => {
 		// Listar contas do usuários
@@ -74,12 +71,11 @@ export default function CadastroResgistro() {
 
 	async function cadastroTransacao()
 	{	
-
 		if(isRecipe == 'DESPESA' && categoria == ""){
 			return Alert.alert('Cadastro não realizado!', 'Selecione a categoria da transação do tipo despesa!');
 		}else{
 			if (isAccount == 'CARTAO DE CREDITO') {
-				if (titulo != "" && valor != "" && cartao != "" && parcelas != ""){
+				if (titulo != "" && valor != "" && cartao != ""){
 					await postApiRegistroCartao(categoria);
 				}else{
 					Alert.alert('Preencha todos os campos!', 'Tenha atenção ao preencher, ele não poderá ser alterado!');
@@ -92,8 +88,6 @@ export default function CadastroResgistro() {
 				}
 			}
 		}
-
-		
 	}
 
 	const postApiRegistro = async (categoria) => {
@@ -132,8 +126,6 @@ export default function CadastroResgistro() {
 					'Cadastro não realizado!',
 					'Tente novamente mais tarde!');
 			}
-			
-
 				console.log(error.response);
 		});
 	}
@@ -154,7 +146,6 @@ export default function CadastroResgistro() {
 				status: "ATIVO",
 				categoria: categoriaAPI,
 				tipo: tipoTransacao,
-				numeroParcelas: 1,
 			}
 		).then(function (response) {
 			//Informa que o cadastro foi um sucesso e direciona para a pagina de login
