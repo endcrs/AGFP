@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View,RefreshControl, Text } from 'react-native';
+import { ScrollView, StyleSheet, View,RefreshControl, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ButtonPlus } from '../../components/Button';
@@ -51,12 +51,14 @@ export default function Cartoes() {
           }
           >
           {cartoes.map((cartao, index) => (
-            <CardCartao 
-                key={index}
-                nomeCartao={cartao.nome}
-                numeroCartao={formatCardNumber(cartao.numero)}
-                validade={cartao.validade} 
-            />
+            <TouchableOpacity onPress={() => navigation.navigate('RegistroCartao', {cartao: cartao})}>
+              <CardCartao
+                  key={index}
+                  nomeCartao={cartao.nome}
+                  numeroCartao={formatCardNumber(cartao.numero)}
+                  validade={cartao.validade} 
+              />
+            </TouchableOpacity>
           ))}
             
         </ScrollView>

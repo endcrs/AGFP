@@ -6,6 +6,7 @@ import Painel from '../screens/usuario/Painel';
 import Historico from '../screens/transacao/Historico';
 import Cartoes from '../screens/cartao/Cartoes';
 import CadastroResgistro from '../screens/transacao/CadastroRegistro';
+import RegistroCartao from '../screens/cartao/RegistroCartao';
 import CadastroCartao from '../screens/cartao/CadastroCartao';
 
 import Contas from '../screens/conta/Contas';
@@ -130,6 +131,10 @@ function CartaoNavigation() {
             <CartaoStack.Screen
                 name="CadastroCartao"
                 component={CadastroCartao}
+            />
+            <CartaoStack.Screen
+                name="RegistroCartao"
+                component={RegistroCartao}
             />
         </CartaoStack.Navigator>
     )

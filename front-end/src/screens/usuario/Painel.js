@@ -13,7 +13,6 @@ import { convertDateToFormFormat } from '../../utils/formatData';
 import { formatValue } from '../../utils/formatValue';
 import { disableTransactionDialog } from '../../utils/disableTransaction';
 
-
 export default function Painel() {
   const {authData} = useAuth();
   const navigation = useNavigation();
@@ -44,7 +43,7 @@ export default function Painel() {
     puxarTransacoesMensais();
     puxarCategorias();
     puxarDadosFinanceiro();
-  });
+  }, []);
 
   async function puxarTransacoesMensais(){
         await api.get(`/accounts/transactions/monthly/${authData.id}`)
@@ -266,5 +265,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color:'#fff',
   },
-
 });
